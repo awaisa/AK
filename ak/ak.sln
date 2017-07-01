@@ -1,0 +1,102 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiCore", "WebApi\WebApiCore.csproj", "{A499E53F-874D-4AFF-A7C5-CCF974355E2D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessCore", "BusinessCore\BusinessCore.csproj", "{11689BFC-8BBA-4A1F-94E9-91E15818DC62}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebApp", "WebApp", "{D5B1E97B-A8D6-4BA5-9413-360FDE08ABDC}"
+	ProjectSection(WebsiteProperties) = preProject
+		SccProjectName = "SAK"
+		SccAuxPath = "SAK"
+		SccLocalPath = "SAK"
+		SccProvider = "SAK"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.2"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_50406"
+		Debug.AspNetCompiler.PhysicalPath = "WebApp\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_50406\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_50406"
+		Release.AspNetCompiler.PhysicalPath = "WebApp\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_50406\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "50406"
+		SlnRelativePath = "WebApp\"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A499E53F-874D-4AFF-A7C5-CCF974355E2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A499E53F-874D-4AFF-A7C5-CCF974355E2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A499E53F-874D-4AFF-A7C5-CCF974355E2D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A499E53F-874D-4AFF-A7C5-CCF974355E2D}.Debug|x64.Build.0 = Debug|Any CPU
+		{A499E53F-874D-4AFF-A7C5-CCF974355E2D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A499E53F-874D-4AFF-A7C5-CCF974355E2D}.Debug|x86.Build.0 = Debug|Any CPU
+		{A499E53F-874D-4AFF-A7C5-CCF974355E2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A499E53F-874D-4AFF-A7C5-CCF974355E2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A499E53F-874D-4AFF-A7C5-CCF974355E2D}.Release|x64.ActiveCfg = Release|Any CPU
+		{A499E53F-874D-4AFF-A7C5-CCF974355E2D}.Release|x64.Build.0 = Release|Any CPU
+		{A499E53F-874D-4AFF-A7C5-CCF974355E2D}.Release|x86.ActiveCfg = Release|Any CPU
+		{A499E53F-874D-4AFF-A7C5-CCF974355E2D}.Release|x86.Build.0 = Release|Any CPU
+		{11689BFC-8BBA-4A1F-94E9-91E15818DC62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11689BFC-8BBA-4A1F-94E9-91E15818DC62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11689BFC-8BBA-4A1F-94E9-91E15818DC62}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{11689BFC-8BBA-4A1F-94E9-91E15818DC62}.Debug|x64.Build.0 = Debug|Any CPU
+		{11689BFC-8BBA-4A1F-94E9-91E15818DC62}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{11689BFC-8BBA-4A1F-94E9-91E15818DC62}.Debug|x86.Build.0 = Debug|Any CPU
+		{11689BFC-8BBA-4A1F-94E9-91E15818DC62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11689BFC-8BBA-4A1F-94E9-91E15818DC62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11689BFC-8BBA-4A1F-94E9-91E15818DC62}.Release|x64.ActiveCfg = Release|Any CPU
+		{11689BFC-8BBA-4A1F-94E9-91E15818DC62}.Release|x64.Build.0 = Release|Any CPU
+		{11689BFC-8BBA-4A1F-94E9-91E15818DC62}.Release|x86.ActiveCfg = Release|Any CPU
+		{11689BFC-8BBA-4A1F-94E9-91E15818DC62}.Release|x86.Build.0 = Release|Any CPU
+		{D5B1E97B-A8D6-4BA5-9413-360FDE08ABDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5B1E97B-A8D6-4BA5-9413-360FDE08ABDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5B1E97B-A8D6-4BA5-9413-360FDE08ABDC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D5B1E97B-A8D6-4BA5-9413-360FDE08ABDC}.Debug|x64.Build.0 = Debug|Any CPU
+		{D5B1E97B-A8D6-4BA5-9413-360FDE08ABDC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D5B1E97B-A8D6-4BA5-9413-360FDE08ABDC}.Debug|x86.Build.0 = Debug|Any CPU
+		{D5B1E97B-A8D6-4BA5-9413-360FDE08ABDC}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5B1E97B-A8D6-4BA5-9413-360FDE08ABDC}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{D5B1E97B-A8D6-4BA5-9413-360FDE08ABDC}.Release|x64.ActiveCfg = Debug|Any CPU
+		{D5B1E97B-A8D6-4BA5-9413-360FDE08ABDC}.Release|x64.Build.0 = Debug|Any CPU
+		{D5B1E97B-A8D6-4BA5-9413-360FDE08ABDC}.Release|x86.ActiveCfg = Debug|Any CPU
+		{D5B1E97B-A8D6-4BA5-9413-360FDE08ABDC}.Release|x86.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://awaisa.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = BusinessCore\\BusinessCore.csproj
+		SccProjectName1 = BusinessCore
+		SccLocalPath1 = BusinessCore
+		SccProjectUniqueName2 = WebApi\\WebApiCore.csproj
+		SccProjectName2 = WebApi
+		SccLocalPath2 = WebApi
+		SccWebProject3 = true
+		SccProjectUniqueName3 = WebApp
+		SccProjectName3 = WebApp
+		SccLocalPath3 = WebApp
+		SccProjectEnlistmentChoice3 = 2
+	EndGlobalSection
+EndGlobal

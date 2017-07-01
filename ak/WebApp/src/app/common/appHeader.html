@@ -1,0 +1,114 @@
+﻿<style>
+</style>
+<nav class="navbar navbar-default navbar-inverse navbar-static-top" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">
+        <img alt="Brand" height="20" src="touch-icon.png" width="20">
+      </a>
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-left">
+        <li [ngClass]="{ active: config.activeTab == 'login'}"><a href="#">Login</a></li>
+        <li [ngClass]="{ active: config.activeTab == 'about'}">
+          <a href="#/about">
+            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>About
+          </a>
+        </li>
+        <li [ngClass]="{ active: config.activeTab == 'options'}">
+          <a href="#/options">
+            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Options
+          </a>
+        </li>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Receivable <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a routerLink="../receivable/quotations" routerLinkActive="active">Quotations</a></li>
+            <li><a routerLink="../receivable/orders" routerLinkActive="active">Orders</a></li>
+            <li><a routerLink="../receivable/receipts" routerLinkActive="active">Receipts</a></li>
+            <li><a routerLink="../receivable/invoices" routerLinkActive="active">Invoices</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a routerLink="../receivable/customers" routerLinkActive="active">Customers</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Payable <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a routerLink="../payable/purchase-orders" routerLinkActive="active">Purchase Orders</a></li>
+            <li><a routerLink="../payable/purchase-invoices" routerLinkActive="active">Purchase Invoices</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a routerLink="../payable/vendors" routerLinkActive="active">Vendors</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Inventory <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a routerLink="inventory" routerLinkActive="active">Items</a></li>
+            <li><a href="#">Inventory Control Journal</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Financials <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Journal Entries</a></li>
+            <li><a href="#">General Ledgers</a></li>
+            <li><a href="#">Taxes</a></li>
+            <li><a href="#">Accounts</a></li>
+            <li><a href="#">Banks</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Balance Sheet</a></li>
+            <li><a href="#">Income Statement</a></li>
+            <li><a href="#">Trial Balance</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Organization <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Company</a></li>
+            <li><a href="#">Settings</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li><a *ngIf="!user.isAuthenticated" href="#/login">Login</a></li>
+        <li class="dropdown" *ngIf="user.isAuthenticated">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <div class="hidden-xs">
+              <span class="glyphicon glyphicon-user"></span>
+              <strong>{{user.userName}}</strong>
+              <strong class="caret"></strong>
+            </div>
+            <div class="visible-xs">
+              {{user.userName}}
+              <strong class="caret"></strong>
+            </div>
+          </a>
+          <ul class="dropdown-menu" style="width: 250px;">
+            <li><a>{{user.fullName}}</a></li>
+            <li class="divider"></li>
+            <li>
+              <a href="#/logout">
+                <span class="glyphicon glyphicon-log-out"></span>&nbsp;
+                Log out
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
