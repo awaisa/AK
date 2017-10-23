@@ -45,8 +45,11 @@ namespace BusinessCore.Domain.Financials
         public virtual AccountClass AccountClass { get; set; }
         public virtual Company Company { get; set; }
 
+        [NotMapped]
         public virtual ICollection<Account> ChildAccounts { get; set; }
+        [NotMapped]
         public virtual ICollection<MainContraAccount> ContraAccounts { get; set; }
+        [NotMapped]
         public virtual ICollection<GeneralLedgerLine> GeneralLedgerLines { get; set; }
 
 

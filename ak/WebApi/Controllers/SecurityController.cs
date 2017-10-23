@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using BusinessCore.Services.Security;
 using WebApiCore.Models;
+using Microsoft.AspNetCore.Http.Authentication;
+using System;
+using Microsoft.AspNetCore.Authentication;
 
 namespace AlbumViewerAspNetCore
 {    
@@ -33,15 +36,27 @@ namespace AlbumViewerAspNetCore
                 throw new ApiException("Invalid Login Credentials", 401);
 
 
-            var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-            identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
+            //var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+            //identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
            
             //if (user.Fullname == null)
             //    user.Fullname = string.Empty;
-            identity.AddClaim(new Claim("FullName", string.Format("{0} {1}", user.Firstname, user.Lastname)));
+            //identity.AddClaim(new Claim("FullName", string.Format("{0} {1}", user.Firstname, user.Lastname)));
 
-            await HttpContext.Authentication.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(identity));
+            //await HttpContext.Authentication.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+            //    new ClaimsPrincipal(identity));            
+            var claims = new[]
+            {
+                new Claim("name", user.Username),
+                new Claim("FullName", string.Format("{0} {1}", user.Firstname, user.Lastname))
+            };
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+            //    new ClaimsPrincipal(identity));
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(identity));
+
             loginUser.Password = string.Empty;
             loginUser.Fullname = string.Format("{0} {1}", user.Firstname, user.Lastname);
             return loginUser;
@@ -52,7 +67,7 @@ namespace AlbumViewerAspNetCore
         [Route("api/logout")]
         public async Task<bool> Logout()
         {
-            await HttpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);            
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);            
             return true;
         }
 

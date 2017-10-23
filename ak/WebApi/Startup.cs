@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using BusinessCore;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 using System.Text.Encodings.Web;
@@ -19,6 +18,7 @@ using BusinessCore.Services.Financial;
 using BusinessCore.Services.Purchasing;
 using BusinessCore.Services.Sales;
 using BusinessCore.Services.TaxSystem;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace AlbumViewerNetCore
 {
@@ -65,9 +65,16 @@ namespace AlbumViewerNetCore
                 }
             });
 
+            services
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(o =>
+                {
+                    o.LoginPath = "/api/login";
+                    o.LogoutPath = "/api/logout";
+                });
 
-            services.AddAuthentication();
 
+            //services.AddAuthenticationCore();
 
             services.AddCors(options =>
             {
@@ -209,12 +216,7 @@ namespace AlbumViewerNetCore
             //app.UseCors("CorsPolicy");
 
             // Enable Cookie Auth with automatic user policy
-            app.UseCookieAuthentication(new CookieAuthenticationOptions()
-            {
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = false,
-                LoginPath = "/api/login"
-            });
+            app.UseAuthentication();
 
             app.UseDatabaseErrorPage();
             app.UseStatusCodePages();
