@@ -1,5 +1,5 @@
 ﻿import {Injectable} from "@angular/core";
-import {Http, RequestOptionsArgs, Response}  from "@angular/http";
+import {Http, Headers, RequestOptions, Response}  from "@angular/http";
 import {UserInfo} from "./userInfo";
 import {Observable} from "rxjs";
 
@@ -12,8 +12,8 @@ export class HttpClientService {
   constructor(private http:Http, private user:UserInfo) {
   }
 
-  get(url:string, requestOptions?:RequestOptionsArgs)  {
-    this.ensureOptions(!requestOptions);
+  get(url:string, requestOptions?:RequestOptions)  {
+    requestOptions = this.ensureOptions(requestOptions);
     return this.http
       .get(url, requestOptions)
       .catch( response => {
@@ -24,8 +24,8 @@ export class HttpClientService {
       })
   }
 
-  post(url:string, data:any, requestOptions:RequestOptionsArgs) {
-    this.ensureOptions(!requestOptions)
+  post(url:string, data:any, requestOptions:RequestOptions) {
+    requestOptions = this.ensureOptions(requestOptions)
 
     return this.http
       .post(url, data, requestOptions)
@@ -37,7 +37,7 @@ export class HttpClientService {
       });
   }
 
-  put(url:string, data:any, requestOptions:RequestOptionsArgs) {
+  put(url:string, data:any, requestOptions:RequestOptions) {
     //this.ensureOptions(!requestOptions);
 
     return this.http
@@ -50,9 +50,9 @@ export class HttpClientService {
       });
   }
 
-  delete(url:string, requestOptions:RequestOptionsArgs) {
+  delete(url:string, requestOptions:RequestOptions) {
 
-    this.ensureOptions (!requestOptions);
+    requestOptions = this.ensureOptions (requestOptions);
 
     return this.http.delete(url,requestOptions)
       .catch(response => {
@@ -63,18 +63,21 @@ export class HttpClientService {
       });
   }
 
+  ensureOptions(requestOptions:RequestOptions):RequestOptions {
 
-  ensureOptions(requestOptions:RequestOptionsArgs):RequestOptionsArgs {
-
-
-    // if (!requestOptions)
-    //   requestOptions = <RequestOptionsArgs> {
-    //     withCredentials: true
-    //   };
-    // else
-    //   requestOptions.withCredentials = true;
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser && currentUser.token) {
+      let headAuthorization = { 'Authorization': 'Bearer ' + currentUser.token };
+      let headers = new Headers(headAuthorization);
+      //return new RequestOptions({ headers: headers });
+      if (!requestOptions)
+        requestOptions = new RequestOptions({
+          headers: headers
+        });
+      else
+        requestOptions.headers = headers;
+    }
 
     return requestOptions;
   }
-
 }

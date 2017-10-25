@@ -10,7 +10,7 @@ using WebApiCore;
 
 namespace WebApiCore.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [EnableCors("CorsPolicy")]
     public class InventoryController : BaseController
     {

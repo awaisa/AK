@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import {Http, RequestOptions} from "@angular/http";
+import {Http, Headers, Response, RequestOptions} from "@angular/http";
 import {AppConfiguration} from "./appConfiguration";
 import {Observable} from "rxjs";
 import {ErrorInfo} from "../shared/ErrorInfo";
@@ -8,7 +8,7 @@ import {ErrorInfo} from "../shared/ErrorInfo";
 export class UserInfo {
 
   isAdmin = false;
-  private _userName:string = null;
+  private _currentUser:any = null;
   private _fullName: string = null;
 
   sessionStarted = new Date();
@@ -18,25 +18,22 @@ export class UserInfo {
     this._isAuthenticated = val;
     // cache authentication
     localStorage.setItem('av_isAuthenticated', val.toString());
+    this._currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
   get isAuthenticated() {
     return this._isAuthenticated;
   };
 
-  set userName(val) {
-      this._userName = val;
-      localStorage.setItem('av_userName', val.toString());
-  };
-  get userName() {
-      return this._userName;
+  get currentUser() {
+      return this._currentUser;
   };
 
-  set fullName(val) {
-      this._fullName = val;
-      localStorage.setItem('av_fullName', val.toString());
+  get userName() {
+      return this._currentUser.Username;
   };
+
   get fullName() {
-      return this._fullName;
+      return this._currentUser.FirstName + ' ' + this._currentUser.LastName;
   };
 
   constructor(private http: Http,
@@ -44,16 +41,20 @@ export class UserInfo {
     // initialize isAuthenticate from localstorage
     var isAuthenticated = localStorage.getItem("av_isAuthenticated");
     this._isAuthenticated = !isAuthenticated || isAuthenticated === 'false' ? false : true;
-    this._userName = localStorage.getItem("av_userName");
-    this._fullName = localStorage.getItem("av_fullName");
+    this._currentUser = JSON.parse(localStorage.getItem('currentUser'));
  }
 
 
   login(username, password) {
-    return this.http.post(this.config.urls.url("login"), {
-        username: username,
-        password: password
-      }, new RequestOptions({withCredentials:true}))
+    return this.http.post(this.config.urls.url("login"), { username: username, password: password})
+      .map((response: Response) => {
+          // login successful if there's a jwt token in the response
+          let user = response.json();
+          if (user && user.token) {
+              // store user details and jwt token in local storage to keep user logged in between page refreshes
+              localStorage.setItem('currentUser', JSON.stringify(user));
+          }
+      })
       .catch( (response) => {
         if(response.status === 401)
           this.isAuthenticated = false;
@@ -63,14 +64,11 @@ export class UserInfo {
   }
 
   logout() {
-    return this.http.get(this.config.urls.url("logout"),
-                         new RequestOptions({withCredentials:true}))
-      .map(
-        (response) => {
-          this.isAuthenticated = false;
-          return true;
-        }
-      );
+
+    // remove user from local storage to log user out
+    localStorage.removeItem('currentUser');
+    this.isAuthenticated = false;
+    return true;
   }
 
   /**
@@ -90,6 +88,10 @@ export class UserInfo {
       })
       .catch( (response) => {
         this.isAuthenticated = false;
+
+        // remove user from local storage to log user out
+        localStorage.removeItem('currentUser');
+        
         return Observable.throw( response );
       });
   }

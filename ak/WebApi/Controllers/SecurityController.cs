@@ -10,6 +10,11 @@ using WebApiCore.Models;
 using Microsoft.AspNetCore.Http.Authentication;
 using System;
 using Microsoft.AspNetCore.Authentication;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using WebApiCore.Helper;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AlbumViewerAspNetCore
 {    
@@ -18,58 +23,62 @@ namespace AlbumViewerAspNetCore
     public class SecurityController : Controller
     {
         private ISecurityService accountRepo;
+        private readonly AppSettings _appSettings;
 
-        public SecurityController(ISecurityService actRepo)            
+        public SecurityController(ISecurityService actRepo, IOptions<AppSettings> appSettings)            
         {
             accountRepo = actRepo;
+            _appSettings = appSettings.Value;
         }
 
-           
+
         [AllowAnonymous]                    
         [HttpPost]
         [Route("api/login")]
-        public async Task<UserModel> Login([FromBody]  UserModel loginUser)
+        public async Task<IActionResult> Login([FromBody]  UserModel loginUser)
         {            
             var user = accountRepo.AuthenticateAndLoadUser(loginUser.Username, loginUser.Password);
 
             if (user == null)
                 throw new ApiException("Invalid Login Credentials", 401);
 
-
-            //var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-            //identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
-           
-            //if (user.Fullname == null)
-            //    user.Fullname = string.Empty;
-            //identity.AddClaim(new Claim("FullName", string.Format("{0} {1}", user.Firstname, user.Lastname)));
-
-            //await HttpContext.Authentication.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-            //    new ClaimsPrincipal(identity));            
-            var claims = new[]
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
-                new Claim("name", user.Username),
-                new Claim("FullName", string.Format("{0} {1}", user.Firstname, user.Lastname))
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenString = tokenHandler.WriteToken(token);
 
-            //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-            //    new ClaimsPrincipal(identity));
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(identity));
-
-            loginUser.Password = string.Empty;
-            loginUser.Fullname = string.Format("{0} {1}", user.Firstname, user.Lastname);
-            return loginUser;
+            // return basic user info (without password) and token to store client side
+            return Ok(new
+            {
+                Id = user.Id,
+                Username = user.Username,
+                FirstName = user.Firstname,
+                LastName = user.Lastname,
+                token = tokenString
+            });
         }
 
-        [AllowAnonymous]
-        [HttpGet]
-        [Route("api/logout")]
-        public async Task<bool> Logout()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);            
-            return true;
-        }
+        /// <summary>
+        /// We are using JWT Bearer signIn so to logout simply remove the token from client.
+        /// </summary>
+        /// <returns></returns>
+        //[AllowAnonymous]
+        //[HttpGet]
+        //[Route("api/logout")]
+        //public async Task<bool> Logout()
+        //{
+        //    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);            
+        //    return true;
+        //}
 
         [HttpGet]
         [Route("api/isAuthenticated")]

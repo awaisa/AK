@@ -1,11 +1,12 @@
 ﻿import { Component, OnInit } from '@angular/core';
+import {Router, ActivatedRoute} from "@angular/router";
+
 import {UserInfo} from "../business/userInfo";
 import {ErrorInfo} from "../shared/ErrorInfo";
 import { AppConfiguration } from "../business/appConfiguration";
 
 declare var toastr:any;
 
-import {ActivatedRoute} from "@angular/router";
 //declare var toastr:any;
 
 @Component({
@@ -17,27 +18,26 @@ export class LoginComponent implements OnInit {
     username:string = "";
     password:string = "";
     error: ErrorInfo = new ErrorInfo();
+    returnUrl: string;
 
-    constructor(private user: UserInfo, private route: ActivatedRoute, private config: AppConfiguration) {
+    constructor(private user: UserInfo, private route: ActivatedRoute, private router: Router, private config: AppConfiguration) {
         config.activeTab = "login";
     }
 
     ngOnInit() {
-
-      if (this.route.snapshot.url[0].path == "logout")
-        this.logout();
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        
+        if (this.route.snapshot.url[0].path == "logout")
+            this.logout();
     }
 
     login() {
       this.user.login(this.username,this.password)
-        .subscribe((response) => {
-            var res = response.json();
-            this.user.fullName = res.Fullname;
-            this.user.userName = res.Username;
-
+        .subscribe((response) => {            
             this.user.isAuthenticated = true;
             toastr.success("You are logged in.");
-            window.location.hash = "about";
+            //window.location.hash = "about";
+            this.router.navigate([this.returnUrl]);
         },
         (err)=> {
           this.error.error(err);
@@ -47,11 +47,11 @@ export class LoginComponent implements OnInit {
     }
 
     logout() {
-        this.user.logout()
-          .subscribe((success) => {
+        if(this.user.logout()){
             toastr.success("Logged out.");
-            window.location.hash = "albums";
-          });
+            //window.location.hash = "/";
+            this.router.navigate(['login']);            
+        }
     }
 
 }

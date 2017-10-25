@@ -1,4 +1,6 @@
 ﻿import { NgModule } from '@angular/core';
+import { EnsureAuthenticated } from '../ensureauthenticated';
+
 import {
     Routes,
     RouterModule
@@ -13,7 +15,7 @@ import { ItemsComponent } from './items.component';
 @NgModule({
     imports: [RouterModule.forChild([
         { path: '', redirectTo: 'items', pathMatch: 'full' },
-        { path: 'items', component: ItemsComponent }
+        { path: 'items', component: ItemsComponent, canActivate: [EnsureAuthenticated]}
     ])],
     exports: [RouterModule]
 })

@@ -5,10 +5,11 @@ import { ItemsComponent }         from './items.component';
 import { InventoryRoutingModule } from './inventory-routing.module';
 
 import { InventoryService }       from './inventory.service';
+import { EnsureAuthenticated } from '../ensureauthenticated';
 
 @NgModule({
     imports:      [ SharedModule, InventoryRoutingModule ],
     declarations: [ ItemsComponent ],
-    providers:    [ InventoryService ]
+    providers:    [ InventoryService, EnsureAuthenticated ]
 })
 export class InventoryModule { }
