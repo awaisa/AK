@@ -6,7 +6,7 @@ import { Router } from "@angular/router";
 import { AppConfiguration } from "../business/appConfiguration";
 import { ErrorInfo } from "../shared/ErrorInfo";
 import { ErrorDisplayComponent } from '../shared/error-display.component';
-import { Subject } from 'rxjs/Rx';
+import {UserInfo} from "../business/userInfo";
 
 declare var $: any;
 
@@ -16,15 +16,37 @@ declare var $: any;
 export class ItemsComponent implements OnInit {
     constructor(private http: Http, private router: Router,
         private inventoryService: InventoryService,
-        private config: AppConfiguration) {
+        private config: AppConfiguration, private user:UserInfo) {
 
     }
 
     itemList: Item[] = [];
     error: ErrorInfo = new ErrorInfo();
-
+    dtOptions: DataTables.Settings = {};
+    
+    
     ngOnInit() {
-        this.getItems();
+        var t = this.user.token;
+        this.dtOptions = {
+            ajax: {
+                url: this.config.urls.url("items"),
+                beforeSend: function(xhr, settings) { 
+                    xhr.setRequestHeader('Authorization','Bearer ' + t); 
+                } 
+            },
+            columns: [{
+              title: 'Code',
+              data: 'Code'
+            }, {
+              title: 'Description',
+              data: 'Description'
+            }, {
+              title: 'Price',
+              data: 'Price'
+            }]
+          };
+
+        //this.getItems();
 
         this.config.searchText = "";
         this.config.isSearchAllowed = true;

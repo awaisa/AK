@@ -36,6 +36,9 @@ export class UserInfo {
       return this._currentUser.FirstName + ' ' + this._currentUser.LastName;
   };
 
+  get token() {
+    return this._currentUser.token;
+  };
   constructor(private http: Http,
               private config: AppConfiguration) {
     // initialize isAuthenticate from localstorage
