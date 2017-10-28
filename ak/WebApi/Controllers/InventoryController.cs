@@ -45,7 +45,7 @@ namespace WebApiCore.Controllers
 
             TestData model = new TestData();
 
-            model.draw = GetPageNumber();
+            model.start = Getstart();
 
             var pagesize = GetPageSize();
             var sortcolumn = GetSortColumn();
@@ -67,14 +67,15 @@ namespace WebApiCore.Controllers
             }
             //filtered records count
             model.recordsFiltered = records.Count();
-
+            records = OrderBy(records, sortcolumn, sortcolumnDir == "desc");
             //skip
-            int skip = (model.draw - 1) * pagesize;
+            //int skip = ((model.start == 0 ? 1 : model.start - 1)) * pagesize;
             model.data = records
-                .OrderBy(t => t.Code)
-                .Skip(skip)
+                //.OrderBy(t => t.Code)
+                .Skip(model.start)
                 .Take(pagesize)
-                .ToList().Select(t => new TestDataRecord()
+                //.ToList()
+                .Select(t => new TestDataRecord()
             {
                     Code = t.Code,
                     Description = t.Description,
@@ -82,14 +83,14 @@ namespace WebApiCore.Controllers
             }).ToList();
 
 
-            //return Json(model);
-            return Json(model.data);
+            return Json(model);
+            //return Json(model.data);
         }
     }
 
     public class TestData
     {
-        public int draw { get; set; }
+        public int start { get; set; }
         public int recordsTotal { get; set; }
         public int recordsFiltered { get; set; }
         //public List<string> data { get; set; }

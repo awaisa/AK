@@ -25,7 +25,16 @@ export class ItemsComponent implements OnInit {
     dtOptions: DataTables.Settings = {};
     
     
-    ngOnInit() {
+    ngOnInit(): void {
+
+        this.config.searchText = "";
+        this.config.isSearchAllowed = true;
+        this.config.activeTab = "inventory";
+
+        setTimeout(() => {
+            $("#SearchBox").focus();
+        }, 200);
+
         var t = this.user.token;
         this.dtOptions = {
             ajax: {
@@ -33,7 +42,13 @@ export class ItemsComponent implements OnInit {
                 beforeSend: function(xhr, settings) { 
                     xhr.setRequestHeader('Authorization','Bearer ' + t); 
                 } 
-            },
+            }, 
+            serverSide: true,
+            ordering: true,
+            paging: true,
+            pageLength:2,
+            lengthChange: false,
+            
             columns: [{
               title: 'Code',
               data: 'Code'
@@ -47,14 +62,6 @@ export class ItemsComponent implements OnInit {
           };
 
         //this.getItems();
-
-        this.config.searchText = "";
-        this.config.isSearchAllowed = true;
-        this.config.activeTab = "inventory";
-
-        setTimeout(() => {
-            $("#SearchBox").focus();
-        }, 200);
     }
 
     getItems() {
