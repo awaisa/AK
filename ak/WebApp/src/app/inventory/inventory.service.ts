@@ -9,7 +9,7 @@ import { Observable } from "rxjs";
 export class InventoryService {
     constructor(private httpClient: HttpClientService,
         private config: AppConfiguration) {
-        console.log("InventoryService ctor");
+        //console.log("InventoryService ctor");
     }
 
     itemList: Item[] = [];

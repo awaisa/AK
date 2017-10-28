@@ -9,7 +9,7 @@ declare var location: any;
 export class AppConfiguration {
       constructor(){
           this.setToastrOptions();
-          console.log("AppConfiguration ctor");
+          //console.log("AppConfiguration ctor");
 
           //if(location.port && (location.port == "3999"))
             //this.urls.baseUrl = "http://localhost:5000/"; // kestrel

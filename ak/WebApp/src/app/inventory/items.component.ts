@@ -48,7 +48,6 @@ export class ItemsComponent implements OnInit {
             paging: true,
             pageLength:2,
             lengthChange: false,
-            
             columns: [{
               title: 'Code',
               data: 'Code'
