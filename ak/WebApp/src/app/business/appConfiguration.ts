@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 
 import {RequestOptions} from "@angular/http";
@@ -26,13 +26,9 @@ export class AppConfiguration {
 
       urls = {
         baseUrl: "./",
-        albums: "api/albums",
-        album: "api/album",
-        items: "api/Inventory/GetItems",
-        item: "api/Inventory/GetItem",
-        artistLookup: "api/artistlookup?search=",
-        saveArtist: "api/artist",
-        login: "api/login", //"api/login",
+        items: "api/Inventory/Items",
+        item: "api/Inventory/Item",
+        login: "api/login",
         logout: "api/logout",
         isAuthenticated: "api/isAuthenticated",
         reloadData: "api/reloadData",

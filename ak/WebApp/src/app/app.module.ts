@@ -19,10 +19,6 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { AppHeader } from './common/appHeader';
 import {AppFooter} from "./common/appFooter";
 
-
-// services
-//import { Album, Artist, Track } from './business/entities';
-
 import { AppConfiguration } from './business/appConfiguration';
 import { UserInfo } from "./business/userInfo";
 

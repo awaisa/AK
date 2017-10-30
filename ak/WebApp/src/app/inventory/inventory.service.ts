@@ -48,4 +48,41 @@ export class InventoryService {
             .catch(new ErrorInfo().parseObservableResponseError);
     }
 
+    saveItem(item): Observable<any> {
+        return this.httpClient.post(this.config.urls.url("item"), item, null)
+            .map(response => {
+                this.item = response.json();
+                
+                // explicitly update the list with the updated data
+                this.updateItem(this.item);
+                return this.item;
+            })
+            .catch(new ErrorInfo().parseObservableResponseError);
+    }
+
+    /**
+     * Updates the .albumList property by updating the actual
+     * index entry in the existing list, adding new entries and
+     * removing 0 entries.
+     * @param item  - the item to update
+     */
+    updateItem(item) {
+        var i = this.itemList.findIndex((a) => (a.Id == item.Id));
+        if (i > -1)
+            this.itemList[i] = item;
+        else {
+            this.itemList.push(item);
+            this.itemList.sort((a: Item, b: Item) => {
+                var aCode = a.Code.toLocaleLowerCase();
+                var bCode = b.Code.toLocaleLowerCase();
+                if (aCode > bCode)
+                    return 1;
+                if (aCode < bCode)
+                    return -1;
+                return 0;
+            })
+        }
+
+        this.itemList = this.itemList.filter((a) => a.Id != 0);
+    }
 }

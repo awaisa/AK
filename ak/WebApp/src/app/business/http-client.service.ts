@@ -24,7 +24,7 @@ export class HttpClientService {
       })
   }
 
-  post(url:string, data:any, requestOptions:RequestOptions) {
+  post(url:string, data:any, requestOptions?:RequestOptions) {
     requestOptions = this.ensureOptions(requestOptions)
 
     return this.http
@@ -37,7 +37,7 @@ export class HttpClientService {
       });
   }
 
-  put(url:string, data:any, requestOptions:RequestOptions) {
+  put(url:string, data:any, requestOptions?:RequestOptions) {
     //this.ensureOptions(!requestOptions);
 
     return this.http
@@ -50,7 +50,7 @@ export class HttpClientService {
       });
   }
 
-  delete(url:string, requestOptions:RequestOptions) {
+  delete(url:string, requestOptions?:RequestOptions) {
 
     requestOptions = this.ensureOptions (requestOptions);
 
@@ -63,7 +63,7 @@ export class HttpClientService {
       });
   }
 
-  ensureOptions(requestOptions:RequestOptions):RequestOptions {
+  ensureOptions(requestOptions?:RequestOptions):RequestOptions {
 
     let currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (currentUser && currentUser.token) {
