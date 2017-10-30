@@ -14,6 +14,7 @@ using BusinessCore.Domain.Purchases;
 using BusinessCore.Domain.Sales;
 using BusinessCore.Domain.Security;
 using BusinessCore.Domain.TaxSystem;
+using BusinessCore.Security;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,17 +22,20 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Reflection;
+using System.Security.Claims;
 using System.Security.Principal;
 
 namespace BusinessCore.Data
 {
     public class ApplicationContext : DbContext, IDbContext
     {
-        public string UserName
-        {
-            get { return WindowsIdentity.GetCurrent().Name; }
-            //get { return System.Threading.Thread.CurrentPrincipal.Identity.Name; }
-        }
+        private readonly AppPrincipal _principal;
+
+        //public string UserName
+        //{
+        //    get { return WindowsIdentity.GetCurrent().Name; }
+        //    //get { return System.Threading.Thread.CurrentPrincipal.Identity.Name; }
+        //}
 
         //private readonly string companyIdpropertyName = "CompanyId";
 
@@ -39,9 +43,10 @@ namespace BusinessCore.Data
         //    : this("ApplicationContext")
         //{
         //}
-        public ApplicationContext(DbContextOptions options) : base(options)
+        public ApplicationContext(AppPrincipal principal, DbContextOptions options) : base(options)
         {
             //Database.SetInitializer<ApplicationContext>(null); //uncomment this line to disable code first
+            _principal = principal;
         }
         public ApplicationContext()
             : base()
@@ -114,10 +119,10 @@ namespace BusinessCore.Data
         public override int SaveChanges()
         {
             var user = "System";
-            if (string.IsNullOrEmpty(UserName))
+            if (string.IsNullOrEmpty(_principal?.Username))
                 SaveAuditLog(user);
             else
-                SaveAuditLog(UserName);
+                SaveAuditLog(_principal?.Username);
 
             // CAN BE USE IN THE FUTURE : Track Created and Modified fields Automatically with Entity Framework Code First
 
@@ -132,20 +137,20 @@ namespace BusinessCore.Data
                 if (entity.State == EntityState.Added)
                 {
                     ((BaseEntity)entity.Entity).CreatedOn = DateTime.Now;
-                    ((BaseEntity)entity.Entity).CreatedById = CurrentUser == null ? (int?)null : CurrentUser.Id;
+                    ((BaseEntity)entity.Entity).CreatedById = _principal?.UserId == null ? (int?)null : _principal?.UserId;
 
                     #region New entities insert against current user's companyId
                     var companyBaseEntity = entity.Entity as ICompanyBaseEntity;
                     if (companyBaseEntity != null)
                     {
-                        if (CurrentUser != null)
-                            companyBaseEntity.CompanyId = CurrentUser.CompanyId;
+                        if (_principal != null)
+                            companyBaseEntity.CompanyId = (int)_principal?.CompanyId;
                     }
                     #endregion
                 }
 
                 ((BaseEntity)entity.Entity).ModifiedOn = DateTime.Now;
-                ((BaseEntity)entity.Entity).ModifiedById = CurrentUser == null ? (int?)null : CurrentUser.Id;
+                ((BaseEntity)entity.Entity).ModifiedById = _principal?.UserId == null ? (int?)null : _principal?.UserId;
             }
 
             var ret = base.SaveChanges();
@@ -155,18 +160,18 @@ namespace BusinessCore.Data
             return ret;
         }
 
-        private User _currentUser;
+        //private User _currentUser;
 
-        private User CurrentUser
-        {
-            get
-            {
-                if (_currentUser == null)
-                    _currentUser = Users.Where(u => u.Username == WindowsIdentity.GetCurrent().Name).FirstOrDefault();
-                    //_currentUser = Users.Where(u => u.UserName == System.Threading.Thread.CurrentPrincipal.Identity.Name).FirstOrDefault();
-                return _currentUser;
-            }
-        }
+        //private User CurrentUser
+        //{
+        //    get
+        //    {
+        //        if (_currentUser == null)
+        //            _currentUser = Users.Where(u => u.Username == WindowsIdentity.GetCurrent().Name).FirstOrDefault();
+        //            //_currentUser = Users.Where(u => u.UserName == System.Threading.Thread.CurrentPrincipal.Identity.Name).FirstOrDefault();
+        //        return _currentUser;
+        //    }
+        //}
 
         /// <summary>
         /// Create database script

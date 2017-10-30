@@ -24,6 +24,7 @@ namespace BusinessCore.Data
         private readonly string companyIdpropertyName = "CompanyId";
         private readonly IDbContext _context;
         private DbSet<T> _entities;
+        private readonly Security.AppPrincipal _principal;
 
         #endregion
 
@@ -33,9 +34,11 @@ namespace BusinessCore.Data
         /// Ctor
         /// </summary>
         /// <param name="context">Object context</param>
-        public EfRepository(IDbContext context)
+        public EfRepository(IDbContext context,
+                            Security.AppPrincipal principal)
         {
             this._context = context;
+            this._principal = principal;
         }
 
         #endregion
@@ -95,7 +98,6 @@ namespace BusinessCore.Data
                 if (entities == null)
                     throw new ArgumentNullException("entities");
                 var hasCompanyId = HasCompanyId();
-                var currentUser = CurrentUser;
                 foreach (var entity in entities)
                 {
                     this.Entities.Add(entity);
@@ -226,8 +228,8 @@ namespace BusinessCore.Data
             {
                 if (HasCompanyId())
                 {
-                    if (CurrentUser != null)
-                        return this.Entities.Where(MakeCurrentUserCompanyFilter(companyIdpropertyName, CurrentUser.CompanyId));
+                    if (_principal != null)
+                        return this.Entities.Where(MakeCurrentUserCompanyFilter(companyIdpropertyName, _principal.CompanyId));
                 }
                 return this.Entities;
             }
@@ -242,8 +244,8 @@ namespace BusinessCore.Data
             {
                 if (HasCompanyId())
                 {
-                    if (CurrentUser != null)
-                        return this.Entities.AsNoTracking().Where(MakeCurrentUserCompanyFilter(companyIdpropertyName, CurrentUser.CompanyId));
+                    if (_principal != null)
+                        return this.Entities.AsNoTracking().Where(MakeCurrentUserCompanyFilter(companyIdpropertyName, _principal.CompanyId));
                 }
                 return this.Entities.AsNoTracking();
             }
@@ -266,17 +268,17 @@ namespace BusinessCore.Data
 
         #region HACK: Current User Company filter
 
-        private BusinessCore.Domain.Security.User _currentUser;
+        //private BusinessCore.Domain.Security.User _currentUser;
 
-        private BusinessCore.Domain.Security.User CurrentUser
-        {
-            get
-            {
-                if (_currentUser == null)
-                    _currentUser = _context.Set<BusinessCore.Domain.Security.User>().Where(u => u.Username == WindowsIdentity.GetCurrent().Name).FirstOrDefault();
-                return _currentUser;
-            }
-        }
+        //private BusinessCore.Domain.Security.User CurrentUser
+        //{
+        //    get
+        //    {
+        //        if (_currentUser == null)
+        //            _currentUser = _context.Set<BusinessCore.Domain.Security.User>().Where(u => u.Username == WindowsIdentity.GetCurrent().Name).FirstOrDefault();
+        //        return _currentUser;
+        //    }
+        //}
 
         bool HasCompanyId()
         {

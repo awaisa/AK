@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using BusinessCore.Domain.Financials;
 using BusinessCore.Domain.TaxSystem;
 using BusinessCore.Services.Security;
+using BusinessCore.Security;
 
 namespace BusinessCore.Services.Inventory
 {
@@ -30,6 +31,7 @@ namespace BusinessCore.Services.Inventory
         private readonly IRepository<ItemTaxGroup> _itemTaxGroup;
         private readonly IRepository<Model> _modelRepo;
         private readonly IRepository<Brand> _brandRepo;
+        private readonly AppPrincipal _principal;
 
         public InventoryService(IRepository<Item> itemRepo,
             IRepository<Measurement> measurementRepo,
@@ -40,7 +42,8 @@ namespace BusinessCore.Services.Inventory
             IRepository<Account> accountRepo,
             IRepository<ItemTaxGroup> itemTaxGroup,
             IRepository<Model> modelRepo,
-             IRepository<Brand> brandRepo
+             IRepository<Brand> brandRepo,
+            AppPrincipal principal
            )
             : base(sequenceNumberRepo, null, null, bankRepo)
         {
@@ -54,6 +57,8 @@ namespace BusinessCore.Services.Inventory
             _itemTaxGroup = itemTaxGroup;
             _modelRepo = modelRepo;
             _brandRepo = brandRepo;
+
+            _principal = principal;
         }
 
         public InventoryControlJournal CreateInventoryControlJournal(int itemId, int? measurementId, DocumentTypes documentType, decimal? inQty, decimal? outQty, decimal? totalCost, decimal? totalAmount)
@@ -75,29 +80,38 @@ namespace BusinessCore.Services.Inventory
             return icj;
         }
 
-        public void AddItem(Item item)
+        public void SaveItem(Item objectToSave)
         {
-            item.No = GetNextNumber(SequenceNumberTypes.Item).ToString();
+            var item = GetItemById(objectToSave.Id);
+            if (item != null)
+            {
+                item.Code = objectToSave.Code;
+                item.Description = objectToSave.Description;
+                item.PurchaseDescription = objectToSave.PurchaseDescription;
+                item.SellDescription = objectToSave.SellDescription;
+                item.Price = objectToSave.Price;
+                item.Cost = objectToSave.Cost;
+                _itemRepo.Update(item);
+            }
+            else
+            {
+                objectToSave.No = GetNextNumber(SequenceNumberTypes.Item).ToString();
 
-            var sales = _accountRepo.Table.Where(a => a.AccountCode == "40100").FirstOrDefault();
-            var inventory = _accountRepo.Table.Where(a => a.AccountCode == "10800").FirstOrDefault();
-            var invAdjusment = _accountRepo.Table.Where(a => a.AccountCode == "50500").FirstOrDefault();
-            var cogs = _accountRepo.Table.Where(a => a.AccountCode == "50300").FirstOrDefault();
-            var assemblyCost = _accountRepo.Table.Where(a => a.AccountCode == "10900").FirstOrDefault();
+                var sales = _accountRepo.Table.Where(a => a.AccountCode == "40100").FirstOrDefault();
+                var inventory = _accountRepo.Table.Where(a => a.AccountCode == "10800").FirstOrDefault();
+                var invAdjusment = _accountRepo.Table.Where(a => a.AccountCode == "50500").FirstOrDefault();
+                var cogs = _accountRepo.Table.Where(a => a.AccountCode == "50300").FirstOrDefault();
+                var assemblyCost = _accountRepo.Table.Where(a => a.AccountCode == "10900").FirstOrDefault();
 
-            item.SalesAccount = sales;
-            item.InventoryAccount = inventory;
-            item.CostOfGoodsSoldAccount = cogs;
-            item.InventoryAdjustmentAccount = invAdjusment;
+                objectToSave.SalesAccount = sales;
+                objectToSave.InventoryAccount = inventory;
+                objectToSave.CostOfGoodsSoldAccount = cogs;
+                objectToSave.InventoryAdjustmentAccount = invAdjusment;
 
-            item.ItemTaxGroup = _itemTaxGroup.Table.Where(m => m.Name == "Regular").FirstOrDefault();
+                objectToSave.ItemTaxGroup = _itemTaxGroup.Table.Where(m => m.Name == "Regular").FirstOrDefault();
 
-            _itemRepo.Insert(item);
-        }
-
-        public void UpdateItem(Item item)
-        {
-            _itemRepo.Update(item);
+                _itemRepo.Insert(objectToSave);
+            }
         }
 
         public void DeleteItem(int itemId)

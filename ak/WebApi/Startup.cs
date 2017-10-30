@@ -23,6 +23,9 @@ using System.Text;
 using WebApiCore.Helper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using WebApiCore._Code;
+using System.Security.Principal;
+using BusinessCore.Security;
 
 namespace AlbumViewerNetCore
 {
@@ -105,6 +108,10 @@ namespace AlbumViewerNetCore
                         .AllowCredentials());
             });
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IPrincipal>( provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
+            services.AddSingleton<AppPrincipal, AppPrincipal>();
+
             // Make configuration available for EF configuration
             services.AddSingleton<IConfigurationRoot>(Configuration);
             services.AddSingleton<IConfiguration>(Configuration);
@@ -151,7 +158,6 @@ namespace AlbumViewerNetCore
         public void Configure(IApplicationBuilder app, 
             IHostingEnvironment env, 
             ILoggerFactory loggerFactory,
-            ApplicationContext albumContext,
             IConfiguration configuration)
         {
 
@@ -242,6 +248,8 @@ namespace AlbumViewerNetCore
 
             app.UseDefaultFiles(); // so index.html is not required
             app.UseStaticFiles();
+
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
             // put last so header configs like CORS or Cookies etc can fire
             app.UseMvc(routes =>

@@ -23,8 +23,7 @@ namespace BusinessCore.Services.Inventory
             decimal? totalCost,
             decimal? totalAmount);
 
-        void AddItem(Item item);
-        void UpdateItem(Item item);
+        void SaveItem(Item item);
         void DeleteItem(int itemId);
         Item GetItemById(int id);
         Item GetItemByNo(string itemNo);

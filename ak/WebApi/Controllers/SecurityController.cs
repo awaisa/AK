@@ -48,7 +48,11 @@ namespace AlbumViewerAspNetCore
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim("UserId", user.Id.ToString()),
+                    new Claim("Username", user.Username),
+                    new Claim("Firstname", user.Firstname),
+                    new Claim("Lastname", user.Lastname),
+                    new Claim("CompanyId", user.CompanyId.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
