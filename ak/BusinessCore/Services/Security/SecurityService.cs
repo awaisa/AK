@@ -9,6 +9,7 @@ namespace BusinessCore.Services.Security
 {
     public class SecurityService : ISecurityService
     {
+        ApplicationContext _dbcontext;
         IRepository<User> _userRepo;
         IRepository<SecurityRole> _securityRoleRepo;
         IRepository<SecurityPermission> _securityPermissionRepo;
@@ -17,7 +18,7 @@ namespace BusinessCore.Services.Security
         IRepository<SecurityRolePermission> _securityRolePermissionRepo;
         IRepository<Company> _companyRepo;
 
-        public SecurityService(IRepository<User> userRepo = null,
+        public SecurityService(ApplicationContext dbcontext, IRepository<User> userRepo = null,
             IRepository<SecurityRole> securityRoleRepo = null,
             IRepository<SecurityPermission> securityPermissionRepo = null,
             IRepository<SecurityGroup> securityGroupRepo = null,
@@ -25,6 +26,7 @@ namespace BusinessCore.Services.Security
             IRepository<SecurityRolePermission> securityRolePermissionRepo = null,
             IRepository<Company> companyRepo = null)
         {
+            _dbcontext = dbcontext;
             _userRepo = userRepo;
             _securityRoleRepo = securityRoleRepo;
             _securityPermissionRepo = securityPermissionRepo;
@@ -256,7 +258,7 @@ namespace BusinessCore.Services.Security
         }
         public User AuthenticateAndLoadUser(string username, string password)
         {
-            var user = _userRepo.Table.FirstOrDefault(u =>
+            var user = _dbcontext.Users.FirstOrDefault(u =>
             u.Username == username &&
             u.Password == password);
             return user;
