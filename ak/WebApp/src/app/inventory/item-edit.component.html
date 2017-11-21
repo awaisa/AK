@@ -1,0 +1,81 @@
+﻿<div class="container"  >
+
+  <!--<div *ngIf="item.Id !== 0" class="btn-group" style="margin-bottom: 10px;">
+    <a href="#/items" class="btn btn-sm btn-default"><i class="fa fa-list"></i> List</a>
+    <a href="#/item/{{item.Id}}" class="btn btn-sm btn-default"><i class="fa fa-eye"></i> View</a>
+    <a [href]="item.AmazonUrl" class="btn btn-sm btn-default"><i class="fa fa-dollar"></i> Buy</a>
+  </div>
+
+  <div class="separator"></div>-->
+
+  <error-display [error]="error"></error-display>
+
+  <div [ngClass]="{ 'hidden': !loaded}" [@slideIn]="'in'">
+
+    <form name="form1" action="javascript:{}" #form1="ngForm" novalidate>
+      <div class="form-group">
+        <label for="Code">Code:</label>
+        <input id="Code" type="text" class="form-control input-sm"
+               placeholder="Code"
+               name="Code" required
+               [(ngModel)]="item.Code" autofocus />
+      </div>
+      <div class="form-group">
+        <label for="Description">Description:</label>
+        <textarea class="form-control input-sm" id="Description"
+                  placeholder="Item description"
+                  required
+                  [(ngModel)]="item.Description"
+                  name="Description"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="PurchaseDescription">Purchase Description:</label>
+        <textarea class="form-control input-sm" id="PurchaseDescription"
+                  placeholder="Item purchase description"
+                  required
+                  [(ngModel)]="item.PurchaseDescription"
+                  name="PurchaseDescription"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="SellDescription">Sell Description:</label>
+        <textarea class="form-control input-sm" id="SellDescription"
+                  placeholder="Item sell description"
+                  required
+                  [(ngModel)]="item.SellDescription"
+                  name="SellDescription"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="Cost">Cost:</label>
+        <input type="number" class="form-control input-sm" id="Cost"
+               required
+               name="Cost"
+               placeholder="Cost"
+               [(ngModel)]="item.Cost" />
+      </div>
+      <div class="form-group">
+        <label for="Price">Price:</label>
+        <input type="number" class="form-control input-sm" id="Price"
+               required
+               name="Price"
+               placeholder="Price"
+               [(ngModel)]="item.Price" />
+      </div>
+
+      <hr />
+      <div class="well well-sm">
+        <button type="submit" (click)="saveItem(item)"
+                class="btn btn-success"
+                [disabled]="form1.invalid" accesskey="S">
+          <i class="fa fa-check"></i> Save
+        </button>
+        <a href="#/inventory/item/{{item.Id}}" class="btn btn-default">
+          <i class="fa fa-remove"></i> Cancel
+        </a>
+      </div>
+      <div class="separator"></div>
+    </form>
+
+  </div>
+
+</div>
