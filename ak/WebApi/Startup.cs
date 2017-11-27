@@ -26,8 +26,11 @@ using Microsoft.IdentityModel.Tokens;
 using WebApiCore._Code;
 using System.Security.Principal;
 using BusinessCore.Security;
+using AutoMapper;
+using WebApiCore.Models.Mappings;
+using FluentValidation.AspNetCore;
 
-namespace AlbumViewerNetCore
+namespace WebApiCore
 {
     public class Startup
     {
@@ -38,7 +41,7 @@ namespace AlbumViewerNetCore
         public Startup(IHostingEnvironment env)
         {
             HostingEnvironment = env;
-            
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -46,7 +49,7 @@ namespace AlbumViewerNetCore
                 .AddEnvironmentVariables();
 
             Configuration = builder.Build();
-            
+
         }
 
 
@@ -109,8 +112,8 @@ namespace AlbumViewerNetCore
             });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<IPrincipal>( provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
-            services.AddSingleton<AppPrincipal, AppPrincipal>();
+            services.AddScoped<IPrincipal>(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
+            services.AddScoped<AppPrincipal, AppPrincipal>();
 
             // Make configuration available for EF configuration
             services.AddSingleton<IConfigurationRoot>(Configuration);
@@ -137,6 +140,9 @@ namespace AlbumViewerNetCore
 
             services.AddScoped<ApiExceptionFilter>();
 
+            // Automapper Configuration
+            AutoMapperConfiguration.Configure();
+
             // Add framework services
             services.AddMvc(options =>
                 {
@@ -150,13 +156,13 @@ namespace AlbumViewerNetCore
                     var res = resolver as DefaultContractResolver;
                     res.NamingStrategy = null;
                 }
-            });            
-
+            })
+            .AddFluentValidation(fvc => fvc.RegisterValidatorsFromAssemblyContaining<Startup>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, 
-            IHostingEnvironment env, 
+        public void Configure(IApplicationBuilder app,
+            IHostingEnvironment env,
             ILoggerFactory loggerFactory,
             IConfiguration configuration)
         {
@@ -177,7 +183,7 @@ namespace AlbumViewerNetCore
                 //    .AddConsole()
                 //    .AddSerilog();
 
-                app.UseDeveloperExceptionPage();             
+                app.UseDeveloperExceptionPage();
             }
             else
             {
@@ -192,7 +198,7 @@ namespace AlbumViewerNetCore
 
                 app.UseExceptionHandler(errorApp =>
 
-                    // Application level exception handler here - this is just a place holder
+                        // Application level exception handler here - this is just a place holder
                         errorApp.Run(async (context) =>
                         {
                             context.Response.StatusCode = 500;
@@ -257,7 +263,7 @@ namespace AlbumViewerNetCore
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
-            });            
+            });
 
 
 

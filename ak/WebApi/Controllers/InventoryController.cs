@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using AlbumViewerAspNetCore;
 using WebApiCore._Code;
 using BusinessCore.Security;
+using WebApiCore.Models.Inventory;
 
 namespace WebApiCore.Controllers
 {
@@ -36,7 +37,7 @@ namespace WebApiCore.Controllers
         [Route("api/Inventory/Items")]
         public IActionResult Items()
         {
-            TestData model = new TestData();
+            ItemSearchModel model = new ItemSearchModel();
 
             model.start = Getstart();
 
@@ -66,7 +67,7 @@ namespace WebApiCore.Controllers
                 .Skip(model.start)
                 .Take(pagesize)
                 //.ToList()
-                .Select(t => new TestDataRecord()
+                .Select(t => new ItemModel()
             {
                     Id = t.Id,
                     Code = t.Code,
@@ -80,9 +81,9 @@ namespace WebApiCore.Controllers
         }
 
         [HttpGet("api/Inventory/Item/{id:int}")]
-        public ItemInModel Item(int? id)
+        public ItemModel Item(int? id)
         {
-            var model = new ItemInModel();
+            var model = new ItemModel();
             var item = _service.GetItemById(id ?? 0);
             if (item != null)
             {
@@ -99,7 +100,7 @@ namespace WebApiCore.Controllers
 
         [HttpPost("api/Inventory/Item")]
         [ValidateModel]
-        public async Task<ItemInModel> SaveItem([FromBody] ItemInModel model)
+        public async Task<ItemModel> SaveItem([FromBody] ItemModel model)
         {
             //server side validations add in ModelState .AddModelError([field], [message])
             if (ModelState.IsValid)
@@ -118,22 +119,5 @@ namespace WebApiCore.Controllers
             }            
             return model;
         }
-    }
-
-    public class TestData
-    {
-        public int start { get; set; }
-        public int recordsTotal { get; set; }
-        public int recordsFiltered { get; set; }
-        //public List<string> data { get; set; }
-        public List<TestDataRecord> data { get; set; }
-    }
-
-    public class TestDataRecord
-    {
-        public int Id { get; set; }
-        public string Code { get; set; }
-        public string Description { get; set; }
-        public decimal? Price { get; set; }
-    }
+    }    
 }
