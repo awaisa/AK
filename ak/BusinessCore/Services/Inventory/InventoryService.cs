@@ -31,7 +31,6 @@ namespace BusinessCore.Services.Inventory
         private readonly IRepository<ItemTaxGroup> _itemTaxGroup;
         private readonly IRepository<Model> _modelRepo;
         private readonly IRepository<Brand> _brandRepo;
-        private readonly AppPrincipal _principal;
 
         public InventoryService(IRepository<Item> itemRepo,
             IRepository<Measurement> measurementRepo,
@@ -42,8 +41,7 @@ namespace BusinessCore.Services.Inventory
             IRepository<Account> accountRepo,
             IRepository<ItemTaxGroup> itemTaxGroup,
             IRepository<Model> modelRepo,
-             IRepository<Brand> brandRepo,
-            AppPrincipal principal
+             IRepository<Brand> brandRepo
            )
             : base(sequenceNumberRepo, null, null, bankRepo)
         {
@@ -57,8 +55,6 @@ namespace BusinessCore.Services.Inventory
             _itemTaxGroup = itemTaxGroup;
             _modelRepo = modelRepo;
             _brandRepo = brandRepo;
-
-            _principal = principal;
         }
 
         public InventoryControlJournal CreateInventoryControlJournal(int itemId, int? measurementId, DocumentTypes documentType, decimal? inQty, decimal? outQty, decimal? totalCost, decimal? totalAmount)
@@ -79,7 +75,14 @@ namespace BusinessCore.Services.Inventory
             };
             return icj;
         }
+        public IQueryable<InventoryControlJournal> GetInventoryControlJournals()
+        {
+            var query = from f in _icjRepo.Table
+                        select f;
+            return query;
+        }
 
+        #region Manage Items
         public void SaveItem(Item objectToSave)
         {
             var item = GetItemById(objectToSave.Id);
@@ -133,18 +136,20 @@ namespace BusinessCore.Services.Inventory
                         select item;
             return query.FirstOrDefault();
         }
+        #endregion
 
+        #region Manage Measurements
         public IEnumerable<Measurement> GetMeasurements()
         {
             var query = from f in _measurementRepo.Table
                         select f;
             return query.AsEnumerable();
         }
-
         public Measurement GetMeasurementById(int id)
         {
             return _measurementRepo.GetById(id);
         }
+        #endregion
 
         public IQueryable<ItemCategory> GetItemCategories()
         {
@@ -153,13 +158,7 @@ namespace BusinessCore.Services.Inventory
             return query;
         }
 
-        public IQueryable<InventoryControlJournal> GetInventoryControlJournals()
-        {
-            var query = from f in _icjRepo.Table
-                        select f;
-            return query;
-        }
-
+        #region Manage Models
         public Item GetItemByNo(string itemNo)
         {
             var query = from item in _itemRepo.Table
@@ -167,8 +166,6 @@ namespace BusinessCore.Services.Inventory
                         select item;
             return query.FirstOrDefault();
         }
-
-
         public IQueryable<Model> GetModels()
         {
             var query = from m in _modelRepo.Table
@@ -176,7 +173,6 @@ namespace BusinessCore.Services.Inventory
             return query;
 
         }
-
         public Model GetModel(int? id)
         {
             var query = from m in _modelRepo.Table
@@ -184,7 +180,6 @@ namespace BusinessCore.Services.Inventory
                         select m;
             return query.FirstOrDefault();
         }
-
         public Model SaveModel(Model model)
         {
             if (model.Id <= 0)
@@ -193,32 +188,6 @@ namespace BusinessCore.Services.Inventory
                 _modelRepo.Update(model);
             return model;
         }
-
-        public IQueryable<Brand> GetBrands()
-        {
-            var query = from m in _brandRepo.Table
-                        select m;
-            return query;
-
-        }
-
-        public Brand GetBrand(int? id)
-        {
-            var query = from m in _brandRepo.Table
-                        where m.Id == id
-                        select m;
-            return query.FirstOrDefault();
-        }
-
-        public Brand SaveBrand(Brand brand)
-        {
-            if (brand.Id <= 0)
-                _brandRepo.Insert(brand);
-            else
-                _brandRepo.Update(brand);
-            return brand;
-        }
-
         public Model ModelSetActive(int id, bool isInactive)
         {
             var o = (from m in _modelRepo.Table
@@ -231,7 +200,31 @@ namespace BusinessCore.Services.Inventory
             }
             return o;
         }
+        #endregion
 
+        #region Manage Brands
+        public IQueryable<Brand> GetBrands()
+        {
+            var query = from m in _brandRepo.Table
+                        select m;
+            return query;
+
+        }
+        public Brand GetBrand(int? id)
+        {
+            var query = from m in _brandRepo.Table
+                        where m.Id == id
+                        select m;
+            return query.FirstOrDefault();
+        }
+        public Brand SaveBrand(Brand brand)
+        {
+            if (brand.Id <= 0)
+                _brandRepo.Insert(brand);
+            else
+                _brandRepo.Update(brand);
+            return brand;
+        }
         public Brand BrandSetActive(int id, bool isInactive)
         {
             var o = (from m in _brandRepo.Table
@@ -244,5 +237,6 @@ namespace BusinessCore.Services.Inventory
             }
             return o;
         }
+        #endregion
     }
 }

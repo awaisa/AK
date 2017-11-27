@@ -11,7 +11,7 @@
     <AssemblyName>AlbumViewerNetCore</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>AlbumViewerNetCore</PackageId>
-    <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
   </PropertyGroup>
   <ItemGroup>
     <Content Update="wwwroot\**\*;Areas\**\Views;appsettings.json;web.config">

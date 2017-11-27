@@ -28,8 +28,10 @@ namespace BusinessCore.Services.Inventory
         Item GetItemById(int id);
         Item GetItemByNo(string itemNo);
         IQueryable<Item> GetAllItems();
+
         IEnumerable<Measurement> GetMeasurements();
         Measurement GetMeasurementById(int id);
+
         IQueryable<ItemCategory> GetItemCategories();
         IQueryable<InventoryControlJournal> GetInventoryControlJournals();
 

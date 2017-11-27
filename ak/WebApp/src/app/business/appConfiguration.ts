@@ -12,9 +12,9 @@ export class AppConfiguration {
           //console.log("AppConfiguration ctor");
 
           //if(location.port && (location.port == "3999"))
-            //this.urls.baseUrl = "http://localhost:5000/"; // kestrel
+          this.urls.baseUrl = "http://localhost:5000/"; // kestrel
 
-          this.urls.baseUrl = "http://localhost:26448/"; // iis Express
+          //this.urls.baseUrl = "http://localhost:26448/"; // iis Express
           //this.urls.baseUrl = "http://localhost/ak/"; // iis
           //this.urls.baseUrl = "https://samples.ww.com/akCore/";  // online
       }
