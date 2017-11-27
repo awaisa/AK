@@ -27,8 +27,9 @@ using WebApiCore._Code;
 using System.Security.Principal;
 using BusinessCore.Security;
 using AutoMapper;
-using WebApiCore.Models.Mappings;
+//using WebApiCore.Models.Mappings;
 using FluentValidation.AspNetCore;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace WebApiCore
 {
@@ -141,7 +142,8 @@ namespace WebApiCore
             services.AddScoped<ApiExceptionFilter>();
 
             // Automapper Configuration
-            AutoMapperConfiguration.Configure();
+            //AutoMapperConfiguration.Configure();
+            services.AddAutoMapper();
 
             // Add framework services
             services.AddMvc(options =>
@@ -158,6 +160,19 @@ namespace WebApiCore
                 }
             })
             .AddFluentValidation(fvc => fvc.RegisterValidatorsFromAssemblyContaining<Startup>());
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+
+                //https://github.com/domaindrivendev/Swashbuckle/issues/581#issuecomment-235053027
+                c.DocInclusionPredicate((docName, apiDesc) =>
+                {
+                    if (apiDesc.HttpMethod == null) return false;
+                    return true;
+                });
+
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -257,13 +272,17 @@ namespace WebApiCore
 
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
-            // put last so header configs like CORS or Cookies etc can fire
-            app.UseMvc(routes =>
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+
+            // put last so header configs like CORS or Cookies etc can fire
+            app.UseMvc();
 
 
 

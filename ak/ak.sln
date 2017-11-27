@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiCore", "WebApi\WebApiCore.csproj", "{A499E53F-874D-4AFF-A7C5-CCF974355E2D}"
 EndProject
@@ -31,6 +31,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebApp", "WebApp", "{D5B1E9
 		VWDPort = "50406"
 		SlnRelativePath = "WebApp\"
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiCoreTest", "WebApiCoreTest\WebApiCoreTest.csproj", "{020F9088-F814-4ABB-93EB-AC6C7305B7B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,12 +80,27 @@ Global
 		{D5B1E97B-A8D6-4BA5-9413-360FDE08ABDC}.Release|x64.Build.0 = Debug|Any CPU
 		{D5B1E97B-A8D6-4BA5-9413-360FDE08ABDC}.Release|x86.ActiveCfg = Debug|Any CPU
 		{D5B1E97B-A8D6-4BA5-9413-360FDE08ABDC}.Release|x86.Build.0 = Debug|Any CPU
+		{020F9088-F814-4ABB-93EB-AC6C7305B7B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{020F9088-F814-4ABB-93EB-AC6C7305B7B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{020F9088-F814-4ABB-93EB-AC6C7305B7B7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{020F9088-F814-4ABB-93EB-AC6C7305B7B7}.Debug|x64.Build.0 = Debug|Any CPU
+		{020F9088-F814-4ABB-93EB-AC6C7305B7B7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{020F9088-F814-4ABB-93EB-AC6C7305B7B7}.Debug|x86.Build.0 = Debug|Any CPU
+		{020F9088-F814-4ABB-93EB-AC6C7305B7B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{020F9088-F814-4ABB-93EB-AC6C7305B7B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{020F9088-F814-4ABB-93EB-AC6C7305B7B7}.Release|x64.ActiveCfg = Release|Any CPU
+		{020F9088-F814-4ABB-93EB-AC6C7305B7B7}.Release|x64.Build.0 = Release|Any CPU
+		{020F9088-F814-4ABB-93EB-AC6C7305B7B7}.Release|x86.ActiveCfg = Release|Any CPU
+		{020F9088-F814-4ABB-93EB-AC6C7305B7B7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0967C42A-E3EE-438B-BDB6-27B0058C4198}
+	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
+		SccNumberOfProjects = 5
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://awaisa.visualstudio.com/
 		SccLocalPath0 = .
@@ -98,5 +115,8 @@ Global
 		SccProjectName3 = WebApp
 		SccLocalPath3 = WebApp
 		SccProjectEnlistmentChoice3 = 2
+		SccProjectUniqueName4 = WebApiCoreTest\\WebApiCoreTest.csproj
+		SccProjectName4 = WebApiCoreTest
+		SccLocalPath4 = WebApiCoreTest
 	EndGlobalSection
 EndGlobal

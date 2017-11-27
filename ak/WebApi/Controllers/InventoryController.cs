@@ -33,7 +33,8 @@ namespace WebApiCore.Controllers
             //WebApiCore.Helper.HttpContext.Configure();
             _principal = principal;
         }
-
+        //Fix for Swagger
+        [HttpGet("")]
         [Route("api/Inventory/Items")]
         public IActionResult Items()
         {
