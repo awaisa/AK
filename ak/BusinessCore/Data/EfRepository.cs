@@ -54,7 +54,7 @@ namespace BusinessCore.Data
         {
             //see some suggested performance optimization (not tested)
             //http://stackoverflow.com/questions/11686225/dbset-find-method-ridiculously-slow-compared-to-singleordefault-on-id/11688189#comment34876113_11688189
-            return this.Table.FirstOrDefault(t=> t.Id == id);
+            return this.Table.FirstOrDefault(t => t.Id == id);
         }
 
         /// <summary>
@@ -65,12 +65,12 @@ namespace BusinessCore.Data
         {
             //try
             //{
-                if (entity == null)
-                    throw new ArgumentNullException("entity");
+            if (entity == null)
+                throw new ArgumentNullException("entity");
 
-                this.Entities.Add(entity);
+            this.Entities.Add(entity);
 
-                this._context.SaveChanges();
+            this._context.SaveChanges();
 
             //}
             //catch (DbEntityValidationException dbEx)
@@ -95,14 +95,14 @@ namespace BusinessCore.Data
         {
             //try
             //{
-                if (entities == null)
-                    throw new ArgumentNullException("entities");
-                var hasCompanyId = HasCompanyId();
-                foreach (var entity in entities)
-                {
-                    this.Entities.Add(entity);
-                }
-                this._context.SaveChanges();
+            if (entities == null)
+                throw new ArgumentNullException("entities");
+            var hasCompanyId = HasCompanyId();
+            foreach (var entity in entities)
+            {
+                this.Entities.Add(entity);
+            }
+            this._context.SaveChanges();
             //}
             //catch (DbEntityValidationException dbEx)
             //{
@@ -126,10 +126,10 @@ namespace BusinessCore.Data
         {
             //try
             //{
-                if (entity == null)
-                    throw new ArgumentNullException("entity");
+            if (entity == null)
+                throw new ArgumentNullException("entity");
 
-                this._context.SaveChanges();
+            this._context.SaveChanges();
             //}
             //catch (DbEntityValidationException dbEx)
             //{
@@ -153,12 +153,12 @@ namespace BusinessCore.Data
         {
             //try
             //{
-                if (entity == null)
-                    throw new ArgumentNullException("entity");
+            if (entity == null)
+                throw new ArgumentNullException("entity");
 
-                this.Entities.Remove(entity);
+            this.Entities.Remove(entity);
 
-                this._context.SaveChanges();
+            this._context.SaveChanges();
             //}
             //catch (DbEntityValidationException dbEx)
             //{
@@ -182,13 +182,13 @@ namespace BusinessCore.Data
         {
             //try
             //{
-                if (entities == null)
-                    throw new ArgumentNullException("entities");
+            if (entities == null)
+                throw new ArgumentNullException("entities");
 
-                foreach (var entity in entities)
-                    this.Entities.Remove(entity);
+            foreach (var entity in entities)
+                this.Entities.Remove(entity);
 
-                this._context.SaveChanges();
+            this._context.SaveChanges();
             //}
             //catch (DbEntityValidationException dbEx)
             //{
@@ -204,10 +204,16 @@ namespace BusinessCore.Data
             //}
         }
 
-        public IQueryable<T> GetAllIncluding(params System.Linq.Expressions.Expression<Func<T, object>>[] includeProperties)
+        public IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> queryable = Entities;
-            foreach (System.Linq.Expressions.Expression<Func<T, object>> includeProperty in includeProperties)
+            if (HasCompanyId())
+            {
+                if (_principal != null)
+                    queryable = queryable.Where(MakeCurrentUserCompanyFilter(companyIdpropertyName, _principal.CompanyId));
+            }
+
+            foreach (Expression<Func<T, object>> includeProperty in includeProperties)
             {
                 queryable = queryable.Include<T, object>(includeProperty);
             }
@@ -259,7 +265,9 @@ namespace BusinessCore.Data
             get
             {
                 if (_entities == null)
+                {
                     _entities = _context.Set<T>();
+                }
                 return _entities;
             }
         }

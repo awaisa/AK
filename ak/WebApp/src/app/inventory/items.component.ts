@@ -50,20 +50,20 @@ export class ItemsComponent implements OnInit {
             lengthChange: false,
             columns: [{
               title: 'Code',
-              data: 'Code'
+              data: 'code'
             }, {
               title: 'Description',
-              data: 'Description'
+              data: 'description'
             }, {
               title: 'Price',
-              data: 'Price'
+              data: 'price'
             },
             {
                 data: null,
                 className: "text-center",
                 orderable: false,
                 render: function(val, type, row){
-                    var a = '<a href="#/inventory/item/'+val.Id+'">Edit</a>'
+                    var a = '<a href="#/inventory/item/'+val.id+'">Edit</a>'
                     return a;
                     //return '<a href="#/inventory/item?id='+val.Code+'" class="btn btn-link">Edit</a> / <a href="" class="editor_remove">Delete</a>';
                 }

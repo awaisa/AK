@@ -34,7 +34,7 @@ namespace BusinessCore.Services.Security
         void DeleteRole(int roleId);
         void AddUser(string username /*, string email**/, string firstname, string lastname);
 
-        int UserCompanyId { get; }
+        //int UserCompanyId { get; }
         bool Authenticate(string username, string password);
         User AuthenticateAndLoadUser(string username, string password);
     }

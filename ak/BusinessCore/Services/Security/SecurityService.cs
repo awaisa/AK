@@ -230,22 +230,22 @@ namespace BusinessCore.Services.Security
             _userRepo.Insert(user);
         }
 
-        public User CurrentUser
-        {
-            get { return _userRepo.Table.Where(u => u.Username == WindowsIdentity.GetCurrent().Name).FirstOrDefault(); }
-        }
+        //public User CurrentUser
+        //{
+        //    get { return _userRepo.Table.Where(u => u.Username == WindowsIdentity.GetCurrent().Name).FirstOrDefault(); }
+        //}
 
-        public int UserCompanyId
-        {
-            get
-            {
-                int companyId = 0;
-                var user = CurrentUser;
-                if (user != null)
-                    companyId = user.CompanyId;
-                return companyId;
-            }
-        }
+        //public int UserCompanyId
+        //{
+        //    get
+        //    {
+        //        int companyId = 0;
+        //        var user = CurrentUser;
+        //        if (user != null)
+        //            companyId = user.CompanyId;
+        //        return companyId;
+        //    }
+        //}
 
         public bool Authenticate(string username, string password)
         {

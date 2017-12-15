@@ -67,14 +67,14 @@ export class InventoryService {
      * @param item  - the item to update
      */
     updateItem(item) {
-        var i = this.itemList.findIndex((a) => (a.Id == item.Id));
+        var i = this.itemList.findIndex((a) => (a.id == item.Id));
         if (i > -1)
             this.itemList[i] = item;
         else {
             this.itemList.push(item);
             this.itemList.sort((a: Item, b: Item) => {
-                var aCode = a.Code.toLocaleLowerCase();
-                var bCode = b.Code.toLocaleLowerCase();
+                var aCode = a.code.toLocaleLowerCase();
+                var bCode = b.code.toLocaleLowerCase();
                 if (aCode > bCode)
                     return 1;
                 if (aCode < bCode)
@@ -83,6 +83,6 @@ export class InventoryService {
             })
         }
 
-        this.itemList = this.itemList.filter((a) => a.Id != 0);
+        this.itemList = this.itemList.filter((a) => a.id != 0);
     }
 }

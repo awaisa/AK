@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AlbumViewerAspNetCore
+namespace WebApiCore.Infrastructure.ErrorHandling
 {
 
     public class ApiError

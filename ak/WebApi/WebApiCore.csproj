@@ -8,7 +8,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <PreserveCompilationContext>true</PreserveCompilationContext>
-    <AssemblyName>AlbumViewerNetCore</AssemblyName>
+    <AssemblyName>WebApiCore</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>AlbumViewerNetCore</PackageId>
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>

@@ -51,13 +51,13 @@ export class ItemEditComponent implements OnInit {
   saveItem(item) {
      return this.inventoryService.saveItem(item)
      .subscribe((item: Item) => {
-         var msg = item.Description + " has been saved."
+         var msg = item.description + " has been saved."
          this.error.info(msg);
          toastr.success(msg);
          window.document.getElementById("MainView").scrollTop = 0;
 
          setTimeout(function () {
-           window.location.hash = "inventory/item/" + item.Id;
+           window.location.hash = "inventory/item/" + item.id;
          }, 1500)
        },
        err => {

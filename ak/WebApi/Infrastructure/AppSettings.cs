@@ -1,4 +1,4 @@
-namespace WebApiCore.Helper
+namespace WebApiCore.Infrastructure
 {
     public class AppSettings
     {

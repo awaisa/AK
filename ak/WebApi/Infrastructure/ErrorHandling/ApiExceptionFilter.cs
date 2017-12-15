@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Serilog;
 
-namespace AlbumViewerAspNetCore
+namespace WebApiCore.Infrastructure.ErrorHandling
 {
     public class ApiExceptionFilter : ExceptionFilterAttribute
     {

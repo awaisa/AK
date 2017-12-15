@@ -12,11 +12,11 @@ export class AppConfiguration {
           //console.log("AppConfiguration ctor");
 
           //if(location.port && (location.port == "3999"))
-          this.urls.baseUrl = "http://localhost:5000/"; // kestrel
+          //this.urls.baseUrl = "http://localhost:5000/"; // kestrel
 
-          //this.urls.baseUrl = "http://localhost:26448/"; // iis Express
+          this.urls.baseUrl = "http://localhost:26448/"; // iis Express
           //this.urls.baseUrl = "http://localhost/ak/"; // iis
-          //this.urls.baseUrl = "https://samples.ww.com/akCore/";  // online
+          //this.urls.baseUrl = "http://vmcore.westus.cloudapp.azure.com/";  // online
       }
 
       // top level search text
@@ -26,7 +26,7 @@ export class AppConfiguration {
 
       urls = {
         baseUrl: "./",
-        items: "api/Inventory/Items",
+        items: "api/Inventory",
         item: "api/Inventory/Item",
         login: "api/login",
         logout: "api/logout",

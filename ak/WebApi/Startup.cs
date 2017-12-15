@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 using System.Text.Encodings.Web;
-using AlbumViewerAspNetCore;
+using WebApiCore.Infrastructure.ErrorHandling;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Serialization;
@@ -20,16 +20,16 @@ using BusinessCore.Services.Sales;
 using BusinessCore.Services.TaxSystem;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Text;
-using WebApiCore.Helper;
+using WebApiCore.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using WebApiCore._Code;
 using System.Security.Principal;
 using BusinessCore.Security;
 using AutoMapper;
 //using WebApiCore.Models.Mappings;
 using FluentValidation.AspNetCore;
 using Swashbuckle.AspNetCore.Swagger;
+using WebApiCore.Models.Mappings;
 
 namespace WebApiCore
 {
@@ -71,7 +71,7 @@ namespace WebApiCore
                     // Note this path has to have full  access for the Web user in order 
                     // to create the DB and write to it.
                     var connStr = "Data Source=" +
-                                  Path.Combine(HostingEnvironment.ContentRootPath, "AlbumViewerData.sqlite");
+                                  Path.Combine(HostingEnvironment.ContentRootPath, "AKData.sqlite");
                     builder.UseSqlite(connStr);
                 }
             });
@@ -143,23 +143,14 @@ namespace WebApiCore
 
             // Automapper Configuration
             //AutoMapperConfiguration.Configure();
-            services.AddAutoMapper();
+            //services.AddAutoMapper();
+            //services.AddSingleton(new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<Models.Mappings.ModelMappingProfile>())));
+            var config = new MapperConfiguration(cfg => {
+                    cfg.AddProfile(new ModelMappingProfile());
+            });
 
-            // Add framework services
-            services.AddMvc(options =>
-                {
-                    // options.Filters.Add(new ApiExceptionFilter());
-                })
-            .AddJsonOptions(opt =>
-            {
-                var resolver = opt.SerializerSettings.ContractResolver;
-                if (resolver != null)
-                {
-                    var res = resolver as DefaultContractResolver;
-                    res.NamingStrategy = null;
-                }
-            })
-            .AddFluentValidation(fvc => fvc.RegisterValidatorsFromAssemblyContaining<Startup>());
+            //register
+            AutoMapperConfiguration.Init(config);
 
             services.AddSwaggerGen(c =>
             {
@@ -173,6 +164,27 @@ namespace WebApiCore
                 });
 
             });
+
+            services.AddCors();
+
+            // Add framework services
+            services.AddMvc(options =>
+            {
+                //options.Filters.Add(new ApiExceptionFilter());
+                options.Filters.Add(typeof(ValidateModelAttribute));
+            })
+            .AddJsonOptions(opt =>
+            {
+                opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                //var resolver = opt.SerializerSettings.ContractResolver;
+                //if (resolver != null)
+                //{
+                //    var res = resolver as DefaultContractResolver;
+                //    res.NamingStrategy = null;
+                //}
+            })
+            .AddFluentValidation(fvc => fvc.RegisterValidatorsFromAssemblyContaining<Startup>());
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -186,7 +198,7 @@ namespace WebApiCore
                     .WriteTo.RollingFile(pathFormat: "logs\\log-{Date}.log")
                     .CreateLogger();
 
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || env.IsEnvironment("Test"))
             {
                 //loggerFactory.WithFilter(new FilterLoggerSettings
                 //    {
@@ -282,13 +294,13 @@ namespace WebApiCore
             });
 
             // put last so header configs like CORS or Cookies etc can fire
+            app.UseCors(builder => builder
+                                .AllowAnyOrigin()
+                                .AllowAnyMethod()
+                                .AllowAnyHeader()
+                                .AllowCredentials());
+
             app.UseMvc();
-
-
-
-            //AlbumViewerDataImporter.EnsureAlbumData(albumContext,
-            //    Path.Combine(env.ContentRootPath, "albums.js"));
-
         }
     }
 }

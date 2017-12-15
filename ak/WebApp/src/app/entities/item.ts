@@ -2,12 +2,12 @@
 
 @Injectable()
 export class Item {
-    Id:number = 0;
-    ItemCategoryId:number = 0;
-    Description:string = null;
-    PurchaseDescription:string = null;
-    SellDescription:string = null;
-    Cost:number = 0;
-    Price:number = 0;
-    Code:string = null;
+    id:number = 0;
+    itemCategoryId:number = 0;
+    description:string = null;
+    purchaseDescription:string = null;
+    sellDescription:string = null;
+    cost:number = 0;
+    price:number = 0;
+    code:string = null;
 }

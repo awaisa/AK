@@ -12,28 +12,38 @@ namespace WebApiCore
     {
         public static void Main(string[] args)
         {
+            var appRootPath = Directory.GetCurrentDirectory();
+            BuildWebHost(appRootPath, args).Run();
+        }
+
+
+        public static IWebHost BuildWebHost(string appRootPath, string[] args)
+        {
+            var webHostBuilder = GetWebHostBuilder(appRootPath, args);
+            return webHostBuilder.Build();
+        }
+
+
+        public static IWebHostBuilder GetWebHostBuilder(string appRootPath, string[] args)
+        {
             // use this to allow command line parameters in the config
             var configuration = new ConfigurationBuilder()
                 .AddCommandLine(args)
                 .Build();
 
-
             var hostUrl = configuration["hosturl"];
             if (string.IsNullOrEmpty(hostUrl))
                 hostUrl = "http://0.0.0.0:5000";
 
-            
-
-            var host = new WebHostBuilder()
+            var webHostBuilder = new WebHostBuilder()
                 .UseConfiguration(configuration)
                 //.UseUrls(hostUrl)
-                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseContentRoot(appRootPath)
                 .UseKestrel()
                 .UseIISIntegration()
-                .UseStartup<Startup>()
-                .Build();
+                .UseStartup<Startup>();
 
-            host.Run();
+            return webHostBuilder;
         }
     }
 }

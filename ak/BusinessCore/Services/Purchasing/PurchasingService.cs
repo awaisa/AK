@@ -1,11 +1,3 @@
-//-----------------------------------------------------------------------
-// <copyright file="PurchasingService.cs" company="AccountGo">
-// Copyright (c) AccountGo. All rights reserved.
-// <author>Marvin Perez</author>
-// <date>1/11/2015 9:48:38 AM</date>
-// </copyright>
-//-----------------------------------------------------------------------
-
 using BusinessCore.Data;
 using BusinessCore.Domain;
 using BusinessCore.Domain.Financials;
@@ -142,7 +134,7 @@ namespace BusinessCore.Services.Purchasing
                 var totalLineAmount = lineAmount + lineTaxes.Sum(t => t.Value);
 
                 totalAmount += (decimal)totalLineAmount;
-                
+
                 foreach (var t in lineTaxes)
                     taxes.Add(t);
             }
@@ -150,12 +142,12 @@ namespace BusinessCore.Services.Purchasing
             if (taxes != null && taxes.Count > 0)
             {
                 var groupedTaxes = from t in taxes
-                           group t by t.Key into grouped
-                           select new
-                           {
-                               Key = grouped.Key,
-                               Value = grouped.Sum(t => t.Value)
-                           };
+                                   group t by t.Key into grouped
+                                   select new
+                                   {
+                                       Key = grouped.Key,
+                                       Value = grouped.Sum(t => t.Value)
+                                   };
 
                 totalTaxAmount = taxes.Sum(t => t.Value);
 
@@ -196,8 +188,8 @@ namespace BusinessCore.Services.Purchasing
         public void AddPurchaseOrder(PurchaseOrderHeader purchaseOrder, bool toSave)
         {
             purchaseOrder.No = GetNextNumber(SequenceNumberTypes.PurchaseOrder).ToString();
-            
-            if(toSave)
+
+            if (toSave)
                 _purchaseOrderRepo.Insert(purchaseOrder);
         }
 
@@ -248,23 +240,30 @@ namespace BusinessCore.Services.Purchasing
             }
         }
 
-        public IEnumerable<Vendor> GetVendors()
+        public IQueryable<Vendor> GetVendors()
         {
-            var query = from f in _vendorRepo.Table
-                        select f;
-            return query.AsEnumerable();
+            System.Linq.Expressions.Expression<Func<Vendor, object>>[] includeProperties =
+            {
+                p => p.Party,
+                pt => pt.PaymentTerm,
+                pc => pc.PrimaryContact,
+                tg => tg.TaxGroup,
+            };
+
+            var query = _vendorRepo.GetAllIncluding(includeProperties);
+            return query;
         }
 
         public Vendor GetVendorById(int id)
         {
-            return _vendorRepo.GetById(id);
+            return GetVendors().FirstOrDefault(o=> o.Id == id);
         }
 
-        public IEnumerable<PurchaseOrderHeader> GetPurchaseOrders()
+        public IQueryable<PurchaseOrderHeader> GetPurchaseOrders()
         {
             var query = _purchaseOrderRepo.Table;
 
-            return query.AsEnumerable();
+            return query;
         }
 
         public PurchaseOrderHeader GetPurchaseOrderById(int id)
@@ -293,11 +292,11 @@ namespace BusinessCore.Services.Purchasing
             _vendorRepo.Update(vendor);
         }
 
-        public IEnumerable<PurchaseInvoiceHeader> GetPurchaseInvoices()
+        public IQueryable<PurchaseInvoiceHeader> GetPurchaseInvoices()
         {
             var query = from purchInvoice in _purchaseInvoiceRepo.Table
                         select purchInvoice;
-            return query.ToList();
+            return query;
         }
 
         public PurchaseInvoiceHeader GetPurchaseInvoiceById(int id)
@@ -321,7 +320,7 @@ namespace BusinessCore.Services.Purchasing
             glHeader.GeneralLedgerLines.Add(debit);
             glHeader.GeneralLedgerLines.Add(credit);
 
-            if(_financialService.ValidateGeneralLedgerEntry(glHeader))
+            if (_financialService.ValidateGeneralLedgerEntry(glHeader))
             {
                 payment.GeneralLedgerHeader = glHeader;
 

@@ -12,31 +12,32 @@ using System;
 using Microsoft.AspNetCore.Authentication;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using WebApiCore.Helper;
+using WebApiCore.Infrastructure;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using WebApiCore.Infrastructure.ErrorHandling;
 
-namespace AlbumViewerAspNetCore
-{    
-    [ServiceFilter(typeof(ApiExceptionFilter))]    
+namespace WebApiCore.Controllers
+{
+    [ServiceFilter(typeof(ApiExceptionFilter))]
     [EnableCors("CorsPolicy")]
     public class SecurityController : Controller
     {
         private ISecurityService accountRepo;
         private readonly AppSettings _appSettings;
 
-        public SecurityController(ISecurityService actRepo, IOptions<AppSettings> appSettings)            
+        public SecurityController(ISecurityService actRepo, IOptions<AppSettings> appSettings)
         {
             accountRepo = actRepo;
             _appSettings = appSettings.Value;
         }
 
 
-        [AllowAnonymous]                    
+        [AllowAnonymous]
         [HttpPost]
         [Route("api/login")]
-        public async Task<IActionResult> Login([FromBody]  UserModel loginUser)
-        {            
+        public IActionResult Login([FromBody]  UserIn loginUser)
+        {
             var user = accountRepo.AuthenticateAndLoadUser(loginUser.Username, loginUser.Password);
 
             if (user == null)
@@ -61,13 +62,13 @@ namespace AlbumViewerAspNetCore
             var tokenString = tokenHandler.WriteToken(token);
 
             // return basic user info (without password) and token to store client side
-            return Ok(new
+            return Ok(new UserOut
             {
                 Id = user.Id,
                 Username = user.Username,
                 FirstName = user.Firstname,
                 LastName = user.Lastname,
-                token = tokenString
+                Token = tokenString
             });
         }
 
