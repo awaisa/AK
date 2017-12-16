@@ -154,8 +154,14 @@ namespace WebApiCore
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
-
+                c.SwaggerDoc("v1", new Info { Title = "ak api", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
                 //https://github.com/domaindrivendev/Swashbuckle/issues/581#issuecomment-235053027
                 c.DocInclusionPredicate((docName, apiDesc) =>
                 {
@@ -290,7 +296,7 @@ namespace WebApiCore
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ak api v1");
             });
 
             // put last so header configs like CORS or Cookies etc can fire
