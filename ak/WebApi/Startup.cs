@@ -152,10 +152,10 @@ namespace WebApiCore
             //register
             AutoMapperConfiguration.Init(config);
 
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "ak api", Version = "v1" });
-                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                options.SwaggerDoc("v1", new Info { Title = "ak api", Version = "v1" });
+                options.AddSecurityDefinition("Bearer", new ApiKeyScheme
                 {
                     Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
                     Name = "Authorization",
@@ -163,11 +163,12 @@ namespace WebApiCore
                     Type = "apiKey"
                 });
                 //https://github.com/domaindrivendev/Swashbuckle/issues/581#issuecomment-235053027
-                c.DocInclusionPredicate((docName, apiDesc) =>
+                options.DocInclusionPredicate((docName, apiDesc) =>
                 {
                     if (apiDesc.HttpMethod == null) return false;
                     return true;
                 });
+                options.CustomSchemaIds(x => x.FullName);
 
             });
 

@@ -12,12 +12,12 @@ namespace WebApiCore.Models.Inventory
     {
         public ItemModelValidator()
         {
-            RuleFor(m => m.Code).NotEmpty();
-            RuleFor(m => m.Description).NotEmpty();
-            RuleFor(m => m.SellDescription).NotEmpty();
-            RuleFor(m => m.PurchaseDescription).NotEmpty();
-            RuleFor(m => m.Price).NotEmpty();
-            RuleFor(m => m.Cost).NotEmpty();
+            RuleFor(m => m.Code).NotEmpty().NotNull();
+            RuleFor(m => m.Description).NotEmpty().NotNull();
+            RuleFor(m => m.SellDescription).NotEmpty().NotNull();
+            RuleFor(m => m.PurchaseDescription).NotEmpty().NotNull();
+            RuleFor(m => m.Price).NotEmpty().NotNull();
+            RuleFor(m => m.Cost).NotEmpty().NotNull();
         }
     }
 }

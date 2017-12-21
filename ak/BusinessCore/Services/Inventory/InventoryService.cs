@@ -16,6 +16,7 @@ using BusinessCore.Domain.Financials;
 using BusinessCore.Domain.TaxSystem;
 using BusinessCore.Services.Security;
 using BusinessCore.Security;
+using System.Linq.Expressions;
 
 namespace BusinessCore.Services.Inventory
 {
@@ -31,6 +32,19 @@ namespace BusinessCore.Services.Inventory
         private readonly IRepository<ItemTaxGroup> _itemTaxGroup;
         private readonly IRepository<Model> _modelRepo;
         private readonly IRepository<Brand> _brandRepo;
+
+
+        private Expression<Func<Item, object>>[] includePropertiesOfItem =
+            {
+                p => p.Brand,
+                pt => pt.ItemCategory,
+                pc => pc.ItemTaxGroup,
+                tg => tg.Model,
+                tg => tg.SmallestMeasurement,
+                tg => tg.SellMeasurement,
+                tg => tg.PurchaseMeasurement,
+            };
+
 
         public InventoryService(IRepository<Item> itemRepo,
             IRepository<Measurement> measurementRepo,
@@ -94,7 +108,23 @@ namespace BusinessCore.Services.Inventory
                 item.SellDescription = objectToSave.SellDescription;
                 item.Price = objectToSave.Price;
                 item.Cost = objectToSave.Cost;
+                item.ItemCategoryId = objectToSave.ItemCategoryId;
+                item.BrandId = objectToSave.BrandId;
+                item.ModelId = objectToSave.ModelId;
+                item.ItemTaxGroupId = objectToSave.ItemTaxGroupId;
+                item.SmallestMeasurementId = objectToSave.SmallestMeasurementId;
+                item.SellMeasurementId = objectToSave.SellMeasurementId;
+                item.PurchaseMeasurementId = objectToSave.PurchaseMeasurementId;
+
+                item.PreferredVendorId = objectToSave.PreferredVendorId;
+
+                item.InventoryAccountId = objectToSave.InventoryAccountId;
+                item.SalesAccountId = objectToSave.SalesAccountId;
+                item.CostOfGoodsSoldAccountId = objectToSave.CostOfGoodsSoldAccountId;
+                item.InventoryAdjustmentAccountId = objectToSave.InventoryAdjustmentAccountId;
+
                 _itemRepo.Update(item);
+                objectToSave = item;
             }
             else
             {
@@ -105,13 +135,13 @@ namespace BusinessCore.Services.Inventory
                 var invAdjusment = _accountRepo.Table.Where(a => a.AccountCode == "50500").FirstOrDefault();
                 var cogs = _accountRepo.Table.Where(a => a.AccountCode == "50300").FirstOrDefault();
                 var assemblyCost = _accountRepo.Table.Where(a => a.AccountCode == "10900").FirstOrDefault();
+                var taxGroup = _itemTaxGroup.Table.Where(m => m.Name == "Regular").FirstOrDefault();
 
-                objectToSave.SalesAccount = sales;
-                objectToSave.InventoryAccount = inventory;
-                objectToSave.CostOfGoodsSoldAccount = cogs;
-                objectToSave.InventoryAdjustmentAccount = invAdjusment;
-
-                objectToSave.ItemTaxGroup = _itemTaxGroup.Table.Where(m => m.Name == "Regular").FirstOrDefault();
+                objectToSave.SalesAccountId = sales?.Id;
+                objectToSave.InventoryAccountId = inventory?.Id;
+                objectToSave.CostOfGoodsSoldAccountId = cogs?.Id;
+                objectToSave.InventoryAdjustmentAccountId = invAdjusment?.Id;
+                objectToSave.ItemTaxGroupId = taxGroup?.Id;
 
                 _itemRepo.Insert(objectToSave);
             }
@@ -124,6 +154,7 @@ namespace BusinessCore.Services.Inventory
 
         public IQueryable<Item> GetAllItems()
         {
+
             var query = from item in _itemRepo.Table
                         select item;
             return query;
@@ -134,6 +165,32 @@ namespace BusinessCore.Services.Inventory
             var query = from item in _itemRepo.Table
                         where item.Id == id
                         select item;
+            return query.FirstOrDefault();
+        }
+
+        public Item GetItemDetailById(int id)
+        {
+            Expression<Func<Item, object>>[] includePropertiesOfItem =
+            {
+                p => p.ItemCategory,
+                p => p.Model,
+                p => p.Brand,
+                p => p.ItemTaxGroup,
+                p => p.SmallestMeasurement,
+                p => p.SellMeasurement,
+                p => p.PurchaseMeasurement,
+                p => p.PreferredVendor,
+
+                p => p.InventoryAccount,
+                p => p.SalesAccount,
+                p => p.CostOfGoodsSoldAccount,
+                p => p.InventoryAdjustmentAccount,
+            };
+
+            var query = from item in _itemRepo.GetAllIncluding(includePropertiesOfItem)
+                        where item.Id == id
+                        select item;
+
             return query.FirstOrDefault();
         }
         #endregion

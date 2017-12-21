@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using BusinessCore.Services.Security;
+using System.Linq.Expressions;
 
 namespace BusinessCore.Services.Purchasing
 {
@@ -30,6 +31,14 @@ namespace BusinessCore.Services.Purchasing
         private readonly IRepository<PaymentTerm> _paymentTermRepo;
         private readonly IRepository<Bank> _bankRepo;
 
+        private Expression<Func<Vendor, object>>[] includePropertiesOfVendor =
+            {
+                p => p.Party,
+                pt => pt.PaymentTerm,
+                pc => pc.PrimaryContact,
+                tg => tg.TaxGroup,
+            };
+        
         public PurchasingService(IFinancialService financialService,
             IInventoryService inventoryService,
             IRepository<PurchaseOrderHeader> purchaseOrderRepo,
@@ -242,15 +251,7 @@ namespace BusinessCore.Services.Purchasing
 
         public IQueryable<Vendor> GetVendors()
         {
-            System.Linq.Expressions.Expression<Func<Vendor, object>>[] includeProperties =
-            {
-                p => p.Party,
-                pt => pt.PaymentTerm,
-                pc => pc.PrimaryContact,
-                tg => tg.TaxGroup,
-            };
-
-            var query = _vendorRepo.GetAllIncluding(includeProperties);
+            var query = _vendorRepo.GetAllIncluding(includePropertiesOfVendor);
             return query;
         }
 

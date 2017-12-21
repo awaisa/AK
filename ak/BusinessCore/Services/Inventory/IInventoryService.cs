@@ -26,6 +26,7 @@ namespace BusinessCore.Services.Inventory
         void SaveItem(Item item);
         void DeleteItem(int itemId);
         Item GetItemById(int id);
+        Item GetItemDetailById(int id);
         Item GetItemByNo(string itemNo);
         IQueryable<Item> GetAllItems();
 

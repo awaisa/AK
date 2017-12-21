@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Text;
 using WebApiCore.Models.Vendor;
 using System.Linq;
+using FluentAssertions;
 
 namespace WebApiCore.IntegrationTests
 {
@@ -78,7 +79,7 @@ namespace WebApiCore.IntegrationTests
             var obk = JsonConvert.DeserializeObject(contents);
             Assert.True(response.StatusCode == HttpStatusCode.OK, $"Expected OK but received {response.StatusCode}");
 
-            response.StatusCode.Be(HttpStatusCode.OK);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
             
         }
     }

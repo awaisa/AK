@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
 using WebApiCore.Models.Purchase;
+using FluentAssertions;
 
 namespace WebApiCore.IntegrationTests
 {
@@ -52,7 +53,10 @@ namespace WebApiCore.IntegrationTests
             // Act
             var response = await _testFixture.Client.PostAsync($"{_baseApiUrl}/Invoice", contentData);
             var contents = await response.Content.ReadAsStringAsync();
-            Assert.True(response.StatusCode == HttpStatusCode.OK, $"Expected OK but received {response.StatusCode}");
+            //Assert.True(response.StatusCode == HttpStatusCode.OK);
+
+            response.StatusCode.Should().Be(HttpStatusCode.OK, $"Expected OK but received {response.StatusCode}");
+
         }
     }
 }

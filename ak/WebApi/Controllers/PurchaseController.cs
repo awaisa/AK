@@ -26,6 +26,7 @@ namespace WebApiCore.Controllers
         }
 
         [HttpGet("")]
+        [Produces(typeof(SearchModel))]
         public IActionResult Invoice()
         {
             SearchModel model = new SearchModel();
@@ -68,7 +69,8 @@ namespace WebApiCore.Controllers
         }
 
         [HttpGet("Invoice/{id:int}")]
-        public InvoiceModel Invoice(int? id)
+        [Produces(typeof(InvoiceModel))]
+        public IActionResult Invoice(int? id)
         {
             var model = new InvoiceModel();
             var invoice = _service.GetPurchaseInvoiceById(id ?? 0);
@@ -92,20 +94,24 @@ namespace WebApiCore.Controllers
                         Amount = i.Amount
                 }).ToList();
             }
-            return model;
+            return Ok(model);
         }
 
         [HttpPost("Invoice")]
+        [HttpPut("Invoice")]
         [ValidateModel]
-        public InvoiceModel SaveInvoice([FromBody] InvoiceModel model)
+        [Produces(typeof(InvoiceModel))]
+        public IActionResult SaveInvoice([FromBody] InvoiceModel model)
         {
-            //Note: server side validations add in ModelState .AddModelError([field], [message])
             if (ModelState.IsValid)
             {
-                var invoiceHeader = model.ToEntity();
-                invoiceHeader.PurchaseInvoiceLines = model.InvoiceItems.Select(i => i.ToEntity()).ToList();
-            }            
-            return model;
+                var o = model.ToEntity();
+                //invoiceHeader.PurchaseInvoiceLines = model.InvoiceItems.Select(i => i.ToEntity()).ToList();
+                //_service.In
+                model = o.ToModel();
+                return Ok(model);
+            }
+            return BadRequest(ModelState);
         }
     }    
 }

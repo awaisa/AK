@@ -39,6 +39,25 @@ namespace WebApiCore.Models.Mappings
 
         #endregion
 
+        #region Item Category
+
+        public static ItemCategoryModel ToModel(this ItemCategory entity)
+        {
+            return entity.MapTo<ItemCategory, ItemCategoryModel>();
+        }
+
+        public static ItemCategory ToEntity(this ItemCategoryModel model)
+        {
+            return model.MapTo<ItemCategoryModel, ItemCategory>();
+        }
+
+        public static ItemCategory ToEntity(this ItemCategoryModel model, ItemCategory destination)
+        {
+            return model.MapTo(destination);
+        }
+
+        #endregion
+
         #region Purchase
 
         public static InvoiceModel ToModel(this PurchaseInvoiceHeader entity)

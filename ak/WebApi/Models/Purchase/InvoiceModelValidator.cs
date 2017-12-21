@@ -1,23 +1,32 @@
-﻿using BusinessCore.Domain.Items;
+﻿using BusinessCore.Services.Inventory;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebApiCore.Models.Purchase
 {
     public class InvoiceModelValidator : AbstractValidator<InvoiceModel>
     {
-        public InvoiceModelValidator()
+        private IInventoryService _service;
+        public InvoiceModelValidator(IInventoryService service)
         {
-            //RuleFor(m => m.Code).NotEmpty();
+            _service = service;
+
+            RuleFor(m => m.No).NotEmpty();
             //RuleFor(m => m.Description).NotEmpty();
-            //RuleFor(m => m.SellDescription).NotEmpty();
-            //RuleFor(m => m.PurchaseDescription).NotEmpty();
-            //RuleFor(m => m.Price).NotEmpty();
-            //RuleFor(m => m.Cost).NotEmpty();
+            RuleFor(m => m.InvoiceItems)
+                .Must(i => i.Any())
+                .WithMessage("At least 1 item should exists in invoice");
+
+            RuleForEach(m => m.InvoiceItems).Must(i => ValidateItemId(i.ItemId)).WithMessage("ItemId is not valid");
+
+            RuleFor(m => m.Total).NotEmpty();
         }
+
+        private bool ValidateItemId(int? itemId)
+        {
+            var item = _service.GetItemById(itemId ?? 0);
+            return item != null;
+        }
+
     }
 }

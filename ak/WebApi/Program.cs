@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace WebApiCore
 {
@@ -13,7 +15,9 @@ namespace WebApiCore
         public static void Main(string[] args)
         {
             var appRootPath = Directory.GetCurrentDirectory();
-            BuildWebHost(appRootPath, args).Run();
+            var host = BuildWebHost(appRootPath, args);
+
+            host.Run();
         }
 
 

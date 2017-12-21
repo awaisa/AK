@@ -6,7 +6,7 @@ namespace WebApiCore.Models.Vendor
     {
         public int Id { get; set; }
         public string No { get; set; }
-        public ContactModel PrimaryContact { get; set; }
+        //public ContactModel PrimaryContact { get; set; }
         public PaymentTermModel PaymentTerm { get; set; }
         public TaxGroupModel TaxGroup { get; set; }
     }

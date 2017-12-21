@@ -10,7 +10,7 @@ namespace WebApiCore.IntegrationTests
     public class InventoryControllerTests : IClassFixture<TestFixture>
     {
         private TestFixture _testFixture;
-        readonly string _apiUrl = "/api/Purchase";
+        readonly string _apiUrl = "/api/Inventory";
 
         public InventoryControllerTests(TestFixture testFixture)
         {
@@ -23,7 +23,7 @@ namespace WebApiCore.IntegrationTests
         [Fact]
         public async Task WhenGet_ThenReturnsOk()
         {
-            var response = await _testFixture.Client.GetAsync($"{_apiUrl}/Item");
+            var response = await _testFixture.Client.GetAsync($"{_apiUrl}/");
             var contents = await response.Content.ReadAsStringAsync();
             Assert.True(response.StatusCode == HttpStatusCode.OK, $"Expected OK but received {response.StatusCode}");
         }

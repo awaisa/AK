@@ -118,11 +118,11 @@ namespace BusinessCore.Data
 
         public override int SaveChanges()
         {
-            var user = "System";
-            if (string.IsNullOrEmpty(_principal?.Username))
-                SaveAuditLog(user);
-            else
-                SaveAuditLog(_principal?.Username);
+            //var user = "System";
+            //if (string.IsNullOrEmpty(_principal?.Username))
+            //    SaveAuditLog(user);
+            //else
+            //    SaveAuditLog(_principal?.Username);
 
             // CAN BE USE IN THE FUTURE : Track Created and Modified fields Automatically with Entity Framework Code First
 
@@ -155,7 +155,7 @@ namespace BusinessCore.Data
 
             var ret = base.SaveChanges();
 
-            UpdateAuditLogRecordId();
+            //UpdateAuditLogRecordId();
 
             return ret;
         }
@@ -303,47 +303,47 @@ namespace BusinessCore.Data
         }
 
         #region Audit Logs
-        private void SaveAuditLog(string username)
-        {
-            if (!string.IsNullOrEmpty(username))
-            {
-                var dbEntityEntries = this.ChangeTracker.Entries().Where(p => p.State == EntityState.Modified 
-                || p.State == EntityState.Added 
-                || p.State == EntityState.Deleted);
-                foreach (var dbEntityEntry in dbEntityEntries)
-                {
-                    try
-                    {
-                        var auditLogs = AuditLogHelper.GetChangesForAuditLog(dbEntityEntry, username, this);
-                        foreach (var auditlog in auditLogs)
-                            if (auditlog != null)
-                                this.AuditLogs.Add(auditlog);
-                    }
-                    catch
-                    {
-                        continue;
-                    }
-                }
-            }
-        }
+        //private void SaveAuditLog(string username)
+        //{
+        //    if (!string.IsNullOrEmpty(username))
+        //    {
+        //        var dbEntityEntries = this.ChangeTracker.Entries().Where(p => p.State == EntityState.Modified 
+        //        || p.State == EntityState.Added 
+        //        || p.State == EntityState.Deleted);
+        //        foreach (var dbEntityEntry in dbEntityEntries)
+        //        {
+        //            try
+        //            {
+        //                var auditLogs = AuditLogHelper.GetChangesForAuditLog(dbEntityEntry, username, this);
+        //                foreach (var auditlog in auditLogs)
+        //                    if (auditlog != null)
+        //                        this.AuditLogs.Add(auditlog);
+        //            }
+        //            catch
+        //            {
+        //                continue;
+        //            }
+        //        }
+        //    }
+        //}
 
-        private void UpdateAuditLogRecordId()
-        {
-            foreach (var entity in AuditLogHelper.addedEntities)
-            {
-                if (this.ChangeTracker.Entries().Contains(entity.Value))
-                {
-                    string keyName = entity.Value.Entity.GetType().GetTypeInfo().GetProperties().Single(p => p.GetCustomAttributes(typeof(System.ComponentModel.DataAnnotations.KeyAttribute), false).Count() > 0).Name;
-                    string recid = entity.Value.CurrentValues.GetValue<object>(keyName).ToString();
-                    var auditLog = this.AuditLogs.Where(log => log.AuditEventDateUTC == entity.Key).FirstOrDefault();
-                    if (auditLog != null)
-                    {
-                        auditLog.RecordId = recid;
-                        base.SaveChanges();
-                    }
-                }
-            }
-        }
+        //private void UpdateAuditLogRecordId()
+        //{
+        //    foreach (var entity in AuditLogHelper.addedEntities)
+        //    {
+        //        if (this.ChangeTracker.Entries().Contains(entity.Value))
+        //        {
+        //            string keyName = entity.Value.Entity.GetType().GetTypeInfo().GetProperties().Single(p => p.GetCustomAttributes(typeof(System.ComponentModel.DataAnnotations.KeyAttribute), false).Count() > 0).Name;
+        //            string recid = entity.Value.CurrentValues.GetValue<object>(keyName).ToString();
+        //            var auditLog = this.AuditLogs.Where(log => log.AuditEventDateUTC == entity.Key).FirstOrDefault();
+        //            if (auditLog != null)
+        //            {
+        //                auditLog.RecordId = recid;
+        //                base.SaveChanges();
+        //            }
+        //        }
+        //    }
+        //}
         #endregion
     }
 }
