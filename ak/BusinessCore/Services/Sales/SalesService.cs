@@ -82,7 +82,7 @@ namespace BusinessCore.Services.Sales
         {
             if (string.IsNullOrEmpty(salesOrder.No))
                 salesOrder.No = GetNextNumber(SequenceNumberTypes.SalesOrder).ToString();
-            if(toSave)
+            if (toSave)
                 _salesOrderRepo.Insert(salesOrder);
         }
 
@@ -105,14 +105,14 @@ namespace BusinessCore.Services.Sales
                     continue;
                 else
                 {
-                   
+
                 }
             }
             _salesOrderRepo.Update(salesOrder);
         }
 
         public void AddSalesInvoice(SalesInvoiceHeader salesInvoice, int? salesDeliveryId)
-        {   
+        {
             decimal totalAmount = 0, totalDiscount = 0;
 
             var taxes = new List<KeyValuePair<int, decimal>>();
@@ -134,9 +134,9 @@ namespace BusinessCore.Services.Sales
                 totalDiscount += lineDiscountAmount;
 
                 var totalLineAmount = lineAmount - lineDiscountAmount;
-                
+
                 totalAmount += totalLineAmount;
-                
+
                 var lineTaxes = _financialService.ComputeOutputTax(salesInvoice.CustomerId, item.Id, lineItem.Quantity, lineItem.Amount, lineItem.Discount);
 
                 foreach (var t in lineTaxes)
@@ -144,7 +144,7 @@ namespace BusinessCore.Services.Sales
 
                 var lineTaxAmount = lineTaxes != null && lineTaxes.Count > 0 ? lineTaxes.Sum(t => t.Value) : 0;
                 totalLineAmount = totalLineAmount - lineTaxAmount;
-                
+
                 sales.Add(new KeyValuePair<int, decimal>(item.SalesAccountId.Value, totalLineAmount));
 
                 if (item.ItemCategory.ItemType == ItemTypes.Purchased)
@@ -158,7 +158,7 @@ namespace BusinessCore.Services.Sales
                         lineItem.Quantity * item.Price);
                 }
             }
-            
+
             totalAmount += salesInvoice.ShippingHandlingCharge;
             var debitCustomerAR = _financialService.CreateGeneralLedgerLine(DrOrCrSide.Dr, customer.AccountsReceivableAccount.Id, Math.Round(totalAmount, 2, MidpointRounding.ToEven));
             glHeader.GeneralLedgerLines.Add(debitCustomerAR);
@@ -223,7 +223,7 @@ namespace BusinessCore.Services.Sales
                         CustomerId = salesInvoice.CustomerId,
                         Date = salesInvoice.Date,
                     };
-                    foreach(var line in salesInvoice.SalesInvoiceLines)
+                    foreach (var line in salesInvoice.SalesInvoiceLines)
                     {
                         var item = _itemRepo.GetById(line.ItemId);
                         salesDelivery.SalesDeliveryLines.Add(new SalesDeliveryLine()
@@ -286,11 +286,11 @@ namespace BusinessCore.Services.Sales
             }
         }
 
-        public IEnumerable<SalesInvoiceHeader> GetSalesInvoices()
+        public IQueryable<SalesInvoiceHeader> GetSalesInvoices()
         {
             var query = from invoice in _salesInvoiceRepo.Table
                         select invoice;
-            return query.ToList();
+            return query;
         }
 
         public SalesInvoiceHeader GetSalesInvoiceById(int id)
@@ -311,11 +311,11 @@ namespace BusinessCore.Services.Sales
             _salesInvoiceRepo.Update(salesInvoice);
         }
 
-        public IEnumerable<SalesReceiptHeader> GetSalesReceipts()
+        public IQueryable<SalesReceiptHeader> GetSalesReceipts()
         {
             var query = from receipt in _salesReceiptRepo.Table
                         select receipt;
-            return query.ToList();
+            return query;
         }
 
         public SalesReceiptHeader GetSalesReceiptById(int id)
@@ -328,20 +328,32 @@ namespace BusinessCore.Services.Sales
             _salesReceiptRepo.Update(salesReceipt);
         }
 
-        public IEnumerable<Customer> GetCustomers()
+        public IQueryable<Customer> GetCustomers()
         {
             System.Linq.Expressions.Expression<Func<Customer, object>>[] includeProperties =
-                { p => p.Party, c => c.AccountsReceivableAccount };
+            {
+                p => p.Party,
+                c => c.AccountsReceivableAccount,
+                p => p.PaymentTerm,
+                p => p.PrimaryContact,
+                p => p.TaxGroup
+            };
 
             var customers = _customerRepo.GetAllIncluding(includeProperties);
 
-            return customers.AsEnumerable();
+            return customers;
         }
 
         public Customer GetCustomerById(int id)
         {
             System.Linq.Expressions.Expression<Func<Customer, object>>[] includeProperties =
-                { p => p.Party, c => c.AccountsReceivableAccount };
+            {
+                p => p.Party,
+                c => c.AccountsReceivableAccount,
+                p => p.PaymentTerm,
+                p => p.PrimaryContact,
+                p => p.TaxGroup
+            };
 
             var customer = _customerRepo.GetAllIncluding(includeProperties)
                 .Where(c => c.Id == id).FirstOrDefault();
@@ -397,10 +409,10 @@ namespace BusinessCore.Services.Sales
 
         public void AddCustomer(Customer customer)
         {
-            var accountAR = _accountRepo.Table.Where(e => e.AccountCode == "10120").FirstOrDefault();
-            var accountSales = _accountRepo.Table.Where(e => e.AccountCode == "40100").FirstOrDefault();
-            var accountAdvances = _accountRepo.Table.Where(e => e.AccountCode == "20120").FirstOrDefault();
-            var accountSalesDiscount = _accountRepo.Table.Where(e => e.AccountCode == "40400").FirstOrDefault();
+            var accountAR = _accountRepo.Table.Where(e => e.AccountCode == AccountCodes.AccountsReceivable_10120).FirstOrDefault();
+            var accountSales = _accountRepo.Table.Where(e => e.AccountCode == AccountCodes.Sales_40100).FirstOrDefault();
+            var accountAdvances = _accountRepo.Table.Where(e => e.AccountCode == AccountCodes.CutomerAdvances_20120).FirstOrDefault();
+            var accountSalesDiscount = _accountRepo.Table.Where(e => e.AccountCode == AccountCodes.SalesDiscount_40400).FirstOrDefault();
 
             customer.AccountsReceivableAccountId = accountAR != null ? (int?)accountAR.Id : null;
             customer.SalesAccountId = accountSales != null ? (int?)accountSales.Id : null;
@@ -413,7 +425,7 @@ namespace BusinessCore.Services.Sales
             _customerRepo.Insert(customer);
         }
 
-        public IEnumerable<SalesDeliveryHeader> GetSalesDeliveries()
+        public IQueryable<SalesDeliveryHeader> GetSalesDeliveries()
         {
             var query = from f in _salesDeliveryRepo.Table
                         select f;
@@ -453,7 +465,7 @@ namespace BusinessCore.Services.Sales
 
                 salesDelivery.No = GetNextNumber(SequenceNumberTypes.SalesDelivery).ToString();
 
-                if(!salesDelivery.SalesOrderHeaderId.HasValue)
+                if (!salesDelivery.SalesOrderHeaderId.HasValue)
                 {
                     var salesOrder = new SalesOrderHeader()
                     {
@@ -463,7 +475,7 @@ namespace BusinessCore.Services.Sales
                         No = GetNextNumber(SequenceNumberTypes.SalesOrder).ToString(),
                     };
 
-                    foreach(var line in salesDelivery.SalesDeliveryLines)
+                    foreach (var line in salesDelivery.SalesDeliveryLines)
                     {
                         var item = _inventoryService.GetItemById(line.ItemId.Value);
                         salesOrder.SalesOrderLines.Add(new SalesOrderLine()
@@ -483,13 +495,13 @@ namespace BusinessCore.Services.Sales
             }
         }
 
-        public IEnumerable<SalesOrderHeader> GetSalesOrders()
+        public IQueryable<SalesOrderHeader> GetSalesOrders()
         {
             var salesOrders = _salesOrderRepo.GetAllIncluding(c => c.Customer,
                 pt => pt.PaymentTerm,
                 lines => lines.SalesOrderLines);
 
-            foreach(var salesOrder in salesOrders)
+            foreach (var salesOrder in salesOrders)
             {
                 salesOrder.Customer.Party = GetCustomerById(salesOrder.CustomerId.Value).Party;
             }
@@ -505,7 +517,7 @@ namespace BusinessCore.Services.Sales
                 .Where(o => o.Id == id).FirstOrDefault()
                 ;
 
-            foreach(var line in salesOrder.SalesOrderLines)
+            foreach (var line in salesOrder.SalesOrderLines)
             {
                 line.Item = _itemRepo.GetById(line.ItemId);
                 line.Measurement = _measurementRepo.GetById(line.MeasurementId);
@@ -519,7 +531,7 @@ namespace BusinessCore.Services.Sales
             return _salesDeliveryRepo.GetById(id);
         }
 
-        public IEnumerable<Contact> GetContacts()
+        public IQueryable<Contact> GetContacts()
         {
             var query = from f in _contactRepo.Table
                         select f;

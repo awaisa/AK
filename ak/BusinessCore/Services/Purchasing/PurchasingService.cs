@@ -279,9 +279,9 @@ namespace BusinessCore.Services.Purchasing
 
         public void AddVendor(Vendor vendor)
         {
-            vendor.AccountsPayableAccountId = _accountRepo.Table.Where(a => a.AccountCode == "20110").FirstOrDefault().Id;
-            vendor.PurchaseAccountId = _accountRepo.Table.Where(a => a.AccountCode == "50200").FirstOrDefault().Id;
-            vendor.PurchaseDiscountAccountId = _accountRepo.Table.Where(a => a.AccountCode == "50400").FirstOrDefault().Id;
+            vendor.AccountsPayableAccountId = _accountRepo.Table.Where(a => a.AccountCode == AccountCodes.AccountsPayable_20110).FirstOrDefault().Id;
+            vendor.PurchaseAccountId = _accountRepo.Table.Where(a => a.AccountCode == AccountCodes.Purchase_50200).FirstOrDefault().Id;
+            vendor.PurchaseDiscountAccountId = _accountRepo.Table.Where(a => a.AccountCode == AccountCodes.PurchaseDiscount_50400).FirstOrDefault().Id;
 
             //vendor.IsActive = true;
 

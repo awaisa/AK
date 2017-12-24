@@ -1,31 +1,28 @@
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using BusinessCore.Domain.Items;
 using WebApiCore.Infrastructure;
-using BusinessCore.Services.Purchasing;
-using WebApiCore.Models.Vendor;
-using BusinessCore.Domain.Purchases;
 using WebApiCore.Models.Mappings;
+using WebApiCore.Models.Customer;
+using BusinessCore.Services.Sales;
 
 namespace WebApiCore.Controllers
 {
-    public class VendorController : BaseController
+    public class CustomerController : BaseController
     {
-        private ILogger<VendorController> _log;
-        private IPurchasingService _service;
+        private ILogger<CustomerController> _log;
+        private ISalesService _service;
 
-        public VendorController(
-            IPurchasingService service,
-            ILogger<VendorController> log)
+        public CustomerController(
+            ISalesService service,
+            ILogger<CustomerController> log)
         {
             _service = service;
             _log = log;
         }
 
-        [HttpGet("")]
-        public IActionResult Vendor()
+        [HttpGet]
+        public IActionResult Customer()
         {
             SearchModel model = new SearchModel
             {
@@ -37,7 +34,7 @@ namespace WebApiCore.Controllers
             var sortcolumnDir = GetSortOrder();
             var searchText = GetSearchedText();
 
-            var records = _service.GetVendors();
+            var records = _service.GetCustomers();
 
             //Total Records
             model.RecordsTotal = records.Count();
@@ -63,10 +60,10 @@ namespace WebApiCore.Controllers
             return Json(model);
         }
 
-        [HttpGet("Vendor/{id:int}")]
-        public IActionResult Vendor(int? id)
+        [HttpGet("{id:int}")]
+        public IActionResult Customer(int? id)
         {
-            var o = _service.GetVendorById(id ?? 0);
+            var o = _service.GetCustomerById(id ?? 0);
             if (o == null)
             {
                 return NotFound();
@@ -75,15 +72,15 @@ namespace WebApiCore.Controllers
             return Ok(model);
         }
 
-        [HttpPost("Vendor")]
+        [HttpPost]
         [ValidateModel]
-        public IActionResult Save([FromBody] VendorModel model)
+        public IActionResult SaveCustomer([FromBody] CustomerModel model)
         {
             //server side validations add in ModelState .AddModelError([field], [message])
             if (ModelState.IsValid)
             {
                 var obj = model.ToEntity();
-                _service.UpdateVendor(obj);
+                _service.AddCustomer(obj);
                 model = obj.ToModel();
                 return Ok(model);
             }

@@ -9,6 +9,7 @@
 using BusinessCore.Domain;
 using BusinessCore.Domain.Sales;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BusinessCore.Services.Sales
 {
@@ -20,24 +21,24 @@ namespace BusinessCore.Services.Sales
         void AddSalesReceipt(SalesReceiptHeader salesReceipt);
         void AddSalesReceiptNoInvoice(SalesReceiptHeader salesReceipt);
         void AddSalesDelivery(SalesDeliveryHeader salesDelivery, bool toSave);
-        IEnumerable<SalesInvoiceHeader> GetSalesInvoices();
+        IQueryable<SalesInvoiceHeader> GetSalesInvoices();
         SalesInvoiceHeader GetSalesInvoiceById(int id);
         SalesInvoiceHeader GetSalesInvoiceByNo(string no);
         void UpdateSalesInvoice(SalesInvoiceHeader salesInvoice);
-        IEnumerable<SalesReceiptHeader> GetSalesReceipts();
+        IQueryable<SalesReceiptHeader> GetSalesReceipts();
         SalesReceiptHeader GetSalesReceiptById(int id);
         void UpdateSalesReceipt(SalesReceiptHeader salesReceipt);
-        IEnumerable<Customer> GetCustomers();
+        IQueryable<Customer> GetCustomers();
         Customer GetCustomerById(int id);
         void UpdateCustomer(Customer customer);
         void AddCustomer(Customer customer);
         ICollection<SalesReceiptHeader> GetCustomerReceiptsForAllocation(int customerId);
         void SaveCustomerAllocation(CustomerAllocation allocation);
-        IEnumerable<SalesDeliveryHeader> GetSalesDeliveries();
-        IEnumerable<SalesOrderHeader> GetSalesOrders();
+        IQueryable<SalesDeliveryHeader> GetSalesDeliveries();
+        IQueryable<SalesOrderHeader> GetSalesOrders();
         SalesOrderHeader GetSalesOrderById(int id);
         SalesDeliveryHeader GetSalesDeliveryById(int id);
-        IEnumerable<Contact> GetContacts();
+        IQueryable<Contact> GetContacts();
         int SaveContact(Contact contact);
         ICollection<SalesInvoiceHeader> GetSalesInvoicesByCustomerId(int customerId, SalesInvoiceStatus status);
         ICollection<CustomerAllocation> GetCustomerAllocations(int customerId);

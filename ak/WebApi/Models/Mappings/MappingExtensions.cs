@@ -2,6 +2,7 @@
 using BusinessCore.Domain.Items;
 using BusinessCore.Domain.Purchases;
 using WebApiCore.Models.Common;
+using WebApiCore.Models.Customer;
 using WebApiCore.Models.Inventory;
 using WebApiCore.Models.Purchase;
 using WebApiCore.Models.Vendor;
@@ -109,6 +110,25 @@ namespace WebApiCore.Models.Mappings
         }
 
         public static BusinessCore.Domain.Purchases.Vendor ToEntity(this VendorModel model, BusinessCore.Domain.Purchases.Vendor destination)
+        {
+            return model.MapTo(destination);
+        }
+
+        #endregion
+
+        #region Customer
+
+        public static CustomerModel ToModel(this BusinessCore.Domain.Sales.Customer entity)
+        {
+            return entity.MapTo<BusinessCore.Domain.Sales.Customer, CustomerModel>();
+        }
+
+        public static BusinessCore.Domain.Sales.Customer ToEntity(this CustomerModel model)
+        {
+            return model.MapTo<CustomerModel, BusinessCore.Domain.Sales.Customer>();
+        }
+
+        public static BusinessCore.Domain.Sales.Customer ToEntity(this VendorModel model, BusinessCore.Domain.Sales.Customer destination)
         {
             return model.MapTo(destination);
         }

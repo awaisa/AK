@@ -130,11 +130,11 @@ namespace BusinessCore.Services.Inventory
             {
                 objectToSave.No = GetNextNumber(SequenceNumberTypes.Item).ToString();
 
-                var sales = _accountRepo.Table.Where(a => a.AccountCode == "40100").FirstOrDefault();
-                var inventory = _accountRepo.Table.Where(a => a.AccountCode == "10800").FirstOrDefault();
-                var invAdjusment = _accountRepo.Table.Where(a => a.AccountCode == "50500").FirstOrDefault();
-                var cogs = _accountRepo.Table.Where(a => a.AccountCode == "50300").FirstOrDefault();
-                var assemblyCost = _accountRepo.Table.Where(a => a.AccountCode == "10900").FirstOrDefault();
+                var sales = _accountRepo.Table.Where(a => a.AccountCode == AccountCodes.Sales_40100).FirstOrDefault();
+                var inventory = _accountRepo.Table.Where(a => a.AccountCode == AccountCodes.Inventory_10800).FirstOrDefault();
+                var invAdjusment = _accountRepo.Table.Where(a => a.AccountCode == AccountCodes.PurchasePriceVariance_50500).FirstOrDefault();
+                var cogs = _accountRepo.Table.Where(a => a.AccountCode == AccountCodes.CostOfGoodsSold_50300).FirstOrDefault();
+                var assemblyCost = _accountRepo.Table.Where(a => a.AccountCode == AccountCodes.AssemblyCost_10900).FirstOrDefault();
                 var taxGroup = _itemTaxGroup.Table.Where(m => m.Name == "Regular").FirstOrDefault();
 
                 objectToSave.SalesAccountId = sales?.Id;

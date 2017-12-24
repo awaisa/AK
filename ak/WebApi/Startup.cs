@@ -18,12 +18,10 @@ using BusinessCore.Services.Financial;
 using BusinessCore.Services.Purchasing;
 using BusinessCore.Services.Sales;
 using BusinessCore.Services.TaxSystem;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Text;
 using WebApiCore.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Security.Principal;
 using BusinessCore.Security;
 using AutoMapper;
 //using WebApiCore.Models.Mappings;
@@ -131,9 +129,6 @@ namespace WebApiCore
             services.AddTransient<IPurchasingService, PurchasingService>();
             services.AddTransient<ISalesService, SalesService>();
             services.AddTransient<ITaxService, TaxService>();
-
-            //services.AddTransient<AlbumRepository>();
-            //services.AddTransient<ArtistRepository>();
 
             //Log.Logger = new LoggerConfiguration()
             //        .WriteTo.RollingFile(pathFormat: "logs\\log-{Date}.log")

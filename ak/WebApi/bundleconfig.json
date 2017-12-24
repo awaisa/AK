@@ -1,8 +1,8 @@
 [
   {
-    "outputFileName": "wwwroot/css/albumviewer.css",
+    "outputFileName": "wwwroot/css/site.css",
     "inputFiles": [
-      "wwwroot/css/albumviewer.css"
+      "wwwroot/css/site.css"
     ]
   }
 ]
