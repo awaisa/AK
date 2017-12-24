@@ -28,11 +28,11 @@ namespace WebApiCore.Infrastructure.Security
                     (
                         new ClaimsIdentity(new Claim[]
                         {
-                            new Claim("UserId", "ClaimsPrincipal_UserId"),
+                            new Claim("UserId", "0"),
                             new Claim("Username", "ClaimsPrincipal_Username"),
                             new Claim("Firstname", "ClaimsPrincipal_Firstname"),
                             new Claim("Lastname", "ClaimsPrincipal_Lastname"),
-                            new Claim("CompanyId", "ClaimsPrincipal_CompanyId")
+                            new Claim("CompanyId", "0")
                         })
                     );
             }

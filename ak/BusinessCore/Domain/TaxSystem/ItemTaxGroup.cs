@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BusinessCore.Domain.TaxSystem
 {
     [Table("ItemTaxGroup")]
-    public partial class ItemTaxGroup : BaseEntity
+    public partial class ItemTaxGroup : BaseEntity, ICompanyBaseEntity
     {
         public ItemTaxGroup()
         {
@@ -23,10 +23,13 @@ namespace BusinessCore.Domain.TaxSystem
         public bool IsFullyExempt { get; set; }
 
         public virtual ICollection<ItemTaxGroupTax> ItemTaxGroupTax { get; set; }
+
+        public int CompanyId { get; set; }
+        public virtual Company Company { get; set; }
     }
 
     [Table("ItemTaxGroupTax")]
-    public partial class ItemTaxGroupTax : BaseEntity
+    public partial class ItemTaxGroupTax : BaseEntity, ICompanyBaseEntity
     {
         public int TaxId { get; set; }
         public int ItemTaxGroupId { get; set; }
@@ -34,5 +37,8 @@ namespace BusinessCore.Domain.TaxSystem
         
         public virtual Tax Tax { get; set; }
         public virtual ItemTaxGroup ItemTaxGroup { get; set; }
+
+        public int CompanyId { get; set; }
+        public virtual Company Company { get; set; }
     }
 }

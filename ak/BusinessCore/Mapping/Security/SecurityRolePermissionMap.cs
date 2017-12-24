@@ -13,10 +13,10 @@ namespace BusinessCore.Mapping.Security
             TableColumns = () =>
             {
                 builder.Property(p => p.SecurityRoleId).HasColumnName("SequenceNumberType");
-                builder.HasOne(t => t.SecurityRole).WithMany().HasForeignKey(t => t.SecurityRoleId);
+                builder.HasOne(t => t.SecurityRole).WithMany(t => t.Permissions).HasForeignKey(t => t.SecurityRoleId);
 
                 builder.Property(p => p.SecurityPermissionId).HasColumnName("SecurityPermissionId");
-                builder.HasOne(t => t.SecurityPermission).WithMany().HasForeignKey(t => t.SecurityPermissionId);
+                builder.HasOne(t => t.SecurityPermission).WithMany(t => t.RolePermission).HasForeignKey(t => t.SecurityPermissionId);
             };
 
             base.Configure(builder);

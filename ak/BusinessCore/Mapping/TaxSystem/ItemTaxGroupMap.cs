@@ -14,6 +14,9 @@ namespace BusinessCore.Mapping.TaxSystem
             {
                 builder.Property(p => p.Name).HasColumnName("Name");
                 builder.Property(p => p.IsFullyExempt).HasColumnName("IsFullyExempt");
+
+                builder.Property(p => p.CompanyId).HasColumnName("CompanyId");
+                builder.HasOne(t => t.Company).WithMany().HasForeignKey(t => t.CompanyId);
             };
 
             base.Configure(builder);

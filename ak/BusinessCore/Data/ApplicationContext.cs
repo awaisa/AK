@@ -22,8 +22,12 @@ namespace BusinessCore.Data
 {
     public class ApplicationContext : DbContext, IDbContext
     {
-        private readonly IAppPrincipal _principal;
-
+        public IAppPrincipal _appPrincipal;
+        public IAppPrincipal AppPrincipal
+        {
+            get { return _appPrincipal; }
+            set { _appPrincipal = value; }
+        }
         //public string UserName
         //{
         //    get { return WindowsIdentity.GetCurrent().Name; }
@@ -39,7 +43,7 @@ namespace BusinessCore.Data
         public ApplicationContext(IAppPrincipal principal, DbContextOptions options) : base(options)
         {
             //Database.SetInitializer<ApplicationContext>(null); //uncomment this line to disable code first
-            _principal = principal;
+            _appPrincipal = principal;
         }
         public ApplicationContext()
             : base()
@@ -133,20 +137,20 @@ namespace BusinessCore.Data
                 if (entity.State == EntityState.Added)
                 {
                     ((BaseEntity)entity.Entity).CreatedOn = DateTime.Now;
-                    ((BaseEntity)entity.Entity).CreatedById = _principal?.UserId == null ? (int?)null : _principal?.UserId;
+                    ((BaseEntity)entity.Entity).CreatedById = _appPrincipal?.UserId == null ? (int?)null : _appPrincipal?.UserId;
 
                     #region New entities insert against current user's companyId
                     var companyBaseEntity = entity.Entity as ICompanyBaseEntity;
                     if (companyBaseEntity != null)
                     {
-                        if (_principal != null)
-                            companyBaseEntity.CompanyId = (int)_principal?.CompanyId;
+                        if (_appPrincipal != null)
+                            companyBaseEntity.CompanyId = (int)_appPrincipal?.CompanyId;
                     }
                     #endregion
                 }
 
                 ((BaseEntity)entity.Entity).ModifiedOn = DateTime.Now;
-                ((BaseEntity)entity.Entity).ModifiedById = _principal?.UserId == null ? (int?)null : _principal?.UserId;
+                ((BaseEntity)entity.Entity).ModifiedById = _appPrincipal?.UserId == null ? (int?)null : _appPrincipal?.UserId;
             }
 
             var ret = base.SaveChanges();

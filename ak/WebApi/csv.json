@@ -1,892 +1,803 @@
 [
- {
-   "AccountCode": 10000,
-   "AccountName": "Assets",
-   "ParentAccountCode": "",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 10100,
-   "AccountName": "Current Assets",
-   "ParentAccountCode": "10000",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 10110,
-   "AccountName": "Cash in Hand and in Bank",
-   "ParentAccountCode": "10100",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "true",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 10111,
-   "AccountName": "Regular Checking Account",
-   "ParentAccountCode": "10110",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 10112,
-   "AccountName": "Savings Account",
-   "ParentAccountCode": "10110",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 10113,
-   "AccountName": "Cash in Hand A/C",
-   "ParentAccountCode": "10110",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 10120,
-   "AccountName": "Accounts Receivable",
-   "ParentAccountCode": "10100",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 10130,
-   "AccountName": "Other Receivables",
-   "ParentAccountCode": "10100",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 10121,
-   "AccountName": "Allowance for Doubtful Accounts",
-   "ParentAccountCode": "10100",
-   "AccountClassId": 1,
-   "IsContraAccount": "true",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 10140,
-   "AccountName": "Prepaid Expenses",
-   "ParentAccountCode": "10100",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 10150,
-   "AccountName": "Employee Advances",
-   "ParentAccountCode": "10100",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 10700,
-   "AccountName": "Other Current Assets",
-   "ParentAccountCode": "10100",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 10800,
-   "AccountName": "Inventory",
-   "ParentAccountCode": "10100",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 10810,
-   "AccountName": "Goods Received Clearing Account",
-   "ParentAccountCode": "10100",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 10900,
-   "AccountName": "Stocks of work in progress",
-   "ParentAccountCode": "10100",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 10200,
-   "AccountName": "Noncurrent Assets",
-   "ParentAccountCode": "10000",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 10300,
-   "AccountName": "Fixed Assets",
-   "ParentAccountCode": "10200",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 13301,
-   "AccountName": "Furniture and Fixtures",
-   "ParentAccountCode": "10300",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 13302,
-   "AccountName": "Plants & Equipments",
-   "ParentAccountCode": "10300",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 13303,
-   "AccountName": "Vehicles",
-   "ParentAccountCode": "10300",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 13304,
-   "AccountName": "Buildings",
-   "ParentAccountCode": "10300",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 13305,
-   "AccountName": "Land",
-   "ParentAccountCode": "10300",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 14000,
-   "AccountName": "Accumulated Depreciations",
-   "ParentAccountCode": "10300",
-   "AccountClassId": 1,
-   "IsContraAccount": "true",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 14001,
-   "AccountName": "Accumulated Depreciation-Furniture and Fixtures",
-   "ParentAccountCode": "10300",
-   "AccountClassId": 1,
-   "IsContraAccount": "true",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 14002,
-   "AccountName": "Accumulated Depreciation-Equipment",
-   "ParentAccountCode": "10300",
-   "AccountClassId": 1,
-   "IsContraAccount": "true",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 14003,
-   "AccountName": "Accumulated Depreciation-Vehicles",
-   "ParentAccountCode": "10300",
-   "AccountClassId": 1,
-   "IsContraAccount": "true",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 14004,
-   "AccountName": "Accumulated Depreciations-Building",
-   "ParentAccountCode": "10300",
-   "AccountClassId": 1,
-   "IsContraAccount": "true",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 14005,
-   "AccountName": "Accumulated Depreciation-Building Improvements",
-   "ParentAccountCode": "10300",
-   "AccountClassId": 1,
-   "IsContraAccount": "true",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 15000,
-   "AccountName": "Other Assets",
-   "ParentAccountCode": "10000",
-   "AccountClassId": 1,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 20000,
-   "AccountName": "Liabilities",
-   "ParentAccountCode": "",
-   "AccountClassId": 2,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 20100,
-   "AccountName": "Current Liabilities",
-   "ParentAccountCode": "20000",
-   "AccountClassId": 2,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 20110,
-   "AccountName": "Accounts Payable",
-   "ParentAccountCode": "20100",
-   "AccountClassId": 2,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 20120,
-   "AccountName": "Customer Advances",
-   "ParentAccountCode": "20100",
-   "AccountClassId": 2,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 20201,
-   "AccountName": "Accrued Expenses",
-   "ParentAccountCode": "20100",
-   "AccountClassId": 2,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 20202,
-   "AccountName": "Wages Payable",
-   "ParentAccountCode": "20100",
-   "AccountClassId": 2,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 20203,
-   "AccountName": "Deductions Payable",
-   "ParentAccountCode": "20100",
-   "AccountClassId": 2,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 20204,
-   "AccountName": "Health Insurance Payable",
-   "ParentAccountCode": "20100",
-   "AccountClassId": 2,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 20300,
-   "AccountName": "Sales Tax",
-   "ParentAccountCode": "20100",
-   "AccountClassId": 2,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 20301,
-   "AccountName": "Local Payroll Taxes Payable",
-   "ParentAccountCode": "20100",
-   "AccountClassId": 2,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 20302,
-   "AccountName": "Income Taxes Payable",
-   "ParentAccountCode": "20100",
-   "AccountClassId": 2,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 20303,
-   "AccountName": "Other Taxes Payable",
-   "ParentAccountCode": "20100",
-   "AccountClassId": 2,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 20304,
-   "AccountName": "Advances-H.O. Dues",
-   "ParentAccountCode": "20100",
-   "AccountClassId": 2,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 20400,
-   "AccountName": "Other Current Liabilities",
-   "ParentAccountCode": "20100",
-   "AccountClassId": 2,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 20500,
-   "AccountName": "Non-current Liabilities",
-   "ParentAccountCode": "20000",
-   "AccountClassId": 2,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 20600,
-   "AccountName": "Other Long-term Liabilities",
-   "ParentAccountCode": "20000",
-   "AccountClassId": 2,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 30000,
-   "AccountName": "Equity",
-   "ParentAccountCode": "",
-   "AccountClassId": 3,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 30100,
-   "AccountName": "Member Capital",
-   "ParentAccountCode": "30000",
-   "AccountClassId": 3,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 30200,
-   "AccountName": "Capital Surplus",
-   "ParentAccountCode": "30000",
-   "AccountClassId": 3,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 30300,
-   "AccountName": "Retained Surplus",
-   "ParentAccountCode": "30000",
-   "AccountClassId": 3,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 30400,
-   "AccountName": "Accumulated Profits",
-   "ParentAccountCode": "30000",
-   "AccountClassId": 3,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 30500,
-   "AccountName": "Accumulated Losses",
-   "ParentAccountCode": "30000",
-   "AccountClassId": 3,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 30600,
-   "AccountName": "Other Reserves",
-   "ParentAccountCode": "30000",
-   "AccountClassId": 3,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 40000,
-   "AccountName": "Revenues",
-   "ParentAccountCode": "",
-   "AccountClassId": 4,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 40100,
-   "AccountName": "Sales A/C",
-   "ParentAccountCode": "40000",
-   "AccountClassId": 4,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 40200,
-   "AccountName": "Home Owners",
-   "ParentAccountCode": "40000",
-   "AccountClassId": 4,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 40300,
-   "AccountName": "Interest Income",
-   "ParentAccountCode": "40000",
-   "AccountClassId": 4,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 40400,
-   "AccountName": "Sales Discounts",
-   "ParentAccountCode": "40000",
-   "AccountClassId": 4,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 40500,
-   "AccountName": "Shipping and Handling",
-   "ParentAccountCode": "40000",
-   "AccountClassId": 4,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 40600,
-   "AccountName": "Other Income",
-   "ParentAccountCode": "40000",
-   "AccountClassId": 4,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "CR"
- },
- {
-   "AccountCode": 50000,
-   "AccountName": "Expenses",
-   "ParentAccountCode": "",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50100,
-   "AccountName": "General and Admin Expenses",
-   "ParentAccountCode": "50000",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50101,
-   "AccountName": "Salary Expenses",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50102,
-   "AccountName": "Wages Expenses",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50103,
-   "AccountName": "Employee Benefit Expenses",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50104,
-   "AccountName": "Employee Benefit Expenses-Health Insurance",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50105,
-   "AccountName": "Employee Benefit Expenses-Pension Plans",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50106,
-   "AccountName": "Employee Benefit Expenses-Profit Sharing Plan",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50107,
-   "AccountName": "Employee Benefit Expenses-Other",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50108,
-   "AccountName": "Repair and Maintenance Expenses",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50109,
-   "AccountName": "Repair and Maintenance Expenses-Office Equipment",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50110,
-   "AccountName": "Repair and Maintenance Expenses-Vehicle",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50111,
-   "AccountName": "Supplies Expenses-Office",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50112,
-   "AccountName": "Telephone Expenses",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50113,
-   "AccountName": "Postage Expenses",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50114,
-   "AccountName": "Insurance Expenses-Vehicle",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50115,
-   "AccountName": "Dues and Subscriptions Expenses",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50116,
-   "AccountName": "Depreciation Expenses",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50117,
-   "AccountName": "Meals and Entertainment Expenses",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50118,
-   "AccountName": "Travel Expenses",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50119,
-   "AccountName": "Utilities Expenses",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50120,
-   "AccountName": "Legal and Professional Expenses",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50121,
-   "AccountName": "Bank Charges",
-   "ParentAccountCode": "50100",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50200,
-   "AccountName": "Purchase A/C",
-   "ParentAccountCode": "50000",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50300,
-   "AccountName": "Cost of Goods Sold",
-   "ParentAccountCode": "50000",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50400,
-   "AccountName": "Purchase Discounts",
-   "ParentAccountCode": "50000",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50500,
-   "AccountName": "Purchase price Variance",
-   "ParentAccountCode": "50000",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50600,
-   "AccountName": "Other Expenses",
-   "ParentAccountCode": "50000",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 50700,
-   "AccountName": "Purchase Tax",
-   "ParentAccountCode": "50000",
-   "AccountClassId": 5,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "DR"
- },
- {
-   "AccountCode": 99999,
-   "AccountName": "Income Summary",
-   "ParentAccountCode": null,
-   "AccountClassId": 6,
-   "IsContraAccount": "false",
-   "IsCash": "false",
-   "Company": 100,
-   "Sign": "NA"
- }
+  {
+    "AccountCode": 10000,
+    "AccountName": "Assets",
+    "ParentAccountCode": "",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 10100,
+    "AccountName": "Current Assets",
+    "ParentAccountCode": "10000",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 10110,
+    "AccountName": "Cash in Hand and in Bank",
+    "ParentAccountCode": "10100",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "true",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 10111,
+    "AccountName": "Regular Checking Account",
+    "ParentAccountCode": "10110",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 10112,
+    "AccountName": "Savings Account",
+    "ParentAccountCode": "10110",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 10113,
+    "AccountName": "Cash in Hand A/C",
+    "ParentAccountCode": "10110",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 10120,
+    "AccountName": "Accounts Receivable",
+    "ParentAccountCode": "10100",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 10130,
+    "AccountName": "Other Receivables",
+    "ParentAccountCode": "10100",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 10121,
+    "AccountName": "Allowance for Doubtful Accounts",
+    "ParentAccountCode": "10100",
+    "AccountClassId": 1,
+    "IsContraAccount": "true",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 10140,
+    "AccountName": "Prepaid Expenses",
+    "ParentAccountCode": "10100",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 10150,
+    "AccountName": "Employee Advances",
+    "ParentAccountCode": "10100",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 10700,
+    "AccountName": "Other Current Assets",
+    "ParentAccountCode": "10100",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 10800,
+    "AccountName": "Inventory",
+    "ParentAccountCode": "10100",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 10810,
+    "AccountName": "Goods Received Clearing Account",
+    "ParentAccountCode": "10100",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 10900,
+    "AccountName": "Stocks of work in progress",
+    "ParentAccountCode": "10100",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 10200,
+    "AccountName": "Noncurrent Assets",
+    "ParentAccountCode": "10000",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 10300,
+    "AccountName": "Fixed Assets",
+    "ParentAccountCode": "10200",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 13301,
+    "AccountName": "Furniture and Fixtures",
+    "ParentAccountCode": "10300",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 13302,
+    "AccountName": "Plants & Equipments",
+    "ParentAccountCode": "10300",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 13303,
+    "AccountName": "Vehicles",
+    "ParentAccountCode": "10300",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 13304,
+    "AccountName": "Buildings",
+    "ParentAccountCode": "10300",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 13305,
+    "AccountName": "Land",
+    "ParentAccountCode": "10300",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 14000,
+    "AccountName": "Accumulated Depreciations",
+    "ParentAccountCode": "10300",
+    "AccountClassId": 1,
+    "IsContraAccount": "true",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 14001,
+    "AccountName": "Accumulated Depreciation-Furniture and Fixtures",
+    "ParentAccountCode": "10300",
+    "AccountClassId": 1,
+    "IsContraAccount": "true",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 14002,
+    "AccountName": "Accumulated Depreciation-Equipment",
+    "ParentAccountCode": "10300",
+    "AccountClassId": 1,
+    "IsContraAccount": "true",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 14003,
+    "AccountName": "Accumulated Depreciation-Vehicles",
+    "ParentAccountCode": "10300",
+    "AccountClassId": 1,
+    "IsContraAccount": "true",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 14004,
+    "AccountName": "Accumulated Depreciations-Building",
+    "ParentAccountCode": "10300",
+    "AccountClassId": 1,
+    "IsContraAccount": "true",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 14005,
+    "AccountName": "Accumulated Depreciation-Building Improvements",
+    "ParentAccountCode": "10300",
+    "AccountClassId": 1,
+    "IsContraAccount": "true",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 15000,
+    "AccountName": "Other Assets",
+    "ParentAccountCode": "10000",
+    "AccountClassId": 1,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 20000,
+    "AccountName": "Liabilities",
+    "ParentAccountCode": "",
+    "AccountClassId": 2,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 20100,
+    "AccountName": "Current Liabilities",
+    "ParentAccountCode": "20000",
+    "AccountClassId": 2,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 20110,
+    "AccountName": "Accounts Payable",
+    "ParentAccountCode": "20100",
+    "AccountClassId": 2,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 20120,
+    "AccountName": "Customer Advances",
+    "ParentAccountCode": "20100",
+    "AccountClassId": 2,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 20201,
+    "AccountName": "Accrued Expenses",
+    "ParentAccountCode": "20100",
+    "AccountClassId": 2,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 20202,
+    "AccountName": "Wages Payable",
+    "ParentAccountCode": "20100",
+    "AccountClassId": 2,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 20203,
+    "AccountName": "Deductions Payable",
+    "ParentAccountCode": "20100",
+    "AccountClassId": 2,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 20204,
+    "AccountName": "Health Insurance Payable",
+    "ParentAccountCode": "20100",
+    "AccountClassId": 2,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 20300,
+    "AccountName": "Sales Tax",
+    "ParentAccountCode": "20100",
+    "AccountClassId": 2,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 20301,
+    "AccountName": "Local Payroll Taxes Payable",
+    "ParentAccountCode": "20100",
+    "AccountClassId": 2,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 20302,
+    "AccountName": "Income Taxes Payable",
+    "ParentAccountCode": "20100",
+    "AccountClassId": 2,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 20303,
+    "AccountName": "Other Taxes Payable",
+    "ParentAccountCode": "20100",
+    "AccountClassId": 2,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 20304,
+    "AccountName": "Advances-H.O. Dues",
+    "ParentAccountCode": "20100",
+    "AccountClassId": 2,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 20400,
+    "AccountName": "Other Current Liabilities",
+    "ParentAccountCode": "20100",
+    "AccountClassId": 2,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 20500,
+    "AccountName": "Non-current Liabilities",
+    "ParentAccountCode": "20000",
+    "AccountClassId": 2,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 20600,
+    "AccountName": "Other Long-term Liabilities",
+    "ParentAccountCode": "20000",
+    "AccountClassId": 2,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 30000,
+    "AccountName": "Equity",
+    "ParentAccountCode": "",
+    "AccountClassId": 3,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 30100,
+    "AccountName": "Member Capital",
+    "ParentAccountCode": "30000",
+    "AccountClassId": 3,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 30200,
+    "AccountName": "Capital Surplus",
+    "ParentAccountCode": "30000",
+    "AccountClassId": 3,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 30300,
+    "AccountName": "Retained Surplus",
+    "ParentAccountCode": "30000",
+    "AccountClassId": 3,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 30400,
+    "AccountName": "Accumulated Profits",
+    "ParentAccountCode": "30000",
+    "AccountClassId": 3,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 30500,
+    "AccountName": "Accumulated Losses",
+    "ParentAccountCode": "30000",
+    "AccountClassId": 3,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 30600,
+    "AccountName": "Other Reserves",
+    "ParentAccountCode": "30000",
+    "AccountClassId": 3,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 40000,
+    "AccountName": "Revenues",
+    "ParentAccountCode": "",
+    "AccountClassId": 4,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 40100,
+    "AccountName": "Sales A/C",
+    "ParentAccountCode": "40000",
+    "AccountClassId": 4,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 40200,
+    "AccountName": "Home Owners",
+    "ParentAccountCode": "40000",
+    "AccountClassId": 4,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 40300,
+    "AccountName": "Interest Income",
+    "ParentAccountCode": "40000",
+    "AccountClassId": 4,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 40400,
+    "AccountName": "Sales Discounts",
+    "ParentAccountCode": "40000",
+    "AccountClassId": 4,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 40500,
+    "AccountName": "Shipping and Handling",
+    "ParentAccountCode": "40000",
+    "AccountClassId": 4,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 40600,
+    "AccountName": "Other Income",
+    "ParentAccountCode": "40000",
+    "AccountClassId": 4,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "CR"
+  },
+  {
+    "AccountCode": 50000,
+    "AccountName": "Expenses",
+    "ParentAccountCode": "",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50100,
+    "AccountName": "General and Admin Expenses",
+    "ParentAccountCode": "50000",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50101,
+    "AccountName": "Salary Expenses",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50102,
+    "AccountName": "Wages Expenses",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50103,
+    "AccountName": "Employee Benefit Expenses",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50104,
+    "AccountName": "Employee Benefit Expenses-Health Insurance",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50105,
+    "AccountName": "Employee Benefit Expenses-Pension Plans",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50106,
+    "AccountName": "Employee Benefit Expenses-Profit Sharing Plan",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50107,
+    "AccountName": "Employee Benefit Expenses-Other",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50108,
+    "AccountName": "Repair and Maintenance Expenses",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50109,
+    "AccountName": "Repair and Maintenance Expenses-Office Equipment",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50110,
+    "AccountName": "Repair and Maintenance Expenses-Vehicle",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50111,
+    "AccountName": "Supplies Expenses-Office",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50112,
+    "AccountName": "Telephone Expenses",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50113,
+    "AccountName": "Postage Expenses",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50114,
+    "AccountName": "Insurance Expenses-Vehicle",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50115,
+    "AccountName": "Dues and Subscriptions Expenses",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50116,
+    "AccountName": "Depreciation Expenses",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50117,
+    "AccountName": "Meals and Entertainment Expenses",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50118,
+    "AccountName": "Travel Expenses",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50119,
+    "AccountName": "Utilities Expenses",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50120,
+    "AccountName": "Legal and Professional Expenses",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50121,
+    "AccountName": "Bank Charges",
+    "ParentAccountCode": "50100",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50200,
+    "AccountName": "Purchase A/C",
+    "ParentAccountCode": "50000",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50300,
+    "AccountName": "Cost of Goods Sold",
+    "ParentAccountCode": "50000",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50400,
+    "AccountName": "Purchase Discounts",
+    "ParentAccountCode": "50000",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50500,
+    "AccountName": "Purchase price Variance",
+    "ParentAccountCode": "50000",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50600,
+    "AccountName": "Other Expenses",
+    "ParentAccountCode": "50000",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 50700,
+    "AccountName": "Purchase Tax",
+    "ParentAccountCode": "50000",
+    "AccountClassId": 5,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "DR"
+  },
+  {
+    "AccountCode": 99999,
+    "AccountName": "Income Summary",
+    "ParentAccountCode": null,
+    "AccountClassId": 6,
+    "IsContraAccount": "false",
+    "IsCash": "false",
+    "Sign": "NA"
+  }
 ]

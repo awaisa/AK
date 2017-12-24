@@ -4,7 +4,8 @@
     {
         public static void EnsureSeeded(this ApplicationContext context)
         {
-
+            DbInitializer dbInitializer = new DbInitializer(context);
+            dbInitializer.DoIt();
         }
     }
 }

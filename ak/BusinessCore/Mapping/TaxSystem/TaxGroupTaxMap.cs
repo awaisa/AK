@@ -13,10 +13,13 @@ namespace BusinessCore.Mapping.TaxSystem
             TableColumns = () =>
             {
                 builder.Property(p => p.TaxId).HasColumnName("TaxId");
-                builder.HasOne(t => t.Tax).WithMany().HasForeignKey(t => t.TaxId);
+                builder.HasOne(t => t.Tax).WithMany(t => t.TaxGroupTaxes).HasForeignKey(t => t.TaxId);
 
                 builder.Property(p => p.TaxGroupId).HasColumnName("TaxGroupId");
-                builder.HasOne(t => t.TaxGroup).WithMany().HasForeignKey(t => t.TaxGroupId);
+                builder.HasOne(t => t.TaxGroup).WithMany(t => t.TaxGroupTax).HasForeignKey(t => t.TaxGroupId);
+
+                builder.Property(p => p.CompanyId).HasColumnName("CompanyId");
+                builder.HasOne(t => t.Company).WithMany().HasForeignKey(t => t.CompanyId);
             };
 
             base.Configure(builder);

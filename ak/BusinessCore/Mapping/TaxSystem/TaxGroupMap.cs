@@ -14,6 +14,9 @@ namespace BusinessCore.Mapping.TaxSystem
             {
                 builder.Property(p => p.Description).HasColumnName("Description");
                 builder.Property(p => p.TaxAppliedToShipping).HasColumnName("TaxAppliedToShipping");
+
+                builder.Property(p => p.CompanyId).HasColumnName("CompanyId");
+                builder.HasOne(t => t.Company).WithMany().HasForeignKey(t => t.CompanyId);
             };
 
             base.Configure(builder);

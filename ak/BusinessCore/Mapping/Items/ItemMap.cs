@@ -13,7 +13,7 @@ namespace BusinessCore.Mapping.Items
             TableColumns = () =>
             {
                 builder.Property(p => p.ItemCategoryId).HasColumnName("ItemCategoryId");
-                builder.HasOne(t => t.ItemCategory).WithMany().HasForeignKey(t => t.ItemCategoryId);
+                builder.HasOne(t => t.ItemCategory).WithMany(t => t.Items).HasForeignKey(t => t.ItemCategoryId);
 
                 builder.Property(p => p.SmallestMeasurementId).HasColumnName("SmallestMeasurementId");
                 builder.HasOne(t => t.SmallestMeasurement).WithMany().HasForeignKey(t => t.SmallestMeasurementId);
@@ -51,10 +51,10 @@ namespace BusinessCore.Mapping.Items
                 builder.Property(p => p.Price).HasColumnName("Price");
 
                 builder.Property(p => p.BrandId).HasColumnName("BrandId");
-                builder.HasOne(t => t.Brand).WithMany().HasForeignKey(t => t.BrandId);
+                builder.HasOne(t => t.Brand).WithMany(t => t.Items).HasForeignKey(t => t.BrandId);
 
                 builder.Property(p => p.ModelId).HasColumnName("ModelId");
-                builder.HasOne(t => t.Model).WithMany().HasForeignKey(t => t.ModelId);
+                builder.HasOne(t => t.Model).WithMany(t => t.Items).HasForeignKey(t => t.ModelId);
 
                 builder.Property(p => p.CompanyId).HasColumnName("CompanyId");
                 builder.HasOne(t => t.Company).WithMany().HasForeignKey(t => t.CompanyId);

@@ -13,13 +13,13 @@ namespace BusinessCore.Mapping.Purchases
             TableColumns = () =>
             {
                 builder.Property(p => p.VendorId).HasColumnName("VendorId");
-                builder.HasOne(t => t.Vendor).WithMany().HasForeignKey(t => t.VendorId);
+                builder.HasOne(t => t.Vendor).WithMany(t => t.PurchaseReceipts).HasForeignKey(t => t.VendorId);
 
                 builder.Property(p => p.PurchaseOrderHeaderId).HasColumnName("PurchaseOrderHeaderId");
-                builder.HasOne(t => t.PurchaseOrderHeader).WithMany().HasForeignKey(t => t.PurchaseOrderHeaderId);
+                builder.HasOne(t => t.PurchaseOrderHeader).WithMany(t => t.PurchaseReceipts).HasForeignKey(t => t.PurchaseOrderHeaderId);
 
                 builder.Property(p => p.GeneralLedgerHeaderId).HasColumnName("GeneralLedgerHeaderId");
-                builder.HasOne(t => t.GeneralLedgerHeader).WithMany().HasForeignKey(t => t.GeneralLedgerHeaderId);
+                builder.HasOne(t => t.GeneralLedgerHeader).WithMany(t => t.PurchaseOrderReceipts).HasForeignKey(t => t.GeneralLedgerHeaderId);
 
                 builder.Property(p => p.Date).HasColumnName("Date");
                 builder.Property(p => p.No).HasColumnName("No");

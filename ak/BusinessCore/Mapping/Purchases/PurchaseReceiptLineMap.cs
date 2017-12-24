@@ -13,10 +13,10 @@ namespace BusinessCore.Mapping.Purchases
             TableColumns = () =>
             {
                 builder.Property(p => p.PurchaseReceiptHeaderId).HasColumnName("PurchaseReceiptHeaderId");
-                builder.HasOne(t => t.PurchaseReceiptHeader).WithMany().HasForeignKey(t => t.PurchaseReceiptHeaderId);
+                builder.HasOne(t => t.PurchaseReceiptHeader).WithMany(t => t.PurchaseReceiptLines).HasForeignKey(t => t.PurchaseReceiptHeaderId);
 
                 builder.Property(p => p.ItemId).HasColumnName("ItemId");
-                builder.HasOne(t => t.Item).WithMany().HasForeignKey(t => t.ItemId);
+                builder.HasOne(t => t.Item).WithMany(t => t.PurchaseReceiptLines).HasForeignKey(t => t.ItemId);
 
                 builder.Property(p => p.TaxId).HasColumnName("TaxId");
                 builder.HasOne(t => t.Tax).WithMany().HasForeignKey(t => t.TaxId);
@@ -27,7 +27,7 @@ namespace BusinessCore.Mapping.Purchases
 
 
                 builder.Property(p => p.PurchaseOrderLineId).HasColumnName("PurchaseOrderLineId");
-                builder.HasOne(t => t.PurchaseOrderLine).WithMany().HasForeignKey(t => t.PurchaseOrderLineId);
+                builder.HasOne(t => t.PurchaseOrderLine).WithMany(t => t.PurchaseReceiptLines).HasForeignKey(t => t.PurchaseOrderLineId);
 
 
                 builder.Property(p => p.MeasurementId).HasColumnName("MeasurementId");

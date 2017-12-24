@@ -13,7 +13,7 @@ namespace BusinessCore.Mapping.Financials
             TableColumns = () =>
             {
                 builder.Property(p => p.JournalEntryHeaderId).HasColumnName("JournalEntryHeaderId");
-                builder.HasOne(t => t.JournalEntryHeader).WithMany().HasForeignKey(t => t.JournalEntryHeaderId);
+                builder.HasOne(t => t.JournalEntryHeader).WithMany(t => t.JournalEntryLines).HasForeignKey(t => t.JournalEntryHeaderId);
                 builder.Property(p => p.AccountId).HasColumnName("AccountId");
                 builder.HasOne(t => t.Account).WithMany().HasForeignKey(t => t.AccountId);
                 builder.Property(p => p.DrCr).HasColumnName("DrCr");

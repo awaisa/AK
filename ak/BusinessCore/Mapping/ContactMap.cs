@@ -18,7 +18,7 @@ namespace BusinessCore.Mapping
                 builder.Property(p => p.MiddleName).HasColumnName("MiddleName");
 
                 builder.Property(p => p.PartyId).HasColumnName("PartyId");
-                builder.HasOne(t => t.Party).WithMany().HasForeignKey(t => t.PartyId);
+                builder.HasOne(t => t.Party).WithMany(t => t.Contacts).HasForeignKey(t => t.PartyId);
 
                 builder.Property(p => p.CompanyId).HasColumnName("CompanyId");
                 builder.HasOne(t => t.Company).WithMany().HasForeignKey(t => t.CompanyId);

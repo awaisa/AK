@@ -16,7 +16,7 @@ namespace BusinessCore.Mapping.Sales
                 builder.HasOne(t => t.SalesReceiptHeader).WithMany(t=> t.SalesReceiptLines).HasForeignKey(t => t.SalesReceiptHeaderId);
 
                 builder.Property(p => p.SalesInvoiceLineId).HasColumnName("SalesInvoiceLineId");
-                builder.HasOne(t => t.SalesInvoiceLine).WithMany().HasForeignKey(t => t.SalesInvoiceLineId);
+                builder.HasOne(t => t.SalesInvoiceLine).WithMany(t => t.SalesReceiptLines).HasForeignKey(t => t.SalesInvoiceLineId);
 
                 builder.Property(p => p.ItemId).HasColumnName("ItemId");
                 builder.HasOne(t => t.Item).WithMany().HasForeignKey(t => t.ItemId);

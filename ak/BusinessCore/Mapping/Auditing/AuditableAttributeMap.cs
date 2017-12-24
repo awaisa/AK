@@ -13,7 +13,7 @@ namespace BusinessCore.Mapping.Auditing
             TableColumns = () =>
             {
                 builder.Property(p => p.AuditableEntityId).HasColumnName("AuditableEntityId");
-                builder.HasOne(t => t.AuditableEntity).WithMany().HasForeignKey(t => t.AuditableEntityId);
+                builder.HasOne(t => t.AuditableEntity).WithMany(t => t.AuditableAttributes).HasForeignKey(t => t.AuditableEntityId);
                 builder.Property(p => p.AttributeName).HasColumnName("AttributeName");
                 builder.Property(p => p.EnableAudit).HasColumnName("EnableAudit");
             };

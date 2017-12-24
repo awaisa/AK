@@ -13,7 +13,7 @@ namespace BusinessCore.Mapping.Items
             TableColumns = () =>
             {
                 builder.Property(p => p.ItemId).HasColumnName("ItemId");
-                builder.HasOne(t => t.Item).WithMany().HasForeignKey(t => t.ItemId);
+                builder.HasOne(t => t.Item).WithMany(t => t.InventoryControlJournals).HasForeignKey(t => t.ItemId);
                 builder.Property(p => p.MeasurementId).HasColumnName("MeasurementId");
                 builder.HasOne(t => t.Measurement).WithMany().HasForeignKey(t => t.MeasurementId);
                 builder.Property(p => p.DocumentType).HasColumnName("DocumentType");

@@ -51,7 +51,7 @@ namespace WebApiCore.Controllers
             if (val != null)
                 return Convert.ToInt32(val);
 
-            return 1;
+            return 0;
         }
         public int GetPageSize()
         {
