@@ -1,11 +1,3 @@
-//-----------------------------------------------------------------------
-// <copyright file="ApplicationContext.cs" company="AccountGo">
-// Copyright (c) AccountGo. All rights reserved.
-// <author>Marvin Perez</author>
-// <date>1/11/2015 9:48:38 AM</date>
-// </copyright>
-//-----------------------------------------------------------------------
-
 using BusinessCore.Domain;
 using BusinessCore.Domain.Auditing;
 using BusinessCore.Domain.Financials;
@@ -14,6 +6,7 @@ using BusinessCore.Domain.Purchases;
 using BusinessCore.Domain.Sales;
 using BusinessCore.Domain.Security;
 using BusinessCore.Domain.TaxSystem;
+using BusinessCore.EntityMappings;
 using BusinessCore.Security;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -29,7 +22,7 @@ namespace BusinessCore.Data
 {
     public class ApplicationContext : DbContext, IDbContext
     {
-        private readonly AppPrincipal _principal;
+        private readonly IAppPrincipal _principal;
 
         //public string UserName
         //{
@@ -43,7 +36,7 @@ namespace BusinessCore.Data
         //    : this("ApplicationContext")
         //{
         //}
-        public ApplicationContext(AppPrincipal principal, DbContextOptions options) : base(options)
+        public ApplicationContext(IAppPrincipal principal, DbContextOptions options) : base(options)
         {
             //Database.SetInitializer<ApplicationContext>(null); //uncomment this line to disable code first
             _principal = principal;
@@ -109,10 +102,13 @@ namespace BusinessCore.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
             //modelBuilder.Conventions.Remove<System.Data.Entity.ModelConfiguration.Conventions.OneToManyCascadeDeleteConvention>();
-
-
-
+            modelBuilder.AddEntityConfigurationsFromAssembly(GetType().Assembly);
             base.OnModelCreating(modelBuilder);
         }
 

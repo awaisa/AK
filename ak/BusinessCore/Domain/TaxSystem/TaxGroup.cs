@@ -1,11 +1,3 @@
-//-----------------------------------------------------------------------
-// <copyright file="TaxGroup.cs" company="AccountGo">
-// Copyright (c) AccountGo. All rights reserved.
-// <author>Marvin Perez</author>
-// <date>1/11/2015 9:48:38 AM</date>
-// </copyright>
-//-----------------------------------------------------------------------
-
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -20,7 +12,7 @@ namespace BusinessCore.Domain.TaxSystem
         }
         public string Description { get; set; }
         public bool TaxAppliedToShipping { get; set; }
-        public bool IsActive { get; set; }
+        //public bool IsActive { get; set; }
         public virtual ICollection<TaxGroupTax> TaxGroupTax { get; set; }
     }
 

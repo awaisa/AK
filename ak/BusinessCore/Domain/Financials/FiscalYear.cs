@@ -1,11 +1,3 @@
-//-----------------------------------------------------------------------
-// <copyright file="FiscalYear.cs" company="AccountGo">
-// Copyright (c) AccountGo. All rights reserved.
-// <author>Marvin Perez</author>
-// <date>1/11/2015 9:48:38 AM</date>
-// </copyright>
-//-----------------------------------------------------------------------
-
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -27,7 +19,7 @@ namespace BusinessCore.Domain.Financials
 
         public DateTime EndDate { get; set; }
 
-        public bool IsActive { get; set; }
+        //public bool IsActive { get; set; }
 
         public int CompanyId { get; set; }
         public virtual Company Company { get; set; }

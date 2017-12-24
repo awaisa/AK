@@ -1,11 +1,3 @@
-//-----------------------------------------------------------------------
-// <copyright file="EfRepository.cs" company="AccountGo">
-// Copyright (c) AccountGo. All rights reserved.
-// <author>Marvin Perez</author>
-// <date>1/11/2015 9:48:38 AM</date>
-// </copyright>
-//-----------------------------------------------------------------------
-
 using BusinessCore.Data;
 using BusinessCore.Domain;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +16,7 @@ namespace BusinessCore.Data
         private readonly string companyIdpropertyName = "CompanyId";
         private readonly IDbContext _context;
         private DbSet<T> _entities;
-        private readonly Security.AppPrincipal _principal;
+        private readonly Security.IAppPrincipal _principal;
 
         #endregion
 
@@ -35,7 +27,7 @@ namespace BusinessCore.Data
         /// </summary>
         /// <param name="context">Object context</param>
         public EfRepository(IDbContext context,
-                            Security.AppPrincipal principal)
+                            Security.IAppPrincipal principal)
         {
             this._context = context;
             this._principal = principal;

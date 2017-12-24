@@ -1,0 +1,32 @@
+using BusinessCore.Domain.Purchases;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace BusinessCore.Mapping.Purchases
+{
+    public partial class PurchaseOrderHeaderMap : BaseEntityMap<PurchaseOrderHeader>
+    {
+        public override void Configure(EntityTypeBuilder<PurchaseOrderHeader> builder)
+        {
+            builder.ToTable("PurchaseOrderHeader");
+
+            TableColumns = () =>
+            {
+                builder.Property(p => p.VendorId).HasColumnName("VendorId");
+                builder.HasOne(t => t.Vendor).WithMany().HasForeignKey(t => t.VendorId);
+
+                builder.Property(p => p.PurchaseInvoiceHeaderId).HasColumnName("PurchaseInvoiceHeaderId");
+                builder.HasOne(t => t.PurchaseInvoiceHeader).WithMany().HasForeignKey(t => t.PurchaseInvoiceHeaderId);
+
+                builder.Property(p => p.No).HasColumnName("No");
+                builder.Property(p => p.Date).HasColumnName("Date");
+                builder.Property(p => p.Description).HasColumnName("Description");
+
+                builder.Property(p => p.CompanyId).HasColumnName("CompanyId");
+                builder.HasOne(t => t.Company).WithMany().HasForeignKey(t => t.CompanyId);
+            };
+
+            base.Configure(builder);
+        }
+    }
+}

@@ -1,11 +1,3 @@
-//-----------------------------------------------------------------------
-// <copyright file="BaseEntity.cs" company="AccountGo">
-// Copyright (c) AccountGo. All rights reserved.
-// <author>Marvin Perez</author>
-// <date>1/11/2015 9:48:38 AM</date>
-// </copyright>
-//-----------------------------------------------------------------------
-
 using BusinessCore.Domain.Security;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -31,7 +23,7 @@ namespace BusinessCore.Domain
         //[ForeignKey("ModifiedById")]
         //public virtual User ModifiedBy { get; set; }
 
-        public virtual bool IsInactive { get; set; }
+        public virtual bool IsActive { get; set; }
     }
 
     public interface ICompanyBaseEntity

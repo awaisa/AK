@@ -1,11 +1,3 @@
-//-----------------------------------------------------------------------
-// <copyright file="Bank.cs" company="AccountGo">
-// Copyright (c) AccountGo. All rights reserved.
-// <author>Marvin Perez</author>
-// <date>1/11/2015 9:48:38 AM</date>
-// </copyright>
-//-----------------------------------------------------------------------
-
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessCore.Domain.Financials
@@ -20,7 +12,7 @@ namespace BusinessCore.Domain.Financials
         public string Number { get; set; }
         public string Address { get; set; }
         public bool IsDefault { get; set; }
-        public bool IsActive { get; set; }
+        //public bool IsActive { get; set; }
         public virtual Account Account { get; set; }
 
         public int CompanyId { get; set; }

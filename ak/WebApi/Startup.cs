@@ -30,6 +30,7 @@ using AutoMapper;
 using FluentValidation.AspNetCore;
 using Swashbuckle.AspNetCore.Swagger;
 using WebApiCore.Models.Mappings;
+using WebApiCore.Infrastructure.Security;
 
 namespace WebApiCore
 {
@@ -113,8 +114,8 @@ namespace WebApiCore
             });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IPrincipal>(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
-            services.AddScoped<AppPrincipal, AppPrincipal>();
+            //services.AddScoped<IPrincipal>(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
+            services.AddScoped<IAppPrincipal, AppPrincipal>();
 
             // Make configuration available for EF configuration
             services.AddSingleton<IConfigurationRoot>(Configuration);
@@ -145,8 +146,9 @@ namespace WebApiCore
             //AutoMapperConfiguration.Configure();
             //services.AddAutoMapper();
             //services.AddSingleton(new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<Models.Mappings.ModelMappingProfile>())));
-            var config = new MapperConfiguration(cfg => {
-                    cfg.AddProfile(new ModelMappingProfile());
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new ModelMappingProfile());
             });
 
             //register
@@ -263,22 +265,12 @@ namespace WebApiCore
                 //app.UseExceptionHandler("/Home/Error");
             }
 
-            // enable this to log ASP.NET messages into the log
-            // not very useful except for troubleshooting
-            //loggerFactory.WithFilter(new FilterLoggerSettings
-            //        {
-            //            {"Trace",LogLevel.Information },
-            //            {"Default", LogLevel.Information},
-            //            {"Microsoft", LogLevel.Warning}, // very verbose
-            //            {"System", LogLevel.Warning}
-            //        })
-            //        .AddConsole()
-            //        .AddSerilog();
-            // loggerFactory.AddSerilog(new LoggerConfiguration()                
-            //    .WriteTo.RollingFile(pathFormat: "asp-logs\\log-{Date}.log")
-            //    .CreateLogger();
-
-            //app.UseCors("CorsPolicy");
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var dbContext = serviceScope.ServiceProvider.GetService<ApplicationContext>();
+                if (dbContext.Database.EnsureCreated())
+                    dbContext.EnsureSeeded();
+            }
 
             // Enable Cookie Auth with automatic user policy
             app.UseAuthentication();

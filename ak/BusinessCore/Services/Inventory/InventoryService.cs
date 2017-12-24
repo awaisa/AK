@@ -252,7 +252,7 @@ namespace BusinessCore.Services.Inventory
                      select m).FirstOrDefault();
             if (o != null)
             {
-                o.IsInactive = isInactive;
+                o.IsActive = isInactive;
                 _modelRepo.Update(o);
             }
             return o;
@@ -289,7 +289,7 @@ namespace BusinessCore.Services.Inventory
                      select m).FirstOrDefault();
             if (o != null)
             {
-                o.IsInactive = isInactive;
+                o.IsActive = isInactive;
                 _brandRepo.Update(o);
             }
             return o;

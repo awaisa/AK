@@ -1,11 +1,3 @@
-//-----------------------------------------------------------------------
-// <copyright file="PurchaseOrderLine.cs" company="AccountGo">
-// Copyright (c) AccountGo. All rights reserved.
-// <author>Marvin Perez</author>
-// <date>1/11/2015 9:48:38 AM</date>
-// </copyright>
-//-----------------------------------------------------------------------
-
 using BusinessCore.Domain.Items;
 using System;
 using System.Collections.Generic;
@@ -29,7 +21,7 @@ namespace BusinessCore.Domain.Purchases
         public decimal Cost { get; set; }
         public decimal Discount { get; set; }
         public decimal Amount { get; set; }
-        public virtual PurchaseOrderHeader PurhcaseOrderHeader { get; set; }
+        public virtual PurchaseOrderHeader PurchaseOrderHeader { get; set; }
         public virtual Item Item { get; set; }
         public virtual Measurement Measurement { get; set; }
 

@@ -2,16 +2,16 @@
 
 namespace BusinessCore.Domain.Financials
 {
-    [Table("MainContraAccount")]
+    //[Table("MainContraAccount")]
     public class MainContraAccount : BaseEntity
     {
-        public int MainAccountId { get; set; }
-        public int RelatedContraAccountId { get; set; }
+        public int? MainAccountId { get; set; }
+        public int? RelatedContraAccountId { get; set; }
 
-        [ForeignKey("MainAccountId")]
-        [InverseProperty("ContraAccounts")]
+        //[ForeignKey("MainAccountId")]
+        //[InverseProperty("ContraAccounts")]
         public virtual Account MainAccount { get; set; }
-        [ForeignKey("RelatedContraAccountId")]        
+        //[ForeignKey("RelatedContraAccountId")]        
         public virtual Account RelatedContraAccount { get; set; }
     }
 }

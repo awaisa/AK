@@ -1,11 +1,3 @@
-//-----------------------------------------------------------------------
-// <copyright file="Tax.cs" company="AccountGo">
-// Copyright (c) AccountGo. All rights reserved.
-// <author>Marvin Perez</author>
-// <date>1/11/2015 9:48:38 AM</date>
-// </copyright>
-//-----------------------------------------------------------------------
-
 using BusinessCore.Domain.Financials;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -31,7 +23,7 @@ namespace BusinessCore.Domain.TaxSystem
         [StringLength(16)]
         public string TaxCode { get; set; }
         public decimal Rate { get; set; }
-        public bool IsActive { get; set; }
+        //public bool IsActive { get; set; }
         public virtual Account SalesAccount { get; set; }
         public virtual Account PurchasingAccount { get; set; }
 
