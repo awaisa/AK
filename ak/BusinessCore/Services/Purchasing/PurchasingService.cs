@@ -31,14 +31,6 @@ namespace BusinessCore.Services.Purchasing
         private readonly IRepository<PaymentTerm> _paymentTermRepo;
         private readonly IRepository<Bank> _bankRepo;
 
-        private Expression<Func<Vendor, object>>[] includePropertiesOfVendor =
-            {
-                p => p.Party,
-                pt => pt.PaymentTerm,
-                pc => pc.PrimaryContact,
-                tg => tg.TaxGroup,
-            };
-        
         public PurchasingService(IFinancialService financialService,
             IInventoryService inventoryService,
             IRepository<PurchaseOrderHeader> purchaseOrderRepo,
@@ -251,13 +243,26 @@ namespace BusinessCore.Services.Purchasing
 
         public IQueryable<Vendor> GetVendors()
         {
-            var query = _vendorRepo.GetAllIncluding(includePropertiesOfVendor);
+            Expression<Func<Vendor, object>>[] includeProperties =
+            {
+                p => p.Party,
+                pt => pt.PaymentTerm,
+                tg => tg.TaxGroup,
+            };
+            var query = _vendorRepo.GetAllIncluding(includeProperties);
             return query;
         }
 
         public Vendor GetVendorById(int id)
         {
-            return GetVendors().FirstOrDefault(o=> o.Id == id);
+            Expression<Func<Vendor, object>>[] includeProperties =
+            {
+                p => p.Party,
+                p => p.Party.Contacts,
+                pt => pt.PaymentTerm,
+                tg => tg.TaxGroup,
+            };
+            return _vendorRepo.GetAllIncluding(includeProperties).FirstOrDefault(o => o.Id == id);
         }
 
         public IQueryable<PurchaseOrderHeader> GetPurchaseOrders()
@@ -276,23 +281,88 @@ namespace BusinessCore.Services.Purchasing
         {
             return _purchaseReceiptRepo.GetById(id);
         }
-
-        public void AddVendor(Vendor vendor)
+        public Vendor SaveVendor(Vendor vendor)
         {
-            vendor.AccountsPayableAccountId = _accountRepo.Table.Where(a => a.AccountCode == AccountCodes.AccountsPayable_20110).FirstOrDefault().Id;
-            vendor.PurchaseAccountId = _accountRepo.Table.Where(a => a.AccountCode == AccountCodes.Purchase_50200).FirstOrDefault().Id;
-            vendor.PurchaseDiscountAccountId = _accountRepo.Table.Where(a => a.AccountCode == AccountCodes.PurchaseDiscount_50400).FirstOrDefault().Id;
+            var dbObject = GetVendorById(vendor.Id);
+            #region UPDATE
+            if (dbObject != null)
+            {
+                dbObject.No = vendor.No;
+                dbObject.TaxGroupId = vendor.TaxGroupId;
+                dbObject.PaymentTermId = vendor.PaymentTermId;
+                dbObject.TaxGroupId = vendor.TaxGroupId;
 
-            //vendor.IsActive = true;
+                dbObject.AccountsPayableAccountId = vendor.AccountsPayableAccountId;
+                dbObject.PurchaseAccountId = vendor.PurchaseAccountId;
+                dbObject.PurchaseDiscountAccountId = vendor.PurchaseDiscountAccountId;
 
-            _vendorRepo.Insert(vendor);
+                dbObject.IsActive = vendor.IsActive;
+
+                dbObject.Party.Address = vendor.Party.Address;
+                dbObject.Party.Email = vendor.Party.Email;
+                dbObject.Party.Name = vendor.Party.Name;
+                dbObject.Party.Phone = vendor.Party.Phone;
+                dbObject.Party.Fax = vendor.Party.Fax;
+                dbObject.Party.IsActive = vendor.Party.IsActive;
+
+                var contactsToUpdateIds = dbObject.Party.Contacts.Select(c => c.Id).ToList();
+                foreach (var contact in vendor.Party.Contacts)
+                {
+                    var existingContact = dbObject.Party.Contacts.FirstOrDefault(c => c.Id == contact.Id);
+                    if (existingContact != null)
+                    {
+                        existingContact.FirstName = contact.FirstName;
+                        existingContact.LastName = contact.LastName;
+                        existingContact.MiddleName = contact.MiddleName;
+                        existingContact.IsPrimary = contact.IsPrimary;
+                        existingContact.IsActive = contact.IsActive;
+
+                        contactsToUpdateIds.Remove(existingContact.Id);
+                    }
+                    else
+                    {
+                        dbObject.Party.Contacts.Add(new Contact()
+                        {
+                            ContactType = ContactTypes.Vendor,
+                            Party = dbObject.Party,
+                            FirstName = contact.FirstName,
+                            LastName = contact.LastName,
+                            MiddleName = contact.MiddleName,
+                            IsPrimary = contact.IsPrimary
+                        });
+                    }
+                }
+                foreach (var contact in dbObject.Party.Contacts.Where(c => contactsToUpdateIds.Contains(c.Id)))
+                {
+                    contact.Deleted = true;
+                }
+
+
+                _vendorRepo.Update(dbObject);
+                vendor = dbObject;
+            }
+            #endregion
+            #region INSERT
+            else
+            {
+                vendor.No = GetNextNumber(SequenceNumberTypes.Vendor).ToString();
+
+                vendor.AccountsPayableAccountId = _accountRepo.Table.Where(a => a.AccountCode == AccountCodes.AccountsPayable_20110).FirstOrDefault().Id;
+                vendor.PurchaseAccountId = _accountRepo.Table.Where(a => a.AccountCode == AccountCodes.Purchase_50200).FirstOrDefault().Id;
+                vendor.PurchaseDiscountAccountId = _accountRepo.Table.Where(a => a.AccountCode == AccountCodes.PurchaseDiscount_50400).FirstOrDefault().Id;
+
+                vendor.Party.PartyType = PartyTypes.Customer;
+                foreach (var contact in vendor.Party.Contacts)
+                {
+                    contact.Party = vendor.Party;
+                    contact.ContactType = ContactTypes.Company;
+                }
+
+                _vendorRepo.Insert(vendor);
+            }
+            #endregion
+            return vendor;
         }
-
-        public void UpdateVendor(Vendor vendor)
-        {
-            _vendorRepo.Update(vendor);
-        }
-
         public IQueryable<PurchaseInvoiceHeader> GetPurchaseInvoices()
         {
             var query = from purchInvoice in _purchaseInvoiceRepo.Table

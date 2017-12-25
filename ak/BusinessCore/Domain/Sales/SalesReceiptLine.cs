@@ -8,7 +8,7 @@ using BusinessCore.Domain.Items;
 namespace BusinessCore.Domain.Sales
 {
     [Table("SalesReceiptLine")]
-    public partial class SalesReceiptLine : BaseEntity
+    public partial class SalesReceiptLine : BaseEntity, ICompanyBaseEntity
     {
         public SalesReceiptLine()
         {            
@@ -28,5 +28,8 @@ namespace BusinessCore.Domain.Sales
         public virtual SalesInvoiceLine SalesInvoiceLine { get; set; }
         public virtual Account AccountToCredit { get; set; }
         public virtual Measurement Measurement { get; set; }
+
+        public int CompanyId { get; set; }
+        public virtual Company Company { get; set; }
     }
 }

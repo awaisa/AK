@@ -16,7 +16,7 @@ using BusinessCore.Domain.TaxSystem;
 namespace BusinessCore.Domain.Sales
 {
     [Table("SalesInvoiceLine")]
-    public partial class SalesInvoiceLine : BaseEntity
+    public partial class SalesInvoiceLine : BaseEntity, ICompanyBaseEntity
     {
         public SalesInvoiceLine()
         {
@@ -38,6 +38,9 @@ namespace BusinessCore.Domain.Sales
 
         public virtual ICollection<SalesReceiptLine> SalesReceiptLines { get; set; }
 
+
+        public int CompanyId { get; set; }
+        public virtual Company Company { get; set; }
 
         public decimal ComputeLineTaxAmount()
         {

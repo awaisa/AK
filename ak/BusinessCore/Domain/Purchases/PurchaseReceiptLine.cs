@@ -14,7 +14,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BusinessCore.Domain.Purchases
 {
     [Table("PurchaseReceiptLine")]
-    public partial class PurchaseReceiptLine : BaseEntity
+    public partial class PurchaseReceiptLine : BaseEntity, ICompanyBaseEntity
     {
         public int PurchaseReceiptHeaderId { get; set; }
         public int ItemId { get; set; }
@@ -36,5 +36,8 @@ namespace BusinessCore.Domain.Purchases
 
         [NotMapped]
         public decimal LineTaxAmount { get { return Tax != null ? (Tax.Rate * Amount) : 0; } }
+
+        public int CompanyId { get; set; }
+        public virtual Company Company { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace WebApiCore.Controllers
             _log = log;
         }
 
-        [HttpGet("")]
+        [HttpGet]
         public IActionResult Vendor()
         {
             SearchModel model = new SearchModel
@@ -59,11 +59,11 @@ namespace WebApiCore.Controllers
             model.Data = records
                 .Skip(model.Start)
                 .Take(pagesize)
-                .Select(t => t.ToModel()).ToList();
+                .Select(t => t.ToRowModel()).ToList();
             return Json(model);
         }
 
-        [HttpGet("Vendor/{id:int}")]
+        [HttpGet("{id:int}")]
         public IActionResult Vendor(int? id)
         {
             var o = _service.GetVendorById(id ?? 0);
@@ -75,7 +75,7 @@ namespace WebApiCore.Controllers
             return Ok(model);
         }
 
-        [HttpPost("Vendor")]
+        [HttpPost]
         [ValidateModel]
         public IActionResult Save([FromBody] VendorModel model)
         {
@@ -83,7 +83,7 @@ namespace WebApiCore.Controllers
             if (ModelState.IsValid)
             {
                 var obj = model.ToEntity();
-                _service.UpdateVendor(obj);
+                _service.SaveVendor(obj);
                 model = obj.ToModel();
                 return Ok(model);
             }

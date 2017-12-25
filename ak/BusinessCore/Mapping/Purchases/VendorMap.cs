@@ -28,9 +28,6 @@ namespace BusinessCore.Mapping.Purchases
                 builder.Property(p => p.PurchaseDiscountAccountId).HasColumnName("PurchaseDiscountAccountId");
                 builder.HasOne(t => t.PurchaseDiscountAccount).WithMany().HasForeignKey(t => t.PurchaseDiscountAccountId);
 
-                builder.Property(p => p.PrimaryContactId).HasColumnName("PrimaryContactId");
-                builder.HasOne(t => t.PrimaryContact).WithMany().HasForeignKey(t => t.PrimaryContactId);
-
                 builder.Property(p => p.PaymentTermId).HasColumnName("PaymentTermId");
                 builder.HasOne(t => t.PaymentTerm).WithMany().HasForeignKey(t => t.PaymentTermId);
 

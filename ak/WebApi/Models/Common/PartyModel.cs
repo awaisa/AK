@@ -2,9 +2,8 @@
 
 namespace WebApiCore.Models.Common
 {
-    public abstract class PartyModel
+    public class PartyModel : BaseModel
     {
-        public int PartyId { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Website { get; set; }

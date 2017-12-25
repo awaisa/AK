@@ -30,7 +30,7 @@ namespace BusinessCore.Domain.Purchases
         public int? AccountsPayableAccountId { get; set; }
         public int? PurchaseAccountId { get; set; }
         public int? PurchaseDiscountAccountId { get; set; }        
-        public int? PrimaryContactId { get; set; }
+        //public int? PrimaryContactId { get; set; }
         public int? PaymentTermId { get; set; }
         public int? TaxGroupId { get; set; }
 
@@ -38,7 +38,7 @@ namespace BusinessCore.Domain.Purchases
         public virtual Account AccountsPayableAccount { get; set; }
         public virtual Account PurchaseAccount { get; set; }
         public virtual Account PurchaseDiscountAccount { get; set; }
-        public virtual Contact PrimaryContact { get; set; }
+        //public virtual Contact PrimaryContact { get; set; }
         public virtual PaymentTerm PaymentTerm { get; set; }
         public virtual TaxGroup TaxGroup { get; set; }
 

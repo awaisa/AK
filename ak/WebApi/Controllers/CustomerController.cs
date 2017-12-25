@@ -56,7 +56,7 @@ namespace WebApiCore.Controllers
             model.Data = records
                 .Skip(model.Start)
                 .Take(pagesize)
-                .Select(t => t.ToModel()).ToList();
+                .Select(t => t.ToRowModel()).ToList();
             return Json(model);
         }
 
@@ -80,7 +80,7 @@ namespace WebApiCore.Controllers
             if (ModelState.IsValid)
             {
                 var obj = model.ToEntity();
-                _service.AddCustomer(obj);
+                _service.SaveCustomer(obj);
                 model = obj.ToModel();
                 return Ok(model);
             }

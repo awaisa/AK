@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace WebApiCore.Models.Purchase
 {
-    public class InvoiceRowModel
+    public class InvoiceRowModel : BaseModel
     {
-        public int Id { get; set; }
         public string No { get; set; }
         public DateTime Date { get; set; }
         public int? VendorId { get; set; }

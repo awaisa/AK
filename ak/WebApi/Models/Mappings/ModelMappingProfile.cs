@@ -18,6 +18,7 @@ namespace WebApiCore.Models.Mappings
         public ModelMappingProfile()
         {
             CreateMap<Item, ItemModel>();
+            CreateMap<Item, Inventory.SearchRowModel>();
             CreateMap<ItemModel, Item>();
 
             CreateMap<ItemCategory, ItemCategoryModel>();
@@ -28,6 +29,10 @@ namespace WebApiCore.Models.Mappings
 
             CreateMap<Model, ItemModelModel>();
             CreateMap<ItemModelModel, Model>();
+
+
+            CreateMap<Tax, TaxModel>();
+            CreateMap<TaxModel, Tax>();
 
             CreateMap<TaxGroup, TaxGroupModel>();
             CreateMap<TaxGroupModel, TaxGroup>();
@@ -50,51 +55,19 @@ namespace WebApiCore.Models.Mappings
             CreateMap<PurchaseInvoiceLine, InvoiceItemModel>();
             CreateMap<InvoiceItemModel, PurchaseInvoiceLine>();
 
-            CreateMap<BusinessCore.Domain.Purchases.Vendor, VendorModel>()
-                .ForMember(x => x.PartyId, opt => opt.MapFrom(mf => mf.Party.Id))
-                .ForMember(x => x.Name, opt => opt.MapFrom(mf => mf.Party.Name))
-                .ForMember(x => x.Email, opt => opt.MapFrom(mf => mf.Party.Email))
-                .ForMember(x => x.Website, opt => opt.MapFrom(mf => mf.Party.Website))
-                .ForMember(x => x.Phone, opt => opt.MapFrom(mf => mf.Party.Phone))
-                .ForMember(x => x.Fax, opt => opt.MapFrom(mf => mf.Party.Fax))
-                .ForMember(x => x.Address, opt => opt.MapFrom(mf => mf.Party.Address))
-                //.ForMember(x=> x.PrimaryContact, opt => opt.MapFrom(mf=> mf.PrimaryContact))
-                .ForMember(x=> x.Contacts, opt => opt.MapFrom(mf=> mf.Party.Contacts));
+            CreateMap<Party, PartyModel>();
+            CreateMap<PartyModel, Party>();
+
+            CreateMap<BusinessCore.Domain.Purchases.Vendor, VendorModel>();
+            CreateMap<BusinessCore.Domain.Purchases.Vendor, Vendor.SearchRowModel>();
+            CreateMap<VendorModel, BusinessCore.Domain.Purchases.Vendor>();
 
             CreateMap<Contact, ContactModel>();
             CreateMap<ContactModel, Contact>();
 
-            CreateMap<VendorModel, BusinessCore.Domain.Purchases.Vendor>()
-                .ForPath(x => x.Party.Id, opt => opt.MapFrom(mf => mf.PartyId))
-                .ForPath(x => x.Party.Name, opt => opt.MapFrom(mf => mf.Name))
-                .ForPath(x => x.Party.Email, opt => opt.MapFrom(mf => mf.Email))
-                .ForPath(x => x.Party.Website, opt => opt.MapFrom(mf => mf.Website))
-                .ForPath(x => x.Party.Phone, opt => opt.MapFrom(mf => mf.Phone))
-                .ForPath(x => x.Party.Fax, opt => opt.MapFrom(mf => mf.Fax))
-                .ForPath(x => x.Party.Address, opt => opt.MapFrom(mf => mf.Address))
-                .ForPath(x => x.Party.Contacts, opt => opt.MapFrom(mf => mf.Contacts));
-            //.ForPath(x => x.PrimaryContact, opt => opt.MapFrom(mf => mf.PrimaryContact));
-
-            CreateMap<BusinessCore.Domain.Sales.Customer, CustomerModel>()
-                .ForMember(x => x.PartyId, opt => opt.MapFrom(mf => mf.Party.Id))
-                .ForMember(x => x.Name, opt => opt.MapFrom(mf => mf.Party.Name))
-                .ForMember(x => x.Email, opt => opt.MapFrom(mf => mf.Party.Email))
-                .ForMember(x => x.Website, opt => opt.MapFrom(mf => mf.Party.Website))
-                .ForMember(x => x.Phone, opt => opt.MapFrom(mf => mf.Party.Phone))
-                .ForMember(x => x.Fax, opt => opt.MapFrom(mf => mf.Party.Fax))
-                .ForMember(x => x.Address, opt => opt.MapFrom(mf => mf.Party.Address))
-                //.ForMember(x=> x.PrimaryContact, opt => opt.MapFrom(mf=> mf.PrimaryContact))
-                .ForMember(x => x.Contacts, opt => opt.MapFrom(mf => mf.Party.Contacts));
-
-            CreateMap<CustomerModel, BusinessCore.Domain.Sales.Customer>()
-                .ForPath(x => x.Party.Id, opt => opt.MapFrom(mf => mf.PartyId))
-                .ForPath(x => x.Party.Name, opt => opt.MapFrom(mf => mf.Name))
-                .ForPath(x => x.Party.Email, opt => opt.MapFrom(mf => mf.Email))
-                .ForPath(x => x.Party.Website, opt => opt.MapFrom(mf => mf.Website))
-                .ForPath(x => x.Party.Phone, opt => opt.MapFrom(mf => mf.Phone))
-                .ForPath(x => x.Party.Fax, opt => opt.MapFrom(mf => mf.Fax))
-                .ForPath(x => x.Party.Address, opt => opt.MapFrom(mf => mf.Address))
-                .ForPath(x => x.Party.Contacts, opt => opt.MapFrom(mf => mf.Contacts));
+            CreateMap<BusinessCore.Domain.Sales.Customer, CustomerModel>();
+            CreateMap<BusinessCore.Domain.Sales.Customer, Customer.SearchRowModel>();
+            CreateMap<CustomerModel, BusinessCore.Domain.Sales.Customer>();
         }
     }
 }

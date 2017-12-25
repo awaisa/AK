@@ -21,7 +21,7 @@ namespace WebApiCore.IntegrationTests
         {
             _testFixture = testFixture;
         }
-        
+
         /// <summary>
         /// This is a bad test, it is just to verify requests can be made via the TestServer
         /// </summary>
@@ -62,16 +62,17 @@ namespace WebApiCore.IntegrationTests
             var hash = DateTime.Now.GetHashCode();
             var model = new VendorModel()
             {
-                Name = $"Test Name {hash}",
-                Address = $"Test Address {hash}",
-                Email = $"Test Email {hash}",
-                Fax = $"hash",
+                Party = new Models.Common.PartyModel()
+                {
+                    Name = $"Test Name {hash}",
+                    Address = $"Test Address {hash}",
+                    Email = $"Test Email {hash}",
+                    Fax = $"hash",
+                    Phone = $"{hash}",
+                    Website = $"Website{hash}.test"
+                },
                 No = $"{hash}",
-                Phone = $"{hash}",
-                Website = $"Website{hash}.test",
-                TaxGroup = new Models.Common.TaxGroupModel() {
-                    
-                }
+                TaxGroupId = null
             };
 
 
@@ -80,7 +81,7 @@ namespace WebApiCore.IntegrationTests
             Assert.True(response.StatusCode == HttpStatusCode.OK, $"Expected OK but received {response.StatusCode}");
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            
+
         }
     }
 }

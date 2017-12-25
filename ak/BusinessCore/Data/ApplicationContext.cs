@@ -28,28 +28,12 @@ namespace BusinessCore.Data
             get { return _appPrincipal; }
             set { _appPrincipal = value; }
         }
-        //public string UserName
-        //{
-        //    get { return WindowsIdentity.GetCurrent().Name; }
-        //    //get { return System.Threading.Thread.CurrentPrincipal.Identity.Name; }
-        //}
-
-        //private readonly string companyIdpropertyName = "CompanyId";
-
-        //public ApplicationContext()
-        //    : this("ApplicationContext")
-        //{
-        //}
         public ApplicationContext(IAppPrincipal principal, DbContextOptions options) : base(options)
         {
-            //Database.SetInitializer<ApplicationContext>(null); //uncomment this line to disable code first
             _appPrincipal = principal;
         }
-        public ApplicationContext()
-            : base()
-        {
-            //Database.SetInitializer<ApplicationContext>(null); //uncomment this line to disable code first
-        }
+        #region DbSets
+
         public DbSet<AccountClass> AccountClasses { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<GeneralLedgerHeader> GeneralLedgerHeaders { get; set; }
@@ -91,19 +75,19 @@ namespace BusinessCore.Data
         public DbSet<GeneralLedgerSetting> GeneralLedgerSettings { get; set; }
         public DbSet<PaymentTerm> PaymentTerms { get; set; }
         public DbSet<Bank> Banks { get; set; }
-        public virtual DbSet<AuditLog> AuditLogs { get; set; }
-        public virtual DbSet<AuditableEntity> AuditableEntities { get; set; }
-        public virtual DbSet<AuditableAttribute> AuditableAttributes { get; set; }
-        public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<SecurityRole> SecurityRoles { get; set; }
-        public virtual DbSet<SecurityPermission> SecurityPermissions { get; set; }
-        public virtual DbSet<SecurityUserRole> SecurityUserRoles { get; set; }
-        public virtual DbSet<SecurityGroup> SecurityGroups { get; set; }
-        public virtual DbSet<SecurityRolePermission> SecurityRolePermissions { get; set; }
-        public virtual DbSet<MainContraAccount> MainContraAccounts { get; set; }
+        public DbSet<AuditLog> AuditLogs { get; set; }
+        public DbSet<AuditableEntity> AuditableEntities { get; set; }
+        public DbSet<AuditableAttribute> AuditableAttributes { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<SecurityRole> SecurityRoles { get; set; }
+        public DbSet<SecurityPermission> SecurityPermissions { get; set; }
+        public DbSet<SecurityUserRole> SecurityUserRoles { get; set; }
+        public DbSet<SecurityGroup> SecurityGroups { get; set; }
+        public DbSet<SecurityRolePermission> SecurityRolePermissions { get; set; }
+        public DbSet<MainContraAccount> MainContraAccounts { get; set; }
+        #endregion
 
         #region Methods
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
@@ -113,7 +97,22 @@ namespace BusinessCore.Data
 
             //modelBuilder.Conventions.Remove<System.Data.Entity.ModelConfiguration.Conventions.OneToManyCascadeDeleteConvention>();
             modelBuilder.AddEntityConfigurationsFromAssembly(GetType().Assembly);
+
+            foreach (var type in modelBuilder.Model.GetEntityTypes())
+            {
+                var method = SetGlobalQueryMethod.MakeGenericMethod(type.ClrType);
+                method.Invoke(this, new object[] { modelBuilder });
+            }
+
             base.OnModelCreating(modelBuilder);
+        }
+        static readonly MethodInfo SetGlobalQueryMethod = typeof(ApplicationContext).GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                                                        .Single(t => t.IsGenericMethod && t.Name == "SetGlobalQuery");
+        public void SetGlobalQuery<T>(ModelBuilder builder) where T : BaseEntity
+        {
+            builder.Entity<T>().HasKey(e => e.Id);
+            //Debug.WriteLine("Adding global query for: " + typeof(T));
+            builder.Entity<T>().HasQueryFilter(e => !e.Deleted);
         }
 
         public override int SaveChanges()
@@ -126,18 +125,21 @@ namespace BusinessCore.Data
 
             // CAN BE USE IN THE FUTURE : Track Created and Modified fields Automatically with Entity Framework Code First
 
-            var entities = ChangeTracker.Entries().Where(x => x.Entity is BaseEntity && (x.State == EntityState.Added || x.State == EntityState.Modified));
+            var entities = ChangeTracker.Entries().Where(x => x.Entity is BaseEntity && (x.State == EntityState.Added || x.State == EntityState.Modified || x.State == EntityState.Deleted));
 
             //var currentUsername = HttpContext.Current != null && HttpContext.Current.User != null
             //    ? HttpContext.Current.User.Identity.Name
             //    : "Anonymous";
-
+            int? userId = _appPrincipal?.UserId == 0 ? null : _appPrincipal?.UserId;
             foreach (var entity in entities)
             {
                 if (entity.State == EntityState.Added)
                 {
+                    //((BaseEntity)entity.Entity).Id = 0; Set it to 0 so it won't break Identity constraints (Auto Increment) in DB
                     ((BaseEntity)entity.Entity).CreatedOn = DateTime.Now;
-                    ((BaseEntity)entity.Entity).CreatedById = _appPrincipal?.UserId == null ? (int?)null : _appPrincipal?.UserId;
+                    ((BaseEntity)entity.Entity).CreatedById = userId;
+                    ((BaseEntity)entity.Entity).ModifiedOn = DateTime.Now;
+                    ((BaseEntity)entity.Entity).ModifiedById = userId;
 
                     #region New entities insert against current user's companyId
                     var companyBaseEntity = entity.Entity as ICompanyBaseEntity;
@@ -148,9 +150,18 @@ namespace BusinessCore.Data
                     }
                     #endregion
                 }
-
-                ((BaseEntity)entity.Entity).ModifiedOn = DateTime.Now;
-                ((BaseEntity)entity.Entity).ModifiedById = _appPrincipal?.UserId == null ? (int?)null : _appPrincipal?.UserId;
+                else if(entity.State == EntityState.Modified)
+                {
+                    ((BaseEntity)entity.Entity).ModifiedOn = DateTime.Now;
+                    ((BaseEntity)entity.Entity).ModifiedById = userId;
+                }
+                else if (entity.State == EntityState.Deleted)
+                {
+                    entity.State = EntityState.Modified;
+                    ((BaseEntity)entity.Entity).Deleted = true;
+                    ((BaseEntity)entity.Entity).ModifiedOn = DateTime.Now;
+                    ((BaseEntity)entity.Entity).ModifiedById = userId;
+                }
             }
 
             var ret = base.SaveChanges();
@@ -159,28 +170,6 @@ namespace BusinessCore.Data
 
             return ret;
         }
-
-        //private User _currentUser;
-
-        //private User CurrentUser
-        //{
-        //    get
-        //    {
-        //        if (_currentUser == null)
-        //            _currentUser = Users.Where(u => u.Username == WindowsIdentity.GetCurrent().Name).FirstOrDefault();
-        //            //_currentUser = Users.Where(u => u.UserName == System.Threading.Thread.CurrentPrincipal.Identity.Name).FirstOrDefault();
-        //        return _currentUser;
-        //    }
-        //}
-
-        /// <summary>
-        /// Create database script
-        /// </summary>
-        /// <returns>SQL to generate database</returns>
-        //public string CreateDatabaseScript()
-        //{
-        //    return ((IObjectContextAdapter)this).ObjectContext.CreateDatabaseScript();
-        //}
 
         /// <summary>
         /// Get DbSet
@@ -191,159 +180,6 @@ namespace BusinessCore.Data
         {
             return base.Set<TEntity>();
         }
-
-        /// <summary>
-        /// Execute stores procedure and load a list of entities at the end
-        /// </summary>
-        /// <typeparam name="TEntity">Entity type</typeparam>
-        /// <param name="commandText">Command text</param>
-        /// <param name="parameters">Parameters</param>
-        /// <returns>Entities</returns>
-        //public IList<TEntity> ExecuteStoredProcedureList<TEntity>(string commandText, params object[] parameters) where TEntity : BaseEntity, new()
-        //{
-        //    //add parameters to command
-        //    if (parameters != null && parameters.Length > 0)
-        //    {
-        //        for (int i = 0; i <= parameters.Length - 1; i++)
-        //        {
-        //            var p = parameters[i] as DbParameter;
-        //            if (p == null)
-        //                throw new Exception("Not support parameter type");
-
-        //            commandText += i == 0 ? " " : ", ";
-
-        //            commandText += "@" + p.ParameterName;
-        //            if (p.Direction == ParameterDirection.InputOutput || p.Direction == ParameterDirection.Output)
-        //            {
-        //                //output parameter
-        //                commandText += " output";
-        //            }
-        //        }
-        //    }
-
-        //    var result = this.Users.FromSql<TEntity>(commandText, parameters).AsNoTracking().ToList();
-        //    //var result = this.Database.SqlQuery<TEntity>(commandText, parameters).ToList();
-
-        //    bool acd = this.Configuration.AutoDetectChangesEnabled;
-        //    try
-        //    {
-        //        this.Configuration.AutoDetectChangesEnabled = false;
-
-        //        for (int i = 0; i < result.Count; i++)
-        //            result[i] = AttachEntityToContext(result[i]);
-        //    }
-        //    finally
-        //    {
-        //        this.Configuration.AutoDetectChangesEnabled = acd;
-        //    }
-
-        //    return result;
-        //}
-
-        /// <summary>
-        /// Creates a raw SQL query that will return elements of the given generic type.  The type can be any type that has properties that match the names of the columns returned from the query, or can be a simple primitive type. The type does not have to be an entity type. The results of this query are never tracked by the context even if the type of object returned is an entity type.
-        /// </summary>
-        /// <typeparam name="TElement">The type of object returned by the query.</typeparam>
-        /// <param name="sql">The SQL query string.</param>
-        /// <param name="parameters">The parameters to apply to the SQL query string.</param>
-        /// <returns>Result</returns>
-        //public IEnumerable<TElement> SqlQuery<TElement>(string sql, params object[] parameters)
-        //{
-        //    return this.Database.SqlQuery<TElement>(sql, parameters);
-        //}
-
-        /// <summary>
-        /// Executes the given DDL/DML command against the database.
-        /// </summary>
-        /// <param name="sql">The command string</param>
-        /// <param name="doNotEnsureTransaction">false - the transaction creation is not ensured; true - the transaction creation is ensured.</param>
-        /// <param name="timeout">Timeout value, in seconds. A null value indicates that the default value of the underlying provider will be used</param>
-        /// <param name="parameters">The parameters to apply to the command string.</param>
-        /// <returns>The result returned by the database after executing the command.</returns>
-        //public int ExecuteSqlCommand(string sql, bool doNotEnsureTransaction = false, int? timeout = null, params object[] parameters)
-        //{
-        //    int? previousTimeout = null;
-        //    if (timeout.HasValue)
-        //    {
-        //        //store previous timeout
-        //        previousTimeout = ((IObjectContextAdapter)this).ObjectContext.CommandTimeout;
-        //        ((IObjectContextAdapter)this).ObjectContext.CommandTimeout = timeout;
-        //    }
-
-        //    var transactionalBehavior = doNotEnsureTransaction
-        //        ? TransactionalBehavior.DoNotEnsureTransaction
-        //        : TransactionalBehavior.EnsureTransaction;
-        //    var result = this.Database.ExecuteSqlCommand(transactionalBehavior, sql, parameters);
-
-        //    if (timeout.HasValue)
-        //    {
-        //        //Set previous timeout back
-        //        ((IObjectContextAdapter)this).ObjectContext.CommandTimeout = previousTimeout;
-        //    }
-
-        //    return result;
-        //}
-
-        #endregion
-
-        protected virtual TEntity AttachEntityToContext<TEntity>(TEntity entity) where TEntity : BaseEntity, new()
-        {
-            //little hack here until Entity Framework really supports stored procedures
-            //otherwise, navigation properties of loaded entities are not loaded until an entity is attached to the context
-            var alreadyAttached = Set<TEntity>().Local.FirstOrDefault(x => x.Id == entity.Id);
-            if (alreadyAttached == null)
-            {
-                //attach new entity
-                Set<TEntity>().Attach(entity);
-                return entity;
-            }
-
-            //entity is already loaded
-            return alreadyAttached;
-        }
-
-        #region Audit Logs
-        //private void SaveAuditLog(string username)
-        //{
-        //    if (!string.IsNullOrEmpty(username))
-        //    {
-        //        var dbEntityEntries = this.ChangeTracker.Entries().Where(p => p.State == EntityState.Modified 
-        //        || p.State == EntityState.Added 
-        //        || p.State == EntityState.Deleted);
-        //        foreach (var dbEntityEntry in dbEntityEntries)
-        //        {
-        //            try
-        //            {
-        //                var auditLogs = AuditLogHelper.GetChangesForAuditLog(dbEntityEntry, username, this);
-        //                foreach (var auditlog in auditLogs)
-        //                    if (auditlog != null)
-        //                        this.AuditLogs.Add(auditlog);
-        //            }
-        //            catch
-        //            {
-        //                continue;
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private void UpdateAuditLogRecordId()
-        //{
-        //    foreach (var entity in AuditLogHelper.addedEntities)
-        //    {
-        //        if (this.ChangeTracker.Entries().Contains(entity.Value))
-        //        {
-        //            string keyName = entity.Value.Entity.GetType().GetTypeInfo().GetProperties().Single(p => p.GetCustomAttributes(typeof(System.ComponentModel.DataAnnotations.KeyAttribute), false).Count() > 0).Name;
-        //            string recid = entity.Value.CurrentValues.GetValue<object>(keyName).ToString();
-        //            var auditLog = this.AuditLogs.Where(log => log.AuditEventDateUTC == entity.Key).FirstOrDefault();
-        //            if (auditLog != null)
-        //            {
-        //                auditLog.RecordId = recid;
-        //                base.SaveChanges();
-        //            }
-        //        }
-        //    }
-        //}
         #endregion
     }
 }

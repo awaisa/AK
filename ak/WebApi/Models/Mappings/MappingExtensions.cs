@@ -22,6 +22,10 @@ namespace WebApiCore.Models.Mappings
         }
 
         #region Item
+        public static Inventory.SearchRowModel ToRowModel(this Item entity)
+        {
+            return entity.MapTo<Item, Inventory.SearchRowModel>();
+        }
 
         public static ItemModel ToModel(this Item entity)
         {
@@ -99,6 +103,11 @@ namespace WebApiCore.Models.Mappings
 
         #region Vendor
 
+        public static Vendor.SearchRowModel ToRowModel(this BusinessCore.Domain.Purchases.Vendor entity)
+        {
+            return entity.MapTo<BusinessCore.Domain.Purchases.Vendor, Vendor.SearchRowModel>();
+        }
+
         public static VendorModel ToModel(this BusinessCore.Domain.Purchases.Vendor entity)
         {
             return entity.MapTo<BusinessCore.Domain.Purchases.Vendor, VendorModel>();
@@ -117,7 +126,10 @@ namespace WebApiCore.Models.Mappings
         #endregion
 
         #region Customer
-
+        public static Customer.SearchRowModel ToRowModel(this BusinessCore.Domain.Sales.Customer entity)
+        {
+            return entity.MapTo<BusinessCore.Domain.Sales.Customer, Customer.SearchRowModel>();
+        }
         public static CustomerModel ToModel(this BusinessCore.Domain.Sales.Customer entity)
         {
             return entity.MapTo<BusinessCore.Domain.Sales.Customer, CustomerModel>();

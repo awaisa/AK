@@ -3,29 +3,28 @@ using WebApiCore.Models.Vendor;
 
 namespace WebApiCore.Models.Inventory
 {
-    public class ItemModel
+    public class ItemModel : BaseModel
     {
-        public int Id { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }
         public string PurchaseDescription { get; set; }
         public string SellDescription { get; set; }
         public decimal? Cost { get; set; }
         public decimal? Price { get; set; }
-        public ItemCategoryModel ItemCategory { get; set; }
-        public ItemBrandModel Brand { get; set; }
-        public ItemModelModel Model { get; set; }
-        public TaxGroupModel TaxGroup { get; set; }
+        public int? ItemCategoryId { get; set; }
+        public int? BrandId { get; set; }
+        public int? ModelId { get; set; }
+        public int? TaxGroupId { get; set; }
 
-        public MeasurementModel SmallestMeasurement { get; set; }
-        public MeasurementModel SellMeasurement { get; set; }
-        public MeasurementModel PurchaseMeasurement { get; set; }
+        public int? SmallestMeasurementId { get; set; }
+        public int? SellMeasurementId { get; set; }
+        public int? PurchaseMeasurementId { get; set; }
 
-        public VendorModel PreferredVendor { get; set; }
+        public int? PreferredVendorId { get; set; }
 
-        public AccountModel InventoryAccount { get; set; }
-        public AccountModel SalesAccount { get; set; }
-        public AccountModel CostOfGoodsSoldAccount { get; set; }
-        public AccountModel AdjustmentAccount { get; set; }
+        public int? InventoryAccountId { get; set; }
+        public int? SalesAccountId { get; set; }
+        public int? CostOfGoodsSoldAccountId { get; set; }
+        public int? AdjustmentAccountId { get; set; }
     }
 }

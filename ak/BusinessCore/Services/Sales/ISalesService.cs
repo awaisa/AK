@@ -30,8 +30,9 @@ namespace BusinessCore.Services.Sales
         void UpdateSalesReceipt(SalesReceiptHeader salesReceipt);
         IQueryable<Customer> GetCustomers();
         Customer GetCustomerById(int id);
-        void UpdateCustomer(Customer customer);
-        void AddCustomer(Customer customer);
+        //void UpdateCustomer(Customer customer);
+        //void AddCustomer(Customer customer);
+        Customer SaveCustomer(Customer customer);
         ICollection<SalesReceiptHeader> GetCustomerReceiptsForAllocation(int customerId);
         void SaveCustomerAllocation(CustomerAllocation allocation);
         IQueryable<SalesDeliveryHeader> GetSalesDeliveries();

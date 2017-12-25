@@ -26,13 +26,14 @@ namespace BusinessCore.Domain.Sales
 
         public string No { get; set; }
         public int? PartyId { get; set; }
-        public int? PrimaryContactId { get; set; }
+        //public int? PrimaryContactId { get; set; }
         public int? TaxGroupId { get; set; }
+        public int? PaymentTermId { get; set; }
+
         public int? AccountsReceivableAccountId { get; set; }
         public int? SalesAccountId { get; set; }
         public int? SalesDiscountAccountId { get; set; }
         public int? PromptPaymentDiscountAccountId { get; set; }
-        public int? PaymentTermId { get; set; }
         public int? CustomerAdvancesAccountId { get; set; }
 
         public virtual Party Party { get; set; }
@@ -41,7 +42,7 @@ namespace BusinessCore.Domain.Sales
         public virtual Account SalesAccount { get; set; }
         public virtual Account SalesDiscountAccount { get; set; }
         public virtual Account PromptPaymentDiscountAccount { get; set; }
-        public virtual Contact PrimaryContact { get; set; }
+        //public virtual Contact PrimaryContact { get; set; }
         public virtual PaymentTerm PaymentTerm { get; set; }
         public virtual Account CustomerAdvancesAccount { get; set; }
         public virtual ICollection<SalesInvoiceHeader> SalesInvoices { get; set; }

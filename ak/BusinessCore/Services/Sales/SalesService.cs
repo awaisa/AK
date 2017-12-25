@@ -335,7 +335,7 @@ namespace BusinessCore.Services.Sales
                 p => p.Party,
                 c => c.AccountsReceivableAccount,
                 p => p.PaymentTerm,
-                p => p.PrimaryContact,
+                //p => p.PrimaryContact,
                 p => p.TaxGroup
             };
 
@@ -349,9 +349,9 @@ namespace BusinessCore.Services.Sales
             System.Linq.Expressions.Expression<Func<Customer, object>>[] includeProperties =
             {
                 p => p.Party,
+                p => p.Party.Contacts,
                 c => c.AccountsReceivableAccount,
                 p => p.PaymentTerm,
-                p => p.PrimaryContact,
                 p => p.TaxGroup
             };
 
@@ -360,12 +360,96 @@ namespace BusinessCore.Services.Sales
 
             return customer;
         }
-
-        public void UpdateCustomer(Customer customer)
+        public Customer SaveCustomer(Customer customer)
         {
-            _customerRepo.Update(customer);
-        }
+            var dbObject = GetCustomerById(customer.Id);
+            #region UPDATE
+            if (dbObject != null)
+            {
+                dbObject.No = customer.No;
+                dbObject.TaxGroupId = customer.TaxGroupId;
+                dbObject.PaymentTermId = customer.PaymentTermId;
+                dbObject.TaxGroupId = customer.TaxGroupId;
 
+                dbObject.AccountsReceivableAccountId = customer.AccountsReceivableAccountId;
+                dbObject.SalesAccountId = customer.SalesAccountId;
+                dbObject.SalesDiscountAccountId = customer.SalesDiscountAccountId;
+                dbObject.PromptPaymentDiscountAccountId = customer.PromptPaymentDiscountAccountId;
+                dbObject.CustomerAdvancesAccountId = customer.CustomerAdvancesAccountId;
+
+                dbObject.IsActive = customer.IsActive;
+
+                dbObject.Party.Address = customer.Party.Address;
+                dbObject.Party.Email = customer.Party.Email;
+                dbObject.Party.Name = customer.Party.Name;
+                dbObject.Party.Phone = customer.Party.Phone;
+                dbObject.Party.Fax = customer.Party.Fax;
+                dbObject.Party.IsActive = customer.Party.IsActive;
+
+                var contactsToUpdateIds = dbObject.Party.Contacts.Select(c => c.Id).ToList();
+                foreach (var contact in customer.Party.Contacts)
+                {
+                    var existingContact = dbObject.Party.Contacts.FirstOrDefault(c => c.Id == contact.Id);
+                    if (existingContact != null)
+                    {
+                        existingContact.FirstName = contact.FirstName;
+                        existingContact.LastName = contact.LastName;
+                        existingContact.MiddleName = contact.MiddleName;
+                        existingContact.IsPrimary = contact.IsPrimary;
+                        existingContact.IsActive = contact.IsActive;
+
+                        contactsToUpdateIds.Remove(existingContact.Id);
+                    }
+                    else
+                    {
+                        dbObject.Party.Contacts.Add(new Contact()
+                        {
+                            ContactType = ContactTypes.Customer,
+                            Party = dbObject.Party,
+                            FirstName = contact.FirstName,
+                            LastName = contact.LastName,
+                            MiddleName = contact.MiddleName,
+                            IsPrimary = contact.IsPrimary
+                        });
+                    }
+                }
+                foreach (var contact in dbObject.Party.Contacts.Where(c => contactsToUpdateIds.Contains(c.Id)))
+                {
+                    contact.Deleted = true;
+                }
+
+                _customerRepo.Update(dbObject);
+                customer = dbObject;
+            }
+            #endregion
+            #region INSERT
+            else
+            {
+                customer.No = GetNextNumber(SequenceNumberTypes.Customer).ToString();
+
+                var accountAR = _accountRepo.Table.Where(e => e.AccountCode == AccountCodes.AccountsReceivable_10120).FirstOrDefault();
+                var accountSales = _accountRepo.Table.Where(e => e.AccountCode == AccountCodes.Sales_40100).FirstOrDefault();
+                var accountAdvances = _accountRepo.Table.Where(e => e.AccountCode == AccountCodes.CutomerAdvances_20120).FirstOrDefault();
+                var accountSalesDiscount = _accountRepo.Table.Where(e => e.AccountCode == AccountCodes.SalesDiscount_40400).FirstOrDefault();
+
+                customer.AccountsReceivableAccountId = accountAR != null ? (int?)accountAR.Id : null;
+                customer.SalesAccountId = accountSales != null ? (int?)accountSales.Id : null;
+                customer.CustomerAdvancesAccountId = accountAdvances != null ? (int?)accountAdvances.Id : null;
+                customer.SalesDiscountAccountId = accountSalesDiscount != null ? (int?)accountSalesDiscount.Id : null;
+                customer.TaxGroupId = _taxGroupRepo.Table.Where(tg => tg.Description == "VAT").FirstOrDefault().Id;
+
+                customer.Party.PartyType = PartyTypes.Customer;
+                foreach (var contact in customer.Party.Contacts)
+                {
+                    contact.Party = customer.Party;
+                    contact.ContactType = ContactTypes.Customer;
+                }
+
+                _customerRepo.Insert(customer);
+            }
+            #endregion
+            return customer;
+        }
         public ICollection<SalesReceiptHeader> GetCustomerReceiptsForAllocation(int customerId)
         {
             var customerReceipts = _salesReceiptRepo.Table.Where(r => r.CustomerId == customerId);
@@ -405,24 +489,6 @@ namespace BusinessCore.Services.Sales
                 invoice.CustomerAllocations.Add(allocation);
                 _salesInvoiceRepo.Update(invoice);
             }
-        }
-
-        public void AddCustomer(Customer customer)
-        {
-            var accountAR = _accountRepo.Table.Where(e => e.AccountCode == AccountCodes.AccountsReceivable_10120).FirstOrDefault();
-            var accountSales = _accountRepo.Table.Where(e => e.AccountCode == AccountCodes.Sales_40100).FirstOrDefault();
-            var accountAdvances = _accountRepo.Table.Where(e => e.AccountCode == AccountCodes.CutomerAdvances_20120).FirstOrDefault();
-            var accountSalesDiscount = _accountRepo.Table.Where(e => e.AccountCode == AccountCodes.SalesDiscount_40400).FirstOrDefault();
-
-            customer.AccountsReceivableAccountId = accountAR != null ? (int?)accountAR.Id : null;
-            customer.SalesAccountId = accountSales != null ? (int?)accountSales.Id : null;
-            customer.CustomerAdvancesAccountId = accountAdvances != null ? (int?)accountAdvances.Id : null;
-            customer.SalesDiscountAccountId = accountSalesDiscount != null ? (int?)accountSalesDiscount.Id : null;
-            customer.TaxGroupId = _taxGroupRepo.Table.Where(tg => tg.Description == "VAT").FirstOrDefault().Id;
-
-            //customer.IsActive = true;
-
-            _customerRepo.Insert(customer);
         }
 
         public IQueryable<SalesDeliveryHeader> GetSalesDeliveries()

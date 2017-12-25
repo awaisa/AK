@@ -7,7 +7,7 @@ using System.Linq;
 namespace BusinessCore.Domain.Purchases
 {
     [Table("PurchaseOrderLine")]
-    public partial class PurchaseOrderLine : BaseEntity
+    public partial class PurchaseOrderLine : BaseEntity, ICompanyBaseEntity
     {
         public PurchaseOrderLine()
         {
@@ -26,6 +26,9 @@ namespace BusinessCore.Domain.Purchases
         public virtual Measurement Measurement { get; set; }
 
         public virtual ICollection<PurchaseReceiptLine> PurchaseReceiptLines { get; set; }
+
+        public int CompanyId { get; set; }
+        public virtual Company Company { get; set; }
 
         public decimal? GetReceivedQuantity()
         {

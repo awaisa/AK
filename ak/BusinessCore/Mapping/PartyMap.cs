@@ -19,6 +19,8 @@ namespace BusinessCore.Mapping
                 builder.Property(p => p.Phone).HasColumnName("Phone");
                 builder.Property(p => p.Fax).HasColumnName("Fax");
                 builder.Property(p => p.Address).HasColumnName("Address");
+                builder.Property(p => p.CompanyId).HasColumnName("CompanyId");
+                builder.HasOne(t => t.Company).WithMany().HasForeignKey(t => t.CompanyId);
             };
 
             base.Configure(builder);

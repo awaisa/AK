@@ -23,7 +23,8 @@ namespace BusinessCore.Domain
         //[ForeignKey("ModifiedById")]
         //public virtual User ModifiedBy { get; set; }
 
-        public virtual bool IsActive { get; set; }
+        public virtual bool IsActive { get; set; } = true;
+        public virtual bool Deleted { get; set; }
     }
 
     public interface ICompanyBaseEntity

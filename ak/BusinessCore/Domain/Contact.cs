@@ -26,7 +26,7 @@ namespace BusinessCore.Domain
         public string MiddleName { get; set; }
         public int PartyId { get; set; }
         public virtual Party Party { get; set; }
-
+        public bool IsPrimary { get; set; }
         public int CompanyId { get; set; }
         public virtual Company Company { get; set; }
 

@@ -3,9 +3,8 @@ using WebApiCore.Models.Common;
 
 namespace WebApiCore.Models.Inventory
 {
-    public class ItemCategoryModel
+    public class ItemCategoryModel : BaseModel
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public ItemTypes ItemType { get; set; }
         public MeasurementModel Measurement { get; set; }

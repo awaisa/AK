@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BusinessCore.Domain.Sales
 {
     [Table("SalesQuoteLine")]
-    public partial class SalesQuoteLine : BaseEntity
+    public partial class SalesQuoteLine : BaseEntity, ICompanyBaseEntity
     {
         public int SalesQuoteHeaderId { get; set; }
         public int ItemId { get; set; }
@@ -23,5 +23,8 @@ namespace BusinessCore.Domain.Sales
         public SalesQuoteHeader SalesQuoteHeader { get; set; }
         public virtual Item Item { get; set; }
         public virtual Measurement Measurement { get; set; }
+
+        public int CompanyId { get; set; }
+        public virtual Company Company { get; set; }
     }
 }

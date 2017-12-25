@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BusinessCore.Domain.Financials
 {
     [Table("GeneralLedgerLine")]
-    public partial class GeneralLedgerLine : BaseEntity
+    public partial class GeneralLedgerLine : BaseEntity, ICompanyBaseEntity
     {
         public GeneralLedgerLine()
         {
@@ -25,5 +25,8 @@ namespace BusinessCore.Domain.Financials
         public decimal Amount { get; set; }
         public virtual Account Account { get; set; }
         public virtual GeneralLedgerHeader GeneralLedgerHeader { get; set; }
+
+        public int CompanyId { get; set; }
+        public virtual Company Company { get; set; }
     }
 }

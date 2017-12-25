@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BusinessCore.Domain.Financials
 {
     [Table("JournalEntryLine")]
-    public partial class JournalEntryLine : BaseEntity
+    public partial class JournalEntryLine : BaseEntity, ICompanyBaseEntity
     {
         public int JournalEntryHeaderId { get; set; }
         public int AccountId { get; set; }
@@ -21,5 +21,8 @@ namespace BusinessCore.Domain.Financials
 
         public virtual JournalEntryHeader JournalEntryHeader { get; set; }
         public virtual Account Account { get; set; }
+
+        public int CompanyId { get; set; }
+        public virtual Company Company { get; set; }
     }
 }

@@ -375,7 +375,7 @@ namespace BusinessCore.Data
 
                 });
                 vendor.Party.Contacts = contacts;
-                vendor.PrimaryContact = contacts[0];
+                contacts[0].IsPrimary = true;
             });
 
             _context.Vendors.AddRange(vendors);
@@ -417,7 +417,7 @@ namespace BusinessCore.Data
 
                 });
                 customer.Party.Contacts = contacts;
-                customer.PrimaryContact = contacts[0];
+                contacts[0].IsPrimary = true;
             });
 
             _context.Customers.AddRange(customers);

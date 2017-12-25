@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BusinessCore.Domain
 {
     [Table("Party")]
-    public partial class Party : BaseEntity
+    public partial class Party : BaseEntity, ICompanyBaseEntity
     {
         public Party()
         {
@@ -20,5 +20,8 @@ namespace BusinessCore.Domain
         //public bool IsActive { get; set; }
         public string Address { get; set; }
         public virtual ICollection<Contact> Contacts { get; set; }
+
+        public int CompanyId { get; set; }
+        public virtual Company Company { get; set; }
     }
 }

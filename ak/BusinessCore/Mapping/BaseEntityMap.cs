@@ -25,7 +25,8 @@ namespace BusinessCore.Mapping
             builder.Property(p => p.CreatedById).HasColumnName("CreatedById");
             builder.Property(p => p.ModifiedOn).HasColumnName("ModifiedOn");
             builder.Property(p => p.ModifiedById).HasColumnName("ModifiedById");
-            builder.Property(p => p.IsActive).HasColumnName("IsInactive");
+            builder.Property(p => p.IsActive).HasColumnName("IsActive");
+            builder.Property(p => p.Deleted).HasColumnName("Deleted");
         }
     }
 }

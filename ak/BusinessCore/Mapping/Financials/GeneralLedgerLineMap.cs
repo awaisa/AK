@@ -18,6 +18,8 @@ namespace BusinessCore.Mapping.Financials
                 builder.HasOne(t => t.Account).WithMany().HasForeignKey(t => t.AccountId);
                 builder.Property(p => p.DrCr).HasColumnName("DrCr");
                 builder.Property(p => p.Amount).HasColumnName("Amount");
+                builder.Property(p => p.CompanyId).HasColumnName("CompanyId");
+                builder.HasOne(t => t.Company).WithMany().HasForeignKey(t => t.CompanyId);
             };
 
             base.Configure(builder);

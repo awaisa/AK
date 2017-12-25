@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BusinessCore.Domain.Purchases
 {
     [Table("PurchaseInvoiceLine")]
-    public partial class PurchaseInvoiceLine : BaseEntity
+    public partial class PurchaseInvoiceLine : BaseEntity, ICompanyBaseEntity
     {
         public int PurchaseInvoiceHeaderId { get; set; }
         public int ItemId { get; set; }
@@ -42,5 +42,8 @@ namespace BusinessCore.Domain.Purchases
             }
             return lineTaxAmount.Value;
         }
+
+        public int CompanyId { get; set; }
+        public virtual Company Company { get; set; }
     }
 }

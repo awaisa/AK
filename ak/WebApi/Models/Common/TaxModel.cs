@@ -1,8 +1,7 @@
 ﻿namespace WebApiCore.Models.Common
 {
-    public class TaxModel
+    public class TaxModel : BaseModel
     {
-        public int Id { get; set; }
         public string TaxName { get; set; }
         public string TaxCode { get; set; }
         public decimal Rate { get; set; }

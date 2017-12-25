@@ -53,7 +53,7 @@ namespace WebApiCore.Controllers
             model.Data = records
                 .Skip(model.Start)
                 .Take(pagesize)
-                .Select(t => t.ToModel())
+                .Select(t => t.ToRowModel())
                 .ToList();
 
             return Ok(model);

@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace WebApiCore.Models.Purchase
 {
-    public class InvoiceModel
+    public class InvoiceModel : BaseModel
     {
-        public int Id { get; set; }
         public string No { get; set; }
         public DateTime Date { get; set; }
         public int? VendorId { get; set; }
@@ -19,9 +18,8 @@ namespace WebApiCore.Models.Purchase
         public List<InvoiceItemModel> InvoiceItems { get; set; }
     }
 
-    public class InvoiceItemModel
+    public class InvoiceItemModel : BaseModel
     {
-        public int Id { get; set; }
         public int ItemId { get; set; }
         public int? MeasurementId { get; set; }
         public decimal Quantity { get; set; }
