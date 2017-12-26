@@ -72,29 +72,13 @@ namespace WebApiCore.Controllers
         [Produces(typeof(InvoiceModel))]
         public IActionResult Invoice(int? id)
         {
-            var model = new InvoiceModel();
             var invoice = _service.GetPurchaseInvoiceById(id ?? 0);
             if (invoice != null)
             {
-                model.Id = invoice.Id;
-                model.No = invoice.No;
-                model.Description = invoice.Description;
-                model.Date = invoice.Date;
-                model.VendorId = invoice.VendorId;
-                model.VendorInvoiceNo = invoice.VendorInvoiceNo;
-                model.InvoiceItems = invoice
-                    .PurchaseInvoiceLines
-                    .Select(i=> new InvoiceItemModel() {
-                        Id = i.Id,
-                        ItemId = i.ItemId,
-                        Quantity = i.Quantity,
-                        Cost = i.Cost,
-                        Tax = i.LineTaxAmount,
-                        Discount = i.Discount,
-                        Amount = i.Amount
-                }).ToList();
+                var model = invoice.ToModel();
+                return Ok(model);
             }
-            return Ok(model);
+            return NotFound(id);
         }
 
         [HttpPost("Invoice")]
@@ -106,8 +90,7 @@ namespace WebApiCore.Controllers
             if (ModelState.IsValid)
             {
                 var o = model.ToEntity();
-                //invoiceHeader.PurchaseInvoiceLines = model.InvoiceItems.Select(i => i.ToEntity()).ToList();
-                //_service.In
+                _service.SavePurchaseInvoice(o);
                 model = o.ToModel();
                 return Ok(model);
             }

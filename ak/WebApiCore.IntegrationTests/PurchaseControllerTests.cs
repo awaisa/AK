@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Text;
 using WebApiCore.Models.Purchase;
 using FluentAssertions;
+using System.Collections.Generic;
 
 namespace WebApiCore.IntegrationTests
 {
@@ -39,14 +40,29 @@ namespace WebApiCore.IntegrationTests
         [Fact]
         public async Task WhenPost_ThenReturnsOk()
         {
+            Random rnd = new Random();
             var guid = Guid.NewGuid().ToString().Replace("-", "");
+            var invoiceItemsObject = new InvoiceItemModel()
+            {
+                ItemId = rnd.Next(1, 9),
+                MeasurementId = rnd.Next(1, 3),
+                Quantity = rnd.Next(1, 10),
+                Cost = rnd.Next(1, 100),
+                Discount = rnd.Next(1, 10),
+                Tax = rnd.Next(1, 10),
+                Amount = rnd.Next(1, 100)
+            };
+            List<InvoiceItemModel> invoiceList = new List<InvoiceItemModel>();
+            invoiceList.Add(invoiceItemsObject);
             var obj = new InvoiceModel()
             {
                 Date = DateTime.Now,
                 No = guid.Substring(0, 10),
                 Description = guid,
                 VendorInvoiceNo = guid.Substring(10),
-                //VendorId
+                VendorId = rnd.Next(1,2),
+                Total = rnd.Next(1, 10),
+                InvoiceItems = invoiceList,
             };
             string stringData = JsonConvert.SerializeObject(obj);
             var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");

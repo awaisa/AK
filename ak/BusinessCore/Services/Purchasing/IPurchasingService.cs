@@ -7,7 +7,9 @@ namespace BusinessCore.Services.Purchasing
 {
     public partial interface IPurchasingService
     {
-        void AddPurchaseInvoice(PurchaseInvoiceHeader purchaseIvoice, int? purchaseOrderId);
+        //void AddPurchaseInvoice(PurchaseInvoiceHeader purchaseIvoice, int? purchaseOrderId);
+        //void UpdatePurchaseInvoice(PurchaseInvoiceHeader purchaseIvoice, int? purchaseOrderId);
+        void SavePurchaseInvoice(PurchaseInvoiceHeader purchaseIvoice);
         void AddPurchaseOrder(PurchaseOrderHeader purchaseOrder, bool toSave);
         void AddPurchaseOrderReceipt(PurchaseReceiptHeader purchaseOrderReceipt);
         IQueryable<Vendor> GetVendors();

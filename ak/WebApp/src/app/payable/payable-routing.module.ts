@@ -1,7 +1,7 @@
 ﻿import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { PurchaseOrdersComponent } from './purchase-orders.component';
+import { PurchaseOrdersComponent } from './purchase-wrapper/purchase-orders.component';
 import { PurchaseInvoicesComponent } from './purchase-invoices.component';
 import { VendorsComponent } from './vendors.component';
 
