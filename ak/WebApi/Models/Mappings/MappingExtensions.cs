@@ -140,11 +140,32 @@ namespace WebApiCore.Models.Mappings
             return model.MapTo<CustomerModel, BusinessCore.Domain.Sales.Customer>();
         }
 
-        public static BusinessCore.Domain.Sales.Customer ToEntity(this VendorModel model, BusinessCore.Domain.Sales.Customer destination)
+        public static BusinessCore.Domain.Sales.Customer ToEntity(this CustomerModel model, BusinessCore.Domain.Sales.Customer destination)
         {
             return model.MapTo(destination);
         }
 
+        #endregion
+
+        #region Sale Invoice
+        public static Sale.SearchRowModel ToRowModel(this BusinessCore.Domain.Sales.SalesInvoiceHeader entity)
+        {
+            return entity.MapTo<BusinessCore.Domain.Sales.SalesInvoiceHeader, Sale.SearchRowModel>();
+        }
+        public static Sale.InvoiceModel ToModel(this BusinessCore.Domain.Sales.SalesInvoiceHeader entity)
+        {
+            return entity.MapTo<BusinessCore.Domain.Sales.SalesInvoiceHeader, Sale.InvoiceModel>();
+        }
+
+        public static BusinessCore.Domain.Sales.SalesInvoiceHeader ToEntity(this Sale.InvoiceModel model)
+        {
+            return model.MapTo<Sale.InvoiceModel, BusinessCore.Domain.Sales.SalesInvoiceHeader>();
+        }
+
+        public static BusinessCore.Domain.Sales.SalesInvoiceHeader ToEntity(this Sale.InvoiceModel model, BusinessCore.Domain.Sales.SalesInvoiceHeader destination)
+        {
+            return model.MapTo(destination);
+        }
         #endregion
     }
 }

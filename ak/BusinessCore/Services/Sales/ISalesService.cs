@@ -17,14 +17,13 @@ namespace BusinessCore.Services.Sales
     {
         void AddSalesOrder(SalesOrderHeader salesOrder, bool toSave);
         void UpdateSalesOrder(SalesOrderHeader salesOrder);
-        void AddSalesInvoice(SalesInvoiceHeader salesInvoice, int? salesOrderId);
+        SalesInvoiceHeader SaveSaleInvoice(SalesInvoiceHeader salesInvoice);
+        IQueryable<SalesInvoiceHeader> GetSalesInvoices();
+        SalesInvoiceHeader GetSalesInvoiceById(int id);
+        //SalesInvoiceHeader GetSalesInvoiceByNo(string no);
         void AddSalesReceipt(SalesReceiptHeader salesReceipt);
         void AddSalesReceiptNoInvoice(SalesReceiptHeader salesReceipt);
         void AddSalesDelivery(SalesDeliveryHeader salesDelivery, bool toSave);
-        IQueryable<SalesInvoiceHeader> GetSalesInvoices();
-        SalesInvoiceHeader GetSalesInvoiceById(int id);
-        SalesInvoiceHeader GetSalesInvoiceByNo(string no);
-        void UpdateSalesInvoice(SalesInvoiceHeader salesInvoice);
         IQueryable<SalesReceiptHeader> GetSalesReceipts();
         SalesReceiptHeader GetSalesReceiptById(int id);
         void UpdateSalesReceipt(SalesReceiptHeader salesReceipt);

@@ -21,7 +21,7 @@ namespace BusinessCore.Mapping.Purchases
                 builder.Property(p => p.GeneralLedgerHeaderId).HasColumnName("GeneralLedgerHeaderId");
                 builder.HasOne(t => t.GeneralLedgerHeader).WithMany().HasForeignKey(t => t.GeneralLedgerHeaderId);
 
-                builder.Property(p => p.No).HasColumnName("No");
+                builder.Property(p => p.No).HasColumnName("No").HasMaxLength(20);
                 builder.Property(p => p.Date).HasColumnName("Date");
                 builder.Property(p => p.Amount).HasColumnName("Amount");
 

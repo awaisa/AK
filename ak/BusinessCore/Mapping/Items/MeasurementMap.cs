@@ -15,7 +15,7 @@ namespace BusinessCore.Mapping.Items
             TableColumns = () =>
             {
                 builder.Property(p => p.Code).HasColumnName("Code").HasMaxLength(20);
-                builder.Property(p => p.Description).HasColumnName("Description").HasMaxLength(200);
+                builder.Property(p => p.Description).HasColumnName("Description").HasMaxLength(500);
 
                 builder.Property(p => p.CompanyId).HasColumnName("CompanyId");
                 builder.HasOne(t => t.Company).WithMany().HasForeignKey(t => t.CompanyId);

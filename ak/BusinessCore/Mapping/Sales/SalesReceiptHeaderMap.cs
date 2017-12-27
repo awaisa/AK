@@ -21,7 +21,7 @@ namespace BusinessCore.Mapping.Sales
                 builder.Property(p => p.AccountToDebitId).HasColumnName("AccountToDebitId");
                 builder.HasOne(t => t.AccountToDebit).WithMany().HasForeignKey(t => t.AccountToDebitId);
 
-                builder.Property(p => p.No).HasColumnName("No");
+                builder.Property(p => p.No).HasColumnName("No").HasMaxLength(20);
                 builder.Property(p => p.Date).HasColumnName("Date");
                 builder.Property(p => p.Amount).HasColumnName("Amount");
 

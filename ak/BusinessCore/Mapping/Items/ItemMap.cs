@@ -42,9 +42,9 @@ namespace BusinessCore.Mapping.Items
                 builder.Property(p => p.InventoryAdjustmentAccountId).HasColumnName("InventoryAdjustmentAccountId");
                 builder.HasOne(t => t.InventoryAdjustmentAccount).WithMany().HasForeignKey(t => t.InventoryAdjustmentAccountId);
 
-                builder.Property(p => p.No).HasColumnName("No");
-                builder.Property(p => p.Code).HasColumnName("Code");
-                builder.Property(p => p.Description).HasColumnName("Description");
+                builder.Property(p => p.No).HasColumnName("No").HasMaxLength(20);
+                builder.Property(p => p.Code).HasColumnName("Code").HasMaxLength(20);
+                builder.Property(p => p.Description).HasColumnName("Description").HasMaxLength(500);
                 builder.Property(p => p.PurchaseDescription).HasColumnName("PurchaseDescription");
                 builder.Property(p => p.SellDescription).HasColumnName("SellDescription");
                 builder.Property(p => p.Cost).HasColumnName("Cost");

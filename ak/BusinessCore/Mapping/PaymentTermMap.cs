@@ -12,7 +12,7 @@ namespace BusinessCore.Mapping
 
             TableColumns = () =>
             {
-                builder.Property(p => p.Description).HasColumnName("Description");
+                builder.Property(p => p.Description).HasColumnName("Description").HasMaxLength(500);
                 builder.Property(p => p.PaymentType).HasColumnName("PaymentType");
                 builder.Property(p => p.DueAfterDays).HasColumnName("DueAfterDays");
                 builder.Property(p => p.CompanyId).HasColumnName("CompanyId");

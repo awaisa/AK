@@ -12,7 +12,7 @@ namespace BusinessCore.Mapping.TaxSystem
 
             TableColumns = () =>
             {
-                builder.Property(p => p.Description).HasColumnName("Description");
+                builder.Property(p => p.Description).HasColumnName("Description").HasMaxLength(500);
                 builder.Property(p => p.TaxAppliedToShipping).HasColumnName("TaxAppliedToShipping");
 
                 builder.Property(p => p.CompanyId).HasColumnName("CompanyId");

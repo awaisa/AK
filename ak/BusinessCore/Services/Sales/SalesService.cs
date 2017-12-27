@@ -78,256 +78,7 @@ namespace BusinessCore.Services.Sales
             _taxGroupRepo = taxGroupRepo;
         }
 
-        public void AddSalesOrder(SalesOrderHeader salesOrder, bool toSave)
-        {
-            if (string.IsNullOrEmpty(salesOrder.No))
-                salesOrder.No = GetNextNumber(SequenceNumberTypes.SalesOrder).ToString();
-            if (toSave)
-                _salesOrderRepo.Insert(salesOrder);
-        }
-
-        public void UpdateSalesOrder(SalesOrderHeader salesOrder)
-        {
-            var persisted = _salesOrderRepo.GetById(salesOrder.Id);
-            foreach (var persistedLine in persisted.SalesOrderLines)
-            {
-                bool found = false;
-                foreach (var currentLine in salesOrder.SalesOrderLines)
-                {
-                    if (persistedLine.Id == currentLine.Id)
-                    {
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (found)
-                    continue;
-                else
-                {
-
-                }
-            }
-            _salesOrderRepo.Update(salesOrder);
-        }
-
-        public void AddSalesInvoice(SalesInvoiceHeader salesInvoice, int? salesDeliveryId)
-        {
-            decimal totalAmount = 0, totalDiscount = 0;
-
-            var taxes = new List<KeyValuePair<int, decimal>>();
-            var sales = new List<KeyValuePair<int, decimal>>();
-
-            var glHeader = _financialService.CreateGeneralLedgerHeader(DocumentTypes.SalesInvoice, salesInvoice.Date, string.Empty);
-            var customer = _customerRepo.GetById(salesInvoice.CustomerId);
-
-            foreach (var lineItem in salesInvoice.SalesInvoiceLines)
-            {
-                var item = _itemRepo.GetById(lineItem.ItemId);
-
-                var lineAmount = lineItem.Quantity * lineItem.Amount;
-
-                if (!item.GLAccountsValidated())
-                    throw new Exception("Item is not correctly setup for financial transaction. Please check if GL accounts are all set.");
-
-                var lineDiscountAmount = (lineItem.Discount / 100) * lineAmount;
-                totalDiscount += lineDiscountAmount;
-
-                var totalLineAmount = lineAmount - lineDiscountAmount;
-
-                totalAmount += totalLineAmount;
-
-                var lineTaxes = _financialService.ComputeOutputTax(salesInvoice.CustomerId, item.Id, lineItem.Quantity, lineItem.Amount, lineItem.Discount);
-
-                foreach (var t in lineTaxes)
-                    taxes.Add(t);
-
-                var lineTaxAmount = lineTaxes != null && lineTaxes.Count > 0 ? lineTaxes.Sum(t => t.Value) : 0;
-                totalLineAmount = totalLineAmount - lineTaxAmount;
-
-                sales.Add(new KeyValuePair<int, decimal>(item.SalesAccountId.Value, totalLineAmount));
-
-                if (item.ItemCategory.ItemType == ItemTypes.Purchased)
-                {
-                    lineItem.InventoryControlJournal = _inventoryService.CreateInventoryControlJournal(lineItem.ItemId,
-                        lineItem.MeasurementId,
-                        DocumentTypes.SalesInvoice,
-                        null,
-                        lineItem.Quantity,
-                        lineItem.Quantity * item.Cost,
-                        lineItem.Quantity * item.Price);
-                }
-            }
-
-            totalAmount += salesInvoice.ShippingHandlingCharge;
-            var debitCustomerAR = _financialService.CreateGeneralLedgerLine(DrOrCrSide.Dr, customer.AccountsReceivableAccount.Id, Math.Round(totalAmount, 2, MidpointRounding.ToEven));
-            glHeader.GeneralLedgerLines.Add(debitCustomerAR);
-
-            var groupedSalesAccount = from s in sales
-                                      group s by s.Key into grouped
-                                      select new
-                                      {
-                                          Key = grouped.Key,
-                                          Value = grouped.Sum(s => s.Value)
-                                      };
-
-            foreach (var salesAccount in groupedSalesAccount)
-            {
-                var salesAmount = salesAccount.Value;
-                var creditSalesAccount = _financialService.CreateGeneralLedgerLine(DrOrCrSide.Cr, salesAccount.Key, Math.Round(salesAmount, 2, MidpointRounding.ToEven));
-                glHeader.GeneralLedgerLines.Add(creditSalesAccount);
-            }
-
-            if (taxes != null && taxes.Count > 0)
-            {
-                var groupedTaxes = from t in taxes
-                                   group t by t.Key into grouped
-                                   select new
-                                   {
-                                       Key = grouped.Key,
-                                       Value = grouped.Sum(t => t.Value)
-                                   };
-
-                foreach (var tax in groupedTaxes)
-                {
-                    var tx = _financialService.GetTaxes().Where(t => t.Id == tax.Key).FirstOrDefault();
-                    var creditSalesTaxAccount = _financialService.CreateGeneralLedgerLine(DrOrCrSide.Cr, tx.SalesAccountId.Value, Math.Round(tax.Value, 2, MidpointRounding.ToEven));
-                    glHeader.GeneralLedgerLines.Add(creditSalesTaxAccount);
-                }
-            }
-
-            if (totalDiscount > 0)
-            {
-                var salesDiscountAccount = base.GetGeneralLedgerSetting().SalesDiscountAccount;
-                var creditSalesDiscountAccount = _financialService.CreateGeneralLedgerLine(DrOrCrSide.Dr, salesDiscountAccount.Id, Math.Round(totalDiscount, 2, MidpointRounding.ToEven));
-                glHeader.GeneralLedgerLines.Add(creditSalesDiscountAccount);
-            }
-
-            if (salesInvoice.ShippingHandlingCharge > 0)
-            {
-                var shippingHandlingAccount = base.GetGeneralLedgerSetting().ShippingChargeAccount;
-                var creditShippingHandlingAccount = _financialService.CreateGeneralLedgerLine(DrOrCrSide.Cr, shippingHandlingAccount.Id, Math.Round(salesInvoice.ShippingHandlingCharge, 2, MidpointRounding.ToEven));
-                glHeader.GeneralLedgerLines.Add(creditShippingHandlingAccount);
-            }
-
-            if (_financialService.ValidateGeneralLedgerEntry(glHeader))
-            {
-                salesInvoice.GeneralLedgerHeader = glHeader;
-
-                salesInvoice.No = GetNextNumber(SequenceNumberTypes.SalesInvoice).ToString();
-
-                if (!salesDeliveryId.HasValue)
-                {
-                    var salesDelivery = new SalesDeliveryHeader()
-                    {
-                        CustomerId = salesInvoice.CustomerId,
-                        Date = salesInvoice.Date,
-                    };
-                    foreach (var line in salesInvoice.SalesInvoiceLines)
-                    {
-                        var item = _itemRepo.GetById(line.ItemId);
-                        salesDelivery.SalesDeliveryLines.Add(new SalesDeliveryLine()
-                        {
-                            ItemId = line.ItemId,
-                            MeasurementId = line.MeasurementId,
-                            Quantity = line.Quantity,
-                            Discount = line.Discount,
-                            Price = item.Cost.Value,
-                        });
-                    }
-                    AddSalesDelivery(salesDelivery, false);
-                    salesInvoice.SalesDeliveryHeader = salesDelivery;
-                }
-                _salesInvoiceRepo.Insert(salesInvoice);
-            }
-        }
-
-        public void AddSalesReceipt(SalesReceiptHeader salesReceipt)
-        {
-            var customer = _customerRepo.GetById(salesReceipt.CustomerId);
-            var glHeader = _financialService.CreateGeneralLedgerHeader(DocumentTypes.SalesReceipt, salesReceipt.Date, string.Empty);
-            var debit = _financialService.CreateGeneralLedgerLine(DrOrCrSide.Dr, salesReceipt.AccountToDebitId.Value, salesReceipt.SalesReceiptLines.Sum(i => i.AmountPaid));
-            var credit = _financialService.CreateGeneralLedgerLine(DrOrCrSide.Cr, customer.AccountsReceivableAccountId.Value, salesReceipt.SalesReceiptLines.Sum(i => i.AmountPaid));
-            glHeader.GeneralLedgerLines.Add(debit);
-            glHeader.GeneralLedgerLines.Add(credit);
-
-            if (_financialService.ValidateGeneralLedgerEntry(glHeader))
-            {
-                salesReceipt.GeneralLedgerHeader = glHeader;
-
-                salesReceipt.No = GetNextNumber(SequenceNumberTypes.SalesReceipt).ToString();
-                _salesReceiptRepo.Insert(salesReceipt);
-            }
-        }
-
-        /// <summary>
-        /// Customer advances. Initial recognition. Debit to cash (asset), credit to customer advances (liability)
-        /// </summary>
-        /// <param name="salesReceipt"></param>
-        public void AddSalesReceiptNoInvoice(SalesReceiptHeader salesReceipt)
-        {
-            var customer = _customerRepo.GetById(salesReceipt.CustomerId);
-            var glHeader = _financialService.CreateGeneralLedgerHeader(DocumentTypes.SalesReceipt, salesReceipt.Date, string.Empty);
-            var debit = _financialService.CreateGeneralLedgerLine(DrOrCrSide.Dr, salesReceipt.AccountToDebitId.Value, salesReceipt.Amount);
-            glHeader.GeneralLedgerLines.Add(debit);
-
-            foreach (var line in salesReceipt.SalesReceiptLines)
-            {
-                var credit = _financialService.CreateGeneralLedgerLine(DrOrCrSide.Cr, line.AccountToCreditId.Value, line.AmountPaid);
-                glHeader.GeneralLedgerLines.Add(credit);
-            }
-
-            if (_financialService.ValidateGeneralLedgerEntry(glHeader))
-            {
-                salesReceipt.GeneralLedgerHeader = glHeader;
-
-                salesReceipt.No = GetNextNumber(SequenceNumberTypes.SalesReceipt).ToString();
-                _salesReceiptRepo.Insert(salesReceipt);
-            }
-        }
-
-        public IQueryable<SalesInvoiceHeader> GetSalesInvoices()
-        {
-            var query = from invoice in _salesInvoiceRepo.Table
-                        select invoice;
-            return query;
-        }
-
-        public SalesInvoiceHeader GetSalesInvoiceById(int id)
-        {
-            return _salesInvoiceRepo.GetById(id);
-        }
-
-        public SalesInvoiceHeader GetSalesInvoiceByNo(string no)
-        {
-            var query = from invoice in _salesInvoiceRepo.Table
-                        where invoice.No == no
-                        select invoice;
-            return query.FirstOrDefault();
-        }
-
-        public void UpdateSalesInvoice(SalesInvoiceHeader salesInvoice)
-        {
-            _salesInvoiceRepo.Update(salesInvoice);
-        }
-
-        public IQueryable<SalesReceiptHeader> GetSalesReceipts()
-        {
-            var query = from receipt in _salesReceiptRepo.Table
-                        select receipt;
-            return query;
-        }
-
-        public SalesReceiptHeader GetSalesReceiptById(int id)
-        {
-            return _salesReceiptRepo.GetById(id);
-        }
-
-        public void UpdateSalesReceipt(SalesReceiptHeader salesReceipt)
-        {
-            _salesReceiptRepo.Update(salesReceipt);
-        }
-
+        #region CUSTOMER
         public IQueryable<Customer> GetCustomers()
         {
             System.Linq.Expressions.Expression<Func<Customer, object>>[] includeProperties =
@@ -343,7 +94,6 @@ namespace BusinessCore.Services.Sales
 
             return customers;
         }
-
         public Customer GetCustomerById(int id)
         {
             System.Linq.Expressions.Expression<Func<Customer, object>>[] includeProperties =
@@ -450,6 +200,342 @@ namespace BusinessCore.Services.Sales
             #endregion
             return customer;
         }
+        #endregion
+
+        #region SALE INVOICE
+        public IQueryable<SalesInvoiceHeader> GetSalesInvoices()
+        {
+            System.Linq.Expressions.Expression<Func<SalesInvoiceHeader, object>>[] includeProperties =
+            {
+                p => p.SalesInvoiceLines,
+                p => p.SalesInvoiceLines.Select(p2 => p2.Item)
+            };
+            var query = _salesInvoiceRepo.GetAllIncluding(includeProperties);
+            return query;
+        }
+        public SalesInvoiceHeader GetSalesInvoiceById(int id)
+        {
+            System.Linq.Expressions.Expression<Func<SalesInvoiceHeader, object>>[] includeProperties =
+            {
+                p => p.SalesInvoiceLines,
+                p => p.SalesInvoiceLines.Select(p2 => p2.Item)
+            };
+
+            var salesInvoice = _salesInvoiceRepo.GetAllIncluding(includeProperties)
+                .Where(c => c.Id == id).FirstOrDefault();
+            return salesInvoice;
+        }
+        //public SalesInvoiceHeader GetSalesInvoiceByNo(string no)
+        //{
+        //    var query = from invoice in _salesInvoiceRepo.Table
+        //                where invoice.No == no
+        //                select invoice;
+        //    return query.FirstOrDefault();
+        //}
+        public SalesInvoiceHeader SaveSaleInvoice(SalesInvoiceHeader salesInvoice)
+        {
+            decimal totalAmount = 0, totalDiscount = 0;
+            var taxes = new List<KeyValuePair<int, decimal>>();
+            var sales = new List<KeyValuePair<int, decimal>>();
+            var glHeader = _financialService.CreateGeneralLedgerHeader(DocumentTypes.SalesInvoice, salesInvoice.Date, salesInvoice.Description);
+            var customer = _customerRepo.GetById(salesInvoice.CustomerId);
+
+            foreach (var lineItem in salesInvoice.SalesInvoiceLines)
+            {
+                var item = _itemRepo.GetById(lineItem.ItemId);
+
+                var lineAmount = lineItem.Quantity * lineItem.Amount;
+
+                if (!item.GLAccountsValidated())
+                    throw new Exception("Item is not correctly setup for financial transaction. Please check if GL accounts are all set.");
+
+                lineItem.DiscountAmount = (lineItem.Discount / 100) * lineAmount;
+                totalDiscount += lineItem.DiscountAmount;
+
+                var totalLineAmount = lineAmount - lineItem.DiscountAmount;
+
+                totalAmount += totalLineAmount;
+
+                var lineTaxes = _financialService.ComputeOutputTax(salesInvoice.CustomerId, item.Id, lineItem.Quantity, lineItem.Amount, lineItem.Discount);
+
+                foreach (var t in lineTaxes)
+                    taxes.Add(t);
+
+                lineItem.TaxAmount = lineTaxes != null && lineTaxes.Count > 0 ? lineTaxes.Sum(t => t.Value) : 0;
+                totalLineAmount = totalLineAmount - lineItem.TaxAmount;
+
+                sales.Add(new KeyValuePair<int, decimal>(item.SalesAccountId.Value, totalLineAmount));
+
+                if (item.ItemCategory.ItemType == ItemTypes.Purchased)
+                {
+                    lineItem.InventoryControlJournal = _inventoryService.CreateInventoryControlJournal(lineItem.ItemId,
+                        lineItem.MeasurementId,
+                        DocumentTypes.SalesInvoice,
+                        null,
+                        lineItem.Quantity,
+                        lineItem.Quantity * item.Cost,
+                        lineItem.Quantity * item.Price);
+                }
+            }
+
+            totalAmount += salesInvoice.ShippingHandlingCharge;
+            var debitCustomerAR = _financialService.CreateGeneralLedgerLine(DrOrCrSide.Dr, customer.AccountsReceivableAccount.Id, Math.Round(totalAmount, 2, MidpointRounding.ToEven));
+            glHeader.GeneralLedgerLines.Add(debitCustomerAR);
+
+            var groupedSalesAccount = from s in sales
+                                      group s by s.Key into grouped
+                                      select new
+                                      {
+                                          Key = grouped.Key,
+                                          Value = grouped.Sum(s => s.Value)
+                                      };
+
+            foreach (var salesAccount in groupedSalesAccount)
+            {
+                var salesAmount = salesAccount.Value;
+                var creditSalesAccount = _financialService.CreateGeneralLedgerLine(DrOrCrSide.Cr, salesAccount.Key, Math.Round(salesAmount, 2, MidpointRounding.ToEven));
+                glHeader.GeneralLedgerLines.Add(creditSalesAccount);
+            }
+
+            if (taxes != null && taxes.Count > 0)
+            {
+                var groupedTaxes = from t in taxes
+                                   group t by t.Key into grouped
+                                   select new
+                                   {
+                                       Key = grouped.Key,
+                                       Value = grouped.Sum(t => t.Value)
+                                   };
+
+                foreach (var tax in groupedTaxes)
+                {
+                    var tx = _financialService.GetTaxes().Where(t => t.Id == tax.Key).FirstOrDefault();
+                    var creditSalesTaxAccount = _financialService.CreateGeneralLedgerLine(DrOrCrSide.Cr, tx.SalesAccountId.Value, Math.Round(tax.Value, 2, MidpointRounding.ToEven));
+                    glHeader.GeneralLedgerLines.Add(creditSalesTaxAccount);
+                }
+            }
+
+            if (totalDiscount > 0)
+            {
+                var salesDiscountAccount = base.GetGeneralLedgerSetting().SalesDiscountAccount;
+                var creditSalesDiscountAccount = _financialService.CreateGeneralLedgerLine(DrOrCrSide.Dr, salesDiscountAccount.Id, Math.Round(totalDiscount, 2, MidpointRounding.ToEven));
+                glHeader.GeneralLedgerLines.Add(creditSalesDiscountAccount);
+            }
+
+            if (salesInvoice.ShippingHandlingCharge > 0)
+            {
+                var shippingHandlingAccount = base.GetGeneralLedgerSetting().ShippingChargeAccount;
+                var creditShippingHandlingAccount = _financialService.CreateGeneralLedgerLine(DrOrCrSide.Cr, shippingHandlingAccount.Id, Math.Round(salesInvoice.ShippingHandlingCharge, 2, MidpointRounding.ToEven));
+                glHeader.GeneralLedgerLines.Add(creditShippingHandlingAccount);
+            }
+
+            if (_financialService.ValidateGeneralLedgerEntry(glHeader))
+            {
+                salesInvoice.GeneralLedgerHeader = glHeader;
+
+                System.Linq.Expressions.Expression<Func<SalesInvoiceHeader, object>>[] includeProperties = {
+                    p => p.GeneralLedgerHeader,
+                    p => p.GeneralLedgerHeader.GeneralLedgerLines,
+                    p => p.SalesInvoiceLines,
+                    p => p.SalesInvoiceLines.Select(p2 => p2.InventoryControlJournal)
+                };                
+                var dbObject = _salesInvoiceRepo.GetAllIncluding(includeProperties).Where(o => o.Id == salesInvoice.Id).FirstOrDefault();
+                #region UPDATE
+                if (dbObject != null)
+                {
+                    dbObject.No = salesInvoice.No;
+                    dbObject.Description = salesInvoice.Description;
+                    dbObject.Date = salesInvoice.Date;
+                    dbObject.CustomerId = salesInvoice.CustomerId;
+                    dbObject.ShippingHandlingCharge = salesInvoice.ShippingHandlingCharge;
+                    dbObject.IsActive = salesInvoice.IsActive;
+
+                    dbObject.GeneralLedgerHeader.Date = salesInvoice.Date;
+                    dbObject.GeneralLedgerHeader.Description = salesInvoice.Description;
+                    var GLLinesToUpdateIds = dbObject.GeneralLedgerHeader.GeneralLedgerLines.Select(c => c.Id).ToList();
+                    foreach (var generalLedgerLine in salesInvoice.GeneralLedgerHeader.GeneralLedgerLines)
+                    {
+                        var existinggeneralLedgerLine = dbObject.GeneralLedgerHeader.GeneralLedgerLines.FirstOrDefault(c => c.AccountId == generalLedgerLine.AccountId);
+                        if (existinggeneralLedgerLine != null)
+                        {
+                            existinggeneralLedgerLine.AccountId = generalLedgerLine.AccountId;
+                            existinggeneralLedgerLine.Amount = generalLedgerLine.Amount;
+                            existinggeneralLedgerLine.DrCr = generalLedgerLine.DrCr;
+                            existinggeneralLedgerLine.IsActive = generalLedgerLine.IsActive;
+                            GLLinesToUpdateIds.Remove(existinggeneralLedgerLine.Id);
+                        }
+                        else
+                        {
+                            dbObject.GeneralLedgerHeader.GeneralLedgerLines.Add(new GeneralLedgerLine()
+                            {
+                                DrCr = generalLedgerLine.DrCr,
+                                AccountId = generalLedgerLine.AccountId,
+                                Amount = generalLedgerLine.Amount
+                            });
+                        }
+                    }
+                    foreach (var generalLedgerLine in dbObject.GeneralLedgerHeader.GeneralLedgerLines.Where(c => GLLinesToUpdateIds.Contains(c.Id)))
+                    {
+                        generalLedgerLine.Deleted = true;
+                    }
+                    var salesInvoiceLinesToUpdateIds = dbObject.SalesInvoiceLines.Select(c => c.Id).ToList();
+                    foreach (var salesInvoiceLine in dbObject.SalesInvoiceLines)
+                    {
+                        var existingSalesInvoiceLine = dbObject.SalesInvoiceLines.FirstOrDefault(c => c.Id == salesInvoiceLine.Id);
+                        if (existingSalesInvoiceLine != null)
+                        {
+                            existingSalesInvoiceLine.ItemId = salesInvoiceLine.ItemId;
+                            existingSalesInvoiceLine.MeasurementId = salesInvoiceLine.MeasurementId;
+                            existingSalesInvoiceLine.TaxId = salesInvoiceLine.TaxId;
+                            existingSalesInvoiceLine.Quantity = salesInvoiceLine.Quantity;
+                            existingSalesInvoiceLine.Discount = salesInvoiceLine.Discount;
+                            existingSalesInvoiceLine.Amount = salesInvoiceLine.Amount;
+                            existingSalesInvoiceLine.TaxAmount = salesInvoiceLine.TaxAmount;
+                            existingSalesInvoiceLine.DiscountAmount = salesInvoiceLine.DiscountAmount;
+                            existingSalesInvoiceLine.IsActive = salesInvoiceLine.IsActive;
+                            if (salesInvoiceLine.InventoryControlJournal != null)
+                            {
+                                if (existingSalesInvoiceLine.InventoryControlJournal != null)
+                                {
+                                    existingSalesInvoiceLine.InventoryControlJournal.MeasurementId = salesInvoiceLine.InventoryControlJournal.MeasurementId;
+                                    existingSalesInvoiceLine.InventoryControlJournal.OUTQty = salesInvoiceLine.InventoryControlJournal.OUTQty;
+                                    existingSalesInvoiceLine.InventoryControlJournal.TotalCost = salesInvoiceLine.InventoryControlJournal.TotalCost;
+                                    existingSalesInvoiceLine.InventoryControlJournal.TotalAmount = salesInvoiceLine.InventoryControlJournal.TotalAmount;
+                                }
+                                else
+                                {
+                                    existingSalesInvoiceLine.InventoryControlJournal = salesInvoiceLine.InventoryControlJournal;
+                                }
+                            }
+                            else
+                            {
+                                if (existingSalesInvoiceLine.InventoryControlJournal != null)
+                                {
+                                    existingSalesInvoiceLine.InventoryControlJournal.Deleted = true;
+                                    existingSalesInvoiceLine.InventoryControlJournalId = -1;
+                                }
+                            }
+                            salesInvoiceLinesToUpdateIds.Remove(existingSalesInvoiceLine.Id);
+                        }
+                        else
+                        {
+                            dbObject.SalesInvoiceLines.Add(salesInvoiceLine);
+                        }
+                    }
+                    foreach (var salesInvoiceLine in dbObject.SalesInvoiceLines.Where(c => salesInvoiceLinesToUpdateIds.Contains(c.Id)))
+                    {
+                        salesInvoiceLine.Deleted = true;
+                    }
+                    salesInvoice = dbObject;
+                    _salesInvoiceRepo.Update(salesInvoice);
+                }
+                #endregion
+                #region INSERT
+                else
+                {
+                    salesInvoice.No = GetNextNumber(SequenceNumberTypes.SalesInvoice).ToString();
+                    _salesInvoiceRepo.Insert(salesInvoice);
+                }
+                #endregion
+            }
+            return salesInvoice;
+        }
+        #endregion
+
+        public void AddSalesOrder(SalesOrderHeader salesOrder, bool toSave)
+        {
+            if (string.IsNullOrEmpty(salesOrder.No))
+                salesOrder.No = GetNextNumber(SequenceNumberTypes.SalesOrder).ToString();
+            if (toSave)
+                _salesOrderRepo.Insert(salesOrder);
+        }
+
+        public void UpdateSalesOrder(SalesOrderHeader salesOrder)
+        {
+            var persisted = _salesOrderRepo.GetById(salesOrder.Id);
+            foreach (var persistedLine in persisted.SalesOrderLines)
+            {
+                bool found = false;
+                foreach (var currentLine in salesOrder.SalesOrderLines)
+                {
+                    if (persistedLine.Id == currentLine.Id)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (found)
+                    continue;
+                else
+                {
+
+                }
+            }
+            _salesOrderRepo.Update(salesOrder);
+        }
+
+        public void AddSalesReceipt(SalesReceiptHeader salesReceipt)
+        {
+            var customer = _customerRepo.GetById(salesReceipt.CustomerId);
+            var glHeader = _financialService.CreateGeneralLedgerHeader(DocumentTypes.SalesReceipt, salesReceipt.Date, string.Empty);
+            var debit = _financialService.CreateGeneralLedgerLine(DrOrCrSide.Dr, salesReceipt.AccountToDebitId.Value, salesReceipt.SalesReceiptLines.Sum(i => i.AmountPaid));
+            var credit = _financialService.CreateGeneralLedgerLine(DrOrCrSide.Cr, customer.AccountsReceivableAccountId.Value, salesReceipt.SalesReceiptLines.Sum(i => i.AmountPaid));
+            glHeader.GeneralLedgerLines.Add(debit);
+            glHeader.GeneralLedgerLines.Add(credit);
+
+            if (_financialService.ValidateGeneralLedgerEntry(glHeader))
+            {
+                salesReceipt.GeneralLedgerHeader = glHeader;
+
+                salesReceipt.No = GetNextNumber(SequenceNumberTypes.SalesReceipt).ToString();
+                _salesReceiptRepo.Insert(salesReceipt);
+            }
+        }
+
+        /// <summary>
+        /// Customer advances. Initial recognition. Debit to cash (asset), credit to customer advances (liability)
+        /// </summary>
+        /// <param name="salesReceipt"></param>
+        public void AddSalesReceiptNoInvoice(SalesReceiptHeader salesReceipt)
+        {
+            var customer = _customerRepo.GetById(salesReceipt.CustomerId);
+            var glHeader = _financialService.CreateGeneralLedgerHeader(DocumentTypes.SalesReceipt, salesReceipt.Date, string.Empty);
+            var debit = _financialService.CreateGeneralLedgerLine(DrOrCrSide.Dr, salesReceipt.AccountToDebitId.Value, salesReceipt.Amount);
+            glHeader.GeneralLedgerLines.Add(debit);
+
+            foreach (var line in salesReceipt.SalesReceiptLines)
+            {
+                var credit = _financialService.CreateGeneralLedgerLine(DrOrCrSide.Cr, line.AccountToCreditId.Value, line.AmountPaid);
+                glHeader.GeneralLedgerLines.Add(credit);
+            }
+
+            if (_financialService.ValidateGeneralLedgerEntry(glHeader))
+            {
+                salesReceipt.GeneralLedgerHeader = glHeader;
+
+                salesReceipt.No = GetNextNumber(SequenceNumberTypes.SalesReceipt).ToString();
+                _salesReceiptRepo.Insert(salesReceipt);
+            }
+        }
+
+        public IQueryable<SalesReceiptHeader> GetSalesReceipts()
+        {
+            var query = from receipt in _salesReceiptRepo.Table
+                        select receipt;
+            return query;
+        }
+
+        public SalesReceiptHeader GetSalesReceiptById(int id)
+        {
+            return _salesReceiptRepo.GetById(id);
+        }
+
+        public void UpdateSalesReceipt(SalesReceiptHeader salesReceipt)
+        {
+            _salesReceiptRepo.Update(salesReceipt);
+        }
+
         public ICollection<SalesReceiptHeader> GetCustomerReceiptsForAllocation(int customerId)
         {
             var customerReceipts = _salesReceiptRepo.Table.Where(r => r.CustomerId == customerId);

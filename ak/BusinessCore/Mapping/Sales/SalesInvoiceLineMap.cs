@@ -30,6 +30,8 @@ namespace BusinessCore.Mapping.Sales
                 builder.Property(p => p.Quantity).HasColumnName("Quantity");
                 builder.Property(p => p.Discount).HasColumnName("Discount");
                 builder.Property(p => p.Amount).HasColumnName("Amount");
+                builder.Property(p => p.TaxAmount).HasColumnName("TaxAmount");
+                builder.Property(p => p.DiscountAmount).HasColumnName("DiscountAmount");
 
                 builder.Property(p => p.CompanyId).HasColumnName("CompanyId");
                 builder.HasOne(t => t.Company).WithMany().HasForeignKey(t => t.CompanyId);

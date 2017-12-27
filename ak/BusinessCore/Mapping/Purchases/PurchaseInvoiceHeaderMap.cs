@@ -19,9 +19,9 @@ namespace BusinessCore.Mapping.Purchases
                 builder.HasOne(t => t.GeneralLedgerHeader).WithMany().HasForeignKey(t => t.GeneralLedgerHeaderId);
 
                 builder.Property(p => p.Date).HasColumnName("Date");
-                builder.Property(p => p.No).HasColumnName("No");
-                builder.Property(p => p.VendorInvoiceNo).HasColumnName("VendorInvoiceNo");
-                builder.Property(p => p.Description).HasColumnName("Description");
+                builder.Property(p => p.No).HasColumnName("No").HasMaxLength(20);
+                builder.Property(p => p.VendorInvoiceNo).HasColumnName("VendorInvoiceNo").HasMaxLength(50);
+                builder.Property(p => p.Description).HasColumnName("Description").HasMaxLength(500);
                 builder.Property(p => p.CompanyId).HasColumnName("CompanyId");
                 builder.HasOne(t => t.Company).WithMany().HasForeignKey(t => t.CompanyId);
             };

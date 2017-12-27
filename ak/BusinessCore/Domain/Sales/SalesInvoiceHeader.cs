@@ -29,6 +29,7 @@ namespace BusinessCore.Domain.Sales
         public int? SalesDeliveryHeaderId { get; set; }
         public string No { get; set; }
         public DateTime Date { get; set; }
+        public string Description { get; set; }
         public decimal ShippingHandlingCharge{ get; set; }
         public SalesInvoiceStatus Status { get; set; }
         public virtual Customer Customer { get; set; }
@@ -73,7 +74,7 @@ namespace BusinessCore.Domain.Sales
             decimal totalInvoiceAmount = 0;
             foreach (var line in SalesInvoiceLines)
             {
-                totalInvoiceAmount += line.Quantity * line.Amount;
+                totalInvoiceAmount += (line.Quantity * line.Amount) - line.Discount + line.TaxAmount;
             }
             return totalInvoiceAmount;
         }

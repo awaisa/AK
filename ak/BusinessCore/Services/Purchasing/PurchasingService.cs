@@ -90,7 +90,7 @@ namespace BusinessCore.Services.Purchasing
                     }
                     else
                     {
-                        line.IsInactive = true;
+                        line.Deleted = true;
                     }
                 }
                 foreach (var line in purchaseIvoice.PurchaseInvoiceLines)

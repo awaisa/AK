@@ -30,6 +30,8 @@ namespace BusinessCore.Domain.Sales
         public decimal Quantity { get; set; }
         public decimal Discount { get; set; }
         public decimal Amount { get; set; }
+        public decimal TaxAmount { get; set; } //Tax(s) should be included at front and total of tax in amount comes here
+        public decimal DiscountAmount { get; set; }
         public virtual SalesInvoiceHeader SalesInvoiceHeader { get; set; }
         public virtual Item Item { get; set; }
         public virtual Measurement Measurement { get; set; }

@@ -15,7 +15,7 @@ namespace BusinessCore.Mapping.Financials
                 builder.Property(p => p.AccountClassId).HasColumnName("AccountClassId");
                 builder.HasOne(t => t.AccountClass).WithMany(t => t.Accounts).HasForeignKey(t => t.AccountClassId);
                 builder.Property(p => p.ParentAccountId).HasColumnName("ParentAccountId");
-                builder.HasOne(t => t.ParentAccount).WithMany().HasForeignKey(t => t.ParentAccountId);
+                builder.HasOne(t => t.ParentAccount).WithMany(t=> t.ChildAccounts).HasForeignKey(t => t.ParentAccountId);
 
                 builder.Property(p => p.DrOrCrSide).HasColumnName("DrOrCrSide");
                 builder.Property(p => p.AccountCode).HasColumnName("AccountCode").HasMaxLength(50);

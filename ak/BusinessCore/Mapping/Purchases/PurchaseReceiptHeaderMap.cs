@@ -22,7 +22,7 @@ namespace BusinessCore.Mapping.Purchases
                 builder.HasOne(t => t.GeneralLedgerHeader).WithMany(t => t.PurchaseOrderReceipts).HasForeignKey(t => t.GeneralLedgerHeaderId);
 
                 builder.Property(p => p.Date).HasColumnName("Date");
-                builder.Property(p => p.No).HasColumnName("No");
+                builder.Property(p => p.No).HasColumnName("No").HasMaxLength(20);
 
                 builder.Property(p => p.CompanyId).HasColumnName("CompanyId");
                 builder.HasOne(t => t.Company).WithMany().HasForeignKey(t => t.CompanyId);

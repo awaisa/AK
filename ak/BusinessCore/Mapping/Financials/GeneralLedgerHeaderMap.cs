@@ -15,7 +15,7 @@ namespace BusinessCore.Mapping.Financials
             {
                 builder.Property(p => p.Date).HasColumnName("Date");
                 builder.Property(p => p.DocumentType).HasColumnName("DocumentType");
-                builder.Property(p => p.Description).HasColumnName("Description");
+                builder.Property(p => p.Description).HasColumnName("Description").HasMaxLength(500);
                 builder.Property(p => p.CompanyId).HasColumnName("CompanyId");
                 builder.HasOne(t => t.Company).WithMany().HasForeignKey(t => t.CompanyId);
             };

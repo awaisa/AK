@@ -13,8 +13,8 @@ namespace BusinessCore.Mapping
             TableColumns = () =>
             {
                 builder.Property(p => p.SequenceNumberType).HasColumnName("SequenceNumberType");
-                builder.Property(p => p.Description).HasColumnName("Description");
-                builder.Property(p => p.Prefix).HasColumnName("Prefix");
+                builder.Property(p => p.Description).HasColumnName("Description").HasMaxLength(500);
+                builder.Property(p => p.Prefix).HasColumnName("Prefix").HasMaxLength(20);
                 builder.Property(p => p.NextNumber).HasColumnName("NextNumber");
                 builder.Property(p => p.UsePrefix).HasColumnName("UsePrefix");
                 builder.Property(p => p.CompanyId).HasColumnName("CompanyId");

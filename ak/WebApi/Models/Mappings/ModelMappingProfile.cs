@@ -3,6 +3,7 @@ using BusinessCore.Domain;
 using BusinessCore.Domain.Financials;
 using BusinessCore.Domain.Items;
 using BusinessCore.Domain.Purchases;
+using BusinessCore.Domain.Sales;
 using BusinessCore.Domain.TaxSystem;
 using System.Linq;
 using WebApiCore.Models.Common;
@@ -68,6 +69,11 @@ namespace WebApiCore.Models.Mappings
             CreateMap<BusinessCore.Domain.Sales.Customer, CustomerModel>();
             CreateMap<BusinessCore.Domain.Sales.Customer, Customer.SearchRowModel>();
             CreateMap<CustomerModel, BusinessCore.Domain.Sales.Customer>();
+
+            CreateMap<SalesInvoiceHeader, Sale.InvoiceModel>();
+            CreateMap<SalesInvoiceHeader, Sale.SearchRowModel>();
+            CreateMap<ItemModel, SalesInvoiceHeader>();
+
         }
     }
 }

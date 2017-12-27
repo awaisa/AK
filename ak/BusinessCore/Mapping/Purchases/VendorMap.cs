@@ -12,7 +12,7 @@ namespace BusinessCore.Mapping.Purchases
 
             TableColumns = () =>
             {
-                builder.Property(p => p.No).HasColumnName("No");
+                builder.Property(p => p.No).HasColumnName("No").HasMaxLength(20);
                 builder.Property(p => p.PartyId).HasColumnName("PartyId");
                 builder.HasOne(t => t.Party).WithMany().HasForeignKey(t => t.PartyId);
 

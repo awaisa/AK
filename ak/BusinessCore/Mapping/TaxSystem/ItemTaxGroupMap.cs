@@ -12,7 +12,7 @@ namespace BusinessCore.Mapping.TaxSystem
 
             TableColumns = () =>
             {
-                builder.Property(p => p.Name).HasColumnName("Name");
+                builder.Property(p => p.Name).HasColumnName("Name").HasMaxLength(100);
                 builder.Property(p => p.IsFullyExempt).HasColumnName("IsFullyExempt");
 
                 builder.Property(p => p.CompanyId).HasColumnName("CompanyId");

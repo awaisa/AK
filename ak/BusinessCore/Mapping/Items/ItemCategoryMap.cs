@@ -31,7 +31,7 @@ namespace BusinessCore.Mapping.Items
                 builder.Property(p => p.AssemblyAccountId).HasColumnName("AssemblyAccountId");
                 builder.HasOne(t => t.AssemblyAccount).WithMany().HasForeignKey(t => t.AssemblyAccountId);
 
-                builder.Property(p => p.Name).HasColumnName("Name");
+                builder.Property(p => p.Name).HasColumnName("Name").HasMaxLength(100);
 
                 builder.Property(p => p.CompanyId).HasColumnName("CompanyId");
                 builder.HasOne(t => t.Company).WithMany().HasForeignKey(t => t.CompanyId);

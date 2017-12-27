@@ -18,7 +18,7 @@ namespace BusinessCore.Mapping.Sales
                 builder.Property(p => p.PaymentTermId).HasColumnName("PaymentTermId");
                 builder.HasOne(t => t.PaymentTerm).WithMany().HasForeignKey(t => t.PaymentTermId);
 
-                builder.Property(p => p.No).HasColumnName("No");
+                builder.Property(p => p.No).HasColumnName("No").HasMaxLength(20);
                 builder.Property(p => p.ReferenceNo).HasColumnName("ReferenceNo");
                 builder.Property(p => p.Date).HasColumnName("Date");
 
