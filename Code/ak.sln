@@ -1,17 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessCore", "BusinessCore\BusinessCore.csproj", "{11689BFC-8BBA-4A1F-94E9-91E15818DC62}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebApp", "WebApp", "{D5B1E97B-A8D6-4BA5-9413-360FDE08ABDC}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebApp", "WebApp\", "{D5B1E97B-A8D6-4BA5-9413-360FDE08ABDC}"
 	ProjectSection(WebsiteProperties) = preProject
 		SccProjectName = "SAK"
 		SccAuxPath = "SAK"
 		SccLocalPath = "SAK"
 		SccProvider = "SAK"
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.2"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_50406"
 		Debug.AspNetCompiler.PhysicalPath = "WebApp\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_50406\"
@@ -98,25 +98,5 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0967C42A-E3EE-438B-BDB6-27B0058C4198}
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://awaisa.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = BusinessCore\\BusinessCore.csproj
-		SccProjectName1 = BusinessCore
-		SccLocalPath1 = BusinessCore
-		SccWebProject2 = true
-		SccProjectUniqueName2 = WebApp
-		SccProjectName2 = WebApp
-		SccLocalPath2 = WebApp
-		SccProjectEnlistmentChoice2 = 2
-		SccProjectUniqueName3 = WebApiCore.IntegrationTests\\WebApiCore.IntegrationTests.csproj
-		SccProjectName3 = WebApiCore.IntegrationTests
-		SccLocalPath3 = WebApiCore.IntegrationTests
-		SccProjectUniqueName4 = WebApi\\WebApiCore.csproj
-		SccProjectName4 = WebApi
-		SccLocalPath4 = WebApi
 	EndGlobalSection
 EndGlobal
