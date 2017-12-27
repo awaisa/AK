@@ -29,6 +29,8 @@ using FluentValidation.AspNetCore;
 using Swashbuckle.AspNetCore.Swagger;
 using WebApiCore.Models.Mappings;
 using WebApiCore.Infrastructure.Security;
+using BusinessCore.Domain.Security;
+using BusinessCore.Domain.Purchases;
 
 namespace WebApiCore
 {
@@ -59,19 +61,30 @@ namespace WebApiCore
         {
             services.AddDbContext<ApplicationContext>(builder =>
             {
-                string useSqLite = Configuration["Data:useSqLite"];
-                if (useSqLite != "true")
+                if (HostingEnvironment.IsEnvironment("Test"))
                 {
-                    var connStr = Configuration["Data:SqlServerConnectionString"];
-                    builder.UseSqlServer(connStr);
+                    #pragma warning disable CS0618 // Type or member is obsolete
+                    var options = builder
+                          .UseInMemoryDatabase()
+                    #pragma warning restore CS0618 // Type or member is obsolete
+                          .Options;
                 }
                 else
                 {
-                    // Note this path has to have full  access for the Web user in order 
-                    // to create the DB and write to it.
-                    var connStr = "Data Source=" +
-                                  Path.Combine(HostingEnvironment.ContentRootPath, "AKData.sqlite");
-                    builder.UseSqlite(connStr);
+                    string useSqLite = Configuration["Data:useSqLite"];
+                    if (useSqLite != "true")
+                    {
+                        var connStr = Configuration["Data:SqlServerConnectionString"];
+                        builder.UseSqlServer(connStr);
+                    }
+                    else
+                    {
+                        // Note this path has to have full  access for the Web user in order 
+                        // to create the DB and write to it.
+                        var connStr = "Data Source=" +
+                                      Path.Combine(HostingEnvironment.ContentRootPath, "AKData.sqlite");
+                        builder.UseSqlite(connStr);
+                    }
                 }
             });
 

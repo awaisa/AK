@@ -46,7 +46,7 @@ namespace BusinessCore.Data
             foreach (var company in companies)
             {
                 //MockAppPrincipal(0, company.Id, "Joe", "Blog", "JoeBlog");
-                _context.AppPrincipal = MockAppPrincipal(_appPrincipal.UserId, company.Id, _appPrincipal.Firstname, _appPrincipal.Surname, _appPrincipal.Username);
+                _context.AppPrincipal = TestPrincipal.MockAppPrincipal(_appPrincipal.UserId, company.Id, _appPrincipal.Firstname, _appPrincipal.Surname, _appPrincipal.Username);
 
                 InitUsers();
 
@@ -99,7 +99,9 @@ namespace BusinessCore.Data
             var users = A.ListOf<User>(2);
             users.ForEach(u => u.Id = 0);
 
-            //var user = new User() { Lastname = "System", Firstname = "Administrator", Username = "admin@email.com" };
+            if (_context.AppPrincipal.CompanyId == 1)
+                users.Add(new User() { Lastname = "System", Firstname = "Administrator", Username = "admin", Password="admin" });
+
             _context.Users.AddRange(users);
 
             _context.SaveChanges();
@@ -599,17 +601,6 @@ namespace BusinessCore.Data
             _context.AuditableEntities.Add(auditJE);
 
             _context.SaveChanges();
-        }
-        IAppPrincipal MockAppPrincipal(int userId, int companyId, string firstName, string surname, string username)
-        {
-            return new TestPrincipal()
-            {
-                UserId = userId,
-                CompanyId = companyId,
-                Firstname = firstName,
-                Surname = surname,
-                Username = username
-            };
         }
     }
 }

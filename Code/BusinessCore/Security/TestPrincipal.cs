@@ -41,5 +41,17 @@ namespace BusinessCore.Security
             get { return _companyId; }
             set { _companyId = value; }
         }
+
+        public static IAppPrincipal MockAppPrincipal(int userId, int companyId, string firstName, string surname, string username)
+        {
+            return new TestPrincipal()
+            {
+                UserId = userId,
+                CompanyId = companyId,
+                Firstname = firstName,
+                Surname = surname,
+                Username = username
+            };
+        }
     }
 }
