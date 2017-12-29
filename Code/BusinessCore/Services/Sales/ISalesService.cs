@@ -32,6 +32,7 @@ namespace BusinessCore.Services.Sales
         //void UpdateCustomer(Customer customer);
         //void AddCustomer(Customer customer);
         Customer SaveCustomer(Customer customer);
+        void DeleteCustomer(int cutomerId);
         ICollection<SalesReceiptHeader> GetCustomerReceiptsForAllocation(int customerId);
         void SaveCustomerAllocation(CustomerAllocation allocation);
         IQueryable<SalesDeliveryHeader> GetSalesDeliveries();

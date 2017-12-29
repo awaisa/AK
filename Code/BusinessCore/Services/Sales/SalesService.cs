@@ -200,6 +200,15 @@ namespace BusinessCore.Services.Sales
             #endregion
             return customer;
         }
+        public void DeleteCustomer(int cutomerId)
+        {
+            var dbObject = GetCustomerById(cutomerId);
+            if (dbObject != null)
+            {
+                dbObject.Deleted = true;
+                _customerRepo.Update(dbObject);
+            }
+        }
         #endregion
 
         #region SALE INVOICE

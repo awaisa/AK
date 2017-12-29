@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.TestHost;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -72,6 +73,21 @@ namespace WebApiCore.IntegrationTests.Helpers
 
             Assert.NotNull(User);
             Assert.NotNull(User?.Token);
+        }
+
+        public static IEnumerable<object[]> GetJsonObjects(string file, Type type)
+        {
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), file);
+            if (!File.Exists(filePath))
+                throw new Exception($"Test-cases JSON data file '{file}' does not exists");
+            var fileData = File.ReadAllText(filePath);
+            var dataList = JsonConvert.DeserializeObject(fileData, type) as IList;
+            List<object[]> array = new List<object[]>();
+            foreach (var item in dataList)
+            {
+                array.Add(new object[] { item });
+            }
+            return array.ToArray();
         }
 
         public void Dispose()

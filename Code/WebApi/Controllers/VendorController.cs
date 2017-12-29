@@ -87,7 +87,7 @@ namespace WebApiCore.Controllers
                 model = obj.ToModel();
                 return Ok(model);
             }
-            return BadRequest(ModelState);
+            return new BadRequestObjectResult(ModelState);
         }
     }    
 }

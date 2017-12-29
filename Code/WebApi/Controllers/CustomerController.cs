@@ -22,6 +22,7 @@ namespace WebApiCore.Controllers
         }
 
         [HttpGet]
+        [Produces(typeof(SearchModel))]
         public IActionResult Customer()
         {
             SearchModel model = new SearchModel
@@ -74,6 +75,7 @@ namespace WebApiCore.Controllers
 
         [HttpPost]
         [ValidateModel]
+        [Produces(typeof(CustomerModel))]
         public IActionResult SaveCustomer([FromBody] CustomerModel model)
         {
             //server side validations add in ModelState .AddModelError([field], [message])
@@ -84,7 +86,19 @@ namespace WebApiCore.Controllers
                 model = obj.ToModel();
                 return Ok(model);
             }
-            return BadRequest(ModelState);
+            return new BadRequestObjectResult(ModelState);
+        }
+
+        [HttpDelete("{id:int}")]
+        public IActionResult DeleteCustomer(int id)
+        {
+            var o = _service.GetCustomerById(id);
+            if (o == null)
+            {
+                return NotFound();
+            }
+            _service.DeleteCustomer(id);
+            return Ok();
         }
     }    
 }
