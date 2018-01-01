@@ -1,11 +1,3 @@
-//-----------------------------------------------------------------------
-// <copyright file="SalesReceiptHeader.cs" company="AccountGo">
-// Copyright (c) AccountGo. All rights reserved.
-// <author>Marvin Perez</author>
-// <date>1/11/2015 9:48:38 AM</date>
-// </copyright>
-//-----------------------------------------------------------------------
-
 using BusinessCore.Domain.Financials;
 using System;
 using System.Linq;
@@ -14,7 +6,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessCore.Domain.Sales
 {
-    [Table("SalesReceiptHeader")]
     public partial class SalesReceiptHeader : BaseEntity, ICompanyBaseEntity
     {
         public SalesReceiptHeader()

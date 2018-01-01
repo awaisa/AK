@@ -1,17 +1,7 @@
-//-----------------------------------------------------------------------
-// <copyright file="ItemTaxGroup.cs" company="AccountGo">
-// Copyright (c) AccountGo. All rights reserved.
-// <author>Marvin Perez</author>
-// <date>1/11/2015 9:48:38 AM</date>
-// </copyright>
-//-----------------------------------------------------------------------
-
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessCore.Domain.TaxSystem
 {
-    [Table("ItemTaxGroup")]
     public partial class ItemTaxGroup : BaseEntity, ICompanyBaseEntity
     {
         public ItemTaxGroup()
@@ -28,7 +18,6 @@ namespace BusinessCore.Domain.TaxSystem
         public virtual Company Company { get; set; }
     }
 
-    [Table("ItemTaxGroupTax")]
     public partial class ItemTaxGroupTax : BaseEntity, ICompanyBaseEntity
     {
         public int TaxId { get; set; }

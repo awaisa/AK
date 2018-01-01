@@ -12,8 +12,8 @@ namespace BusinessCore.Mapping.Security
 
             TableColumns = () =>
             {
-                builder.Property(p => p.PermissionName).HasColumnName("PermissionName");
-                builder.Property(p => p.DisplayName).HasColumnName("DisplayName");
+                builder.Property(p => p.PermissionName).HasColumnName("PermissionName").HasMaxLength(100);
+                builder.Property(p => p.DisplayName).HasColumnName("DisplayName").HasMaxLength(100);
 
                 builder.Property(p => p.SecurityGroupId).HasColumnName("SecurityGroupId");
                 builder.HasOne(t => t.Groups).WithMany(g => g.Permissions).HasForeignKey(t => t.SecurityGroupId);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Principal;
 using System.Text;
 
 namespace BusinessCore.Security
@@ -42,13 +43,20 @@ namespace BusinessCore.Security
             set { _companyId = value; }
         }
 
-        public static IAppPrincipal MockAppPrincipal(int userId, int companyId, string firstName, string surname, string username)
+        public IIdentity Identity => throw new NotImplementedException();
+
+        public bool IsInRole(string role)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPrincipal SetPrincipal(int userId, string username, string firstname, string surname, int companyId)
         {
             return new TestPrincipal()
             {
                 UserId = userId,
                 CompanyId = companyId,
-                Firstname = firstName,
+                Firstname = firstname,
                 Surname = surname,
                 Username = username
             };

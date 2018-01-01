@@ -1,12 +1,9 @@
 using BusinessCore.Domain.Items;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace BusinessCore.Domain.Purchases
 {
-    [Table("PurchaseOrderLine")]
     public partial class PurchaseOrderLine : BaseEntity, ICompanyBaseEntity
     {
         public PurchaseOrderLine()

@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessCore.Domain.TaxSystem
 {
-    [Table("Tax")]
     public partial class Tax : BaseEntity, ICompanyBaseEntity
     {
         public Tax()

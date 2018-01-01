@@ -21,7 +21,7 @@ namespace WebApiCore.Controllers
             _log = log;
         }
 
-        [HttpGet("")]
+        [HttpGet("Invoice")]
         [Produces(typeof(SearchModel))]
         public IActionResult Invoice()
         {

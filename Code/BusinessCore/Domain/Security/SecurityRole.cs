@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessCore.Domain.Security
 {
-    [Table("SecurityRole", Schema = "dbo")]
     public class SecurityRole : BaseEntity
     {
         //[Key]

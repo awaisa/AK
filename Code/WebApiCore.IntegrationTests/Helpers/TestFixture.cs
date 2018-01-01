@@ -1,11 +1,17 @@
-﻿using Microsoft.AspNetCore.TestHost;
+﻿using BusinessCore.Security;
+using BusinessCore.Services.Inventory;
+using Microsoft.AspNetCore.TestHost;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using WebApiCore.Models;
@@ -17,14 +23,15 @@ namespace WebApiCore.IntegrationTests.Helpers
     {
         public TestServer Server { get; set; }
         private HttpClient _client;
+        private IPrincipal _appPrincipal;
+        private List<Claim> _claims;
+        public UserOutModel User { get; set; }
 
         public HttpClient Client
         {
             get { return _client; }
             set { _client = value; }
         }
-
-        public UserOut User { get; set; }
 
         public TestFixture()
         {
@@ -48,8 +55,32 @@ namespace WebApiCore.IntegrationTests.Helpers
 
             //Set Authorization header with Bearer token with valid token
             Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {User.Token}");
+            var handler = new JwtSecurityTokenHandler();
+            var tokenS = handler.ReadToken(User.Token) as JwtSecurityToken;
+            _claims = tokenS.Claims.ToList();
+
+            //Set App Principal with correct user details
+            var service = GetService<BusinessCore.Security.IAppPrincipal>();
+            _appPrincipal = service.SetPrincipal(
+                Convert.ToInt32(GetClaimGetClaimTokenValue(AppClaims.UserId)),
+                GetClaimGetClaimTokenValue(AppClaims.Firstname),
+                GetClaimGetClaimTokenValue(AppClaims.Lastname),
+                GetClaimGetClaimTokenValue(AppClaims.Username),
+                Convert.ToInt32(GetClaimGetClaimTokenValue(AppClaims.CompanyId)));
         }
 
+        private string GetClaimGetClaimTokenValue(string key)
+        {
+            return _claims.First(claim => claim.Type == key).Value;
+        }
+
+        public T GetService<T>() where T : class
+        {
+            var _services = Server.Host.Services;
+            var type = typeof(T);
+            var service = _services.GetService(type);
+            return service as T;
+        }
 
         //[Fact(DisplayName = "SignIn_To_Get_Bearer_Token")]
         public async Task SignIn_To_Get_Bearer_Token()
@@ -69,7 +100,7 @@ namespace WebApiCore.IntegrationTests.Helpers
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-            User = JsonConvert.DeserializeObject<UserOut>(await response.Content.ReadAsStringAsync());
+            User = JsonConvert.DeserializeObject<UserOutModel>(await response.Content.ReadAsStringAsync());
 
             Assert.NotNull(User);
             Assert.NotNull(User?.Token);

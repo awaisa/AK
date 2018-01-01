@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace WebApiCore.Models
 {
-    public class UserIn
+    public class UserInModel
     {
         public string Username { get; set; }
         public string Password { get; set; }
     }
 
-    public class UserOut
+    public class UserOutModel
     {
         public int Id { get; set; }
         public string Username { get; set; }

@@ -14,7 +14,7 @@ namespace BusinessCore.Mapping.Auditing
             {
                 builder.Property(p => p.AuditableEntityId).HasColumnName("AuditableEntityId");
                 builder.HasOne(t => t.AuditableEntity).WithMany(t => t.AuditableAttributes).HasForeignKey(t => t.AuditableEntityId);
-                builder.Property(p => p.AttributeName).HasColumnName("AttributeName");
+                builder.Property(p => p.AttributeName).HasColumnName("AttributeName").HasMaxLength(100);
                 builder.Property(p => p.EnableAudit).HasColumnName("EnableAudit");
             };
 

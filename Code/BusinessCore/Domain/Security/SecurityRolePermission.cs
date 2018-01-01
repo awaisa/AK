@@ -1,13 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace BusinessCore.Domain.Security
+﻿namespace BusinessCore.Domain.Security
 {
-    [Table("SecurityRolePermission", Schema = "dbo")]
     public class SecurityRolePermission : BaseEntity
     {
-        //[Key]
-        //public int SecurityRolePermissionId { get; set; }
         public int SecurityRoleId { get; set; }
         public int SecurityPermissionId { get; set; }
 

@@ -1,11 +1,3 @@
-//-----------------------------------------------------------------------
-// <copyright file="InventoryService.cs" company="AccountGo">
-// Copyright (c) AccountGo. All rights reserved.
-// <author>Marvin Perez</author>
-// <date>1/11/2015 9:48:38 AM</date>
-// </copyright>
-//-----------------------------------------------------------------------
-
 using BusinessCore.Data;
 using BusinessCore.Domain;
 using BusinessCore.Domain.Items;
@@ -30,8 +22,8 @@ namespace BusinessCore.Services.Inventory
         private readonly IRepository<Bank> _bankRepo;
         private readonly IRepository<Account> _accountRepo;
         private readonly IRepository<ItemTaxGroup> _itemTaxGroup;
-        private readonly IRepository<Model> _modelRepo;
-        private readonly IRepository<Brand> _brandRepo;
+        private readonly IRepository<ItemModel> _modelRepo;
+        private readonly IRepository<ItemBrand> _brandRepo;
 
 
         private Expression<Func<Item, object>>[] includePropertiesOfItem =
@@ -54,8 +46,8 @@ namespace BusinessCore.Services.Inventory
             IRepository<Bank> bankRepo,
             IRepository<Account> accountRepo,
             IRepository<ItemTaxGroup> itemTaxGroup,
-            IRepository<Model> modelRepo,
-             IRepository<Brand> brandRepo
+            IRepository<ItemModel> modelRepo,
+             IRepository<ItemBrand> brandRepo
            )
             : base(sequenceNumberRepo, null, null, bankRepo)
         {
@@ -223,21 +215,21 @@ namespace BusinessCore.Services.Inventory
                         select item;
             return query.FirstOrDefault();
         }
-        public IQueryable<Model> GetModels()
+        public IQueryable<ItemModel> GetModels()
         {
             var query = from m in _modelRepo.Table
                         select m;
             return query;
 
         }
-        public Model GetModel(int? id)
+        public ItemModel GetModel(int? id)
         {
             var query = from m in _modelRepo.Table
                         where m.Id == id
                         select m;
             return query.FirstOrDefault();
         }
-        public Model SaveModel(Model model)
+        public ItemModel SaveModel(ItemModel model)
         {
             if (model.Id <= 0)
                 _modelRepo.Insert(model);
@@ -245,7 +237,7 @@ namespace BusinessCore.Services.Inventory
                 _modelRepo.Update(model);
             return model;
         }
-        public Model ModelSetActive(int id, bool isInactive)
+        public ItemModel ModelSetActive(int id, bool isInactive)
         {
             var o = (from m in _modelRepo.Table
                      where m.Id == id
@@ -260,21 +252,21 @@ namespace BusinessCore.Services.Inventory
         #endregion
 
         #region Manage Brands
-        public IQueryable<Brand> GetBrands()
+        public IQueryable<ItemBrand> GetBrands()
         {
             var query = from m in _brandRepo.Table
                         select m;
             return query;
 
         }
-        public Brand GetBrand(int? id)
+        public ItemBrand GetBrand(int? id)
         {
             var query = from m in _brandRepo.Table
                         where m.Id == id
                         select m;
             return query.FirstOrDefault();
         }
-        public Brand SaveBrand(Brand brand)
+        public ItemBrand SaveBrand(ItemBrand brand)
         {
             if (brand.Id <= 0)
                 _brandRepo.Insert(brand);
@@ -282,7 +274,7 @@ namespace BusinessCore.Services.Inventory
                 _brandRepo.Update(brand);
             return brand;
         }
-        public Brand BrandSetActive(int id, bool isInactive)
+        public ItemBrand BrandSetActive(int id, bool isInactive)
         {
             var o = (from m in _brandRepo.Table
                      where m.Id == id

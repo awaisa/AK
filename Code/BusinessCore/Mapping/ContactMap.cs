@@ -13,9 +13,9 @@ namespace BusinessCore.Mapping
             TableColumns = () =>
             {
                 builder.Property(p => p.ContactType).HasColumnName("ContactType");
-                builder.Property(p => p.FirstName).HasColumnName("FirstName");
-                builder.Property(p => p.LastName).HasColumnName("LastName");
-                builder.Property(p => p.MiddleName).HasColumnName("MiddleName");
+                builder.Property(p => p.FirstName).HasColumnName("FirstName").HasMaxLength(100);
+                builder.Property(p => p.LastName).HasColumnName("LastName").HasMaxLength(100);
+                builder.Property(p => p.MiddleName).HasColumnName("MiddleName").HasMaxLength(100);
                 builder.Property(p => p.IsPrimary).HasColumnName("IsPrimary");
 
                 builder.Property(p => p.PartyId).HasColumnName("PartyId");

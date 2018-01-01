@@ -1,25 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessCore.Domain.Auditing
 {
-    public enum AuditEventTypes
-    {
-        Added = 1,
-        Deleted = 2,
-        Modified = 3
-    }
-
-    [Table("AuditLog", Schema = "dbo")]
     public class AuditLog : BaseEntity
     {
-        ////[Key]
-        //public int AuditLogId { get; set; }
         public string UserName { get; set; }
         public DateTime AuditEventDateUTC { get; set; }
         public int AuditEventType { get; set; }
@@ -28,10 +12,5 @@ namespace BusinessCore.Domain.Auditing
         public string FieldName { get; set; }
         public string OriginalValue { get; set; }
         public string NewValue { get; set; }
-        //public override int Id
-        //{
-        //    get { return AuditLogId; }
-        //    set { AuditLogId = value; }
-        //}
     }
 }

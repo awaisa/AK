@@ -1,4 +1,5 @@
-﻿using BusinessCore.Domain.Auditing;
+﻿using BusinessCore.Domain;
+using BusinessCore.Domain.Auditing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;

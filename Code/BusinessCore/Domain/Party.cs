@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessCore.Domain
 {
-    [Table("Party")]
     public partial class Party : BaseEntity, ICompanyBaseEntity
     {
         public Party()

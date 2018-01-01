@@ -35,6 +35,9 @@
     <None Update="TestData\CustomerControllerTests-InvalidCustomer.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="TestData\SaleControllerTests-ValidSaleInvoices.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="TestData\CustomerControllerTests-ValidCustomer.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

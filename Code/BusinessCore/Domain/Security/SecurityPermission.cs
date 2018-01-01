@@ -1,23 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
 
 namespace BusinessCore.Domain.Security
 {
-    [Flags]
-    public enum Permissions
-    {
-        CreateCase = (1 << 0),
-        ViewCase = (1 << 1),
-        Admin = (CreateCase | ViewCase)
-    }
-
-    [Table("SecurityPermission", Schema = "dbo")]
     public class SecurityPermission : BaseEntity
     {
-        //[Key]
-        //public int SecurityPermissionId { get; set; }
         public string PermissionName { get; set; }
         public string DisplayName { get; set; }
         public int SecurityGroupId { get; set; }

@@ -1,11 +1,3 @@
-//-----------------------------------------------------------------------
-// <copyright file="SalesInvoiceLine.cs" company="AccountGo">
-// Copyright (c) AccountGo. All rights reserved.
-// <author>Marvin Perez</author>
-// <date>1/11/2015 9:48:38 AM</date>
-// </copyright>
-//-----------------------------------------------------------------------
-
 using BusinessCore.Domain.Items;
 using System;
 using System.Linq;
@@ -15,7 +7,6 @@ using BusinessCore.Domain.TaxSystem;
 
 namespace BusinessCore.Domain.Sales
 {
-    [Table("SalesInvoiceLine")]
     public partial class SalesInvoiceLine : BaseEntity, ICompanyBaseEntity
     {
         public SalesInvoiceLine()

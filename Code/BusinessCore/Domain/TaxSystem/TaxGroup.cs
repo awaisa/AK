@@ -1,9 +1,7 @@
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessCore.Domain.TaxSystem
 {
-    [Table("TaxGroup")]
     public partial class TaxGroup : BaseEntity, ICompanyBaseEntity
     {
         public TaxGroup()
@@ -19,7 +17,6 @@ namespace BusinessCore.Domain.TaxSystem
         public virtual Company Company { get; set; }
     }
 
-    [Table("TaxGroupTax")]
     public partial class TaxGroupTax :  BaseEntity, ICompanyBaseEntity
     {
         public int TaxId { get; set; }

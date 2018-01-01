@@ -62,6 +62,7 @@ namespace WebApiCore.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Produces(typeof(CustomerModel))]
         public IActionResult Customer(int? id)
         {
             var o = _service.GetCustomerById(id ?? 0);

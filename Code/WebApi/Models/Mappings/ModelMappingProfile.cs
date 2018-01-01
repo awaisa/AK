@@ -18,18 +18,18 @@ namespace WebApiCore.Models.Mappings
     {
         public ModelMappingProfile()
         {
-            CreateMap<Item, ItemModel>();
+            CreateMap<Item, Inventory.ItemModel>();
             CreateMap<Item, Inventory.SearchRowModel>();
-            CreateMap<ItemModel, Item>();
+            CreateMap<Inventory.ItemModel, Item>();
 
             CreateMap<ItemCategory, ItemCategoryModel>();
             CreateMap<ItemCategoryModel, ItemCategory>();
 
-            CreateMap<Brand, ItemBrandModel>();
-            CreateMap<ItemBrandModel, Brand>();
+            CreateMap<ItemBrand, ItemBrandModel>();
+            CreateMap<ItemBrandModel, ItemBrand>();
 
-            CreateMap<Model, ItemModelModel>();
-            CreateMap<ItemModelModel, Model>();
+            CreateMap<BusinessCore.Domain.Items.ItemModel, ItemModelModel>();
+            CreateMap<ItemModelModel, BusinessCore.Domain.Items.ItemModel>();
 
 
             CreateMap<Tax, TaxModel>();
@@ -72,7 +72,7 @@ namespace WebApiCore.Models.Mappings
 
             CreateMap<SalesInvoiceHeader, Sale.InvoiceModel>();
             CreateMap<SalesInvoiceHeader, Sale.SearchRowModel>();
-            CreateMap<ItemModel, SalesInvoiceHeader>();
+            CreateMap<Inventory.ItemModel, SalesInvoiceHeader>();
 
         }
     }

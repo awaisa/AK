@@ -1,11 +1,3 @@
-//-----------------------------------------------------------------------
-// <copyright file="PurchaseReceiptLine.cs" company="AccountGo">
-// Copyright (c) AccountGo. All rights reserved.
-// <author>Marvin Perez</author>
-// <date>1/11/2015 9:48:38 AM</date>
-// </copyright>
-//-----------------------------------------------------------------------
-
 using BusinessCore.Domain.Items;
 using BusinessCore.Domain.TaxSystem;
 using System;
@@ -13,7 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessCore.Domain.Purchases
 {
-    [Table("PurchaseReceiptLine")]
     public partial class PurchaseReceiptLine : BaseEntity, ICompanyBaseEntity
     {
         public int PurchaseReceiptHeaderId { get; set; }

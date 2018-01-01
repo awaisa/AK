@@ -1,12 +1,4 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="FinancialService.cs" company="AccountGo">
-// Copyright (c) AccountGo. All rights reserved.
-// <author>Marvin Perez</author>
-// <date>1/11/2015 9:48:38 AM</date>
-// </copyright>
-//-----------------------------------------------------------------------
-
-using BusinessCore.Data;
+﻿using BusinessCore.Data;
 using BusinessCore.Domain;
 using BusinessCore.Domain.Financials;
 using BusinessCore.Domain.Items;

@@ -12,7 +12,7 @@ namespace BusinessCore.Mapping.Security
 
             TableColumns = () =>
             {
-                builder.Property(p => p.RoleName).HasColumnName("RoleName");
+                builder.Property(p => p.RoleName).HasColumnName("RoleName").HasMaxLength(100);
                 builder.Property(p => p.SysAdmin).HasColumnName("SysAdmin");
             };
 

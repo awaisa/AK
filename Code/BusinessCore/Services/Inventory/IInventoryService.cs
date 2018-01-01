@@ -1,11 +1,3 @@
-//-----------------------------------------------------------------------
-// <copyright file="IInventoryService.cs" company="AccountGo">
-// Copyright (c) AccountGo. All rights reserved.
-// <author>Marvin Perez</author>
-// <date>1/11/2015 9:48:38 AM</date>
-// </copyright>
-//-----------------------------------------------------------------------
-
 using BusinessCore.Domain;
 using BusinessCore.Domain.Items;
 using System.Collections.Generic;
@@ -36,14 +28,14 @@ namespace BusinessCore.Services.Inventory
         IQueryable<ItemCategory> GetItemCategories();
         IQueryable<InventoryControlJournal> GetInventoryControlJournals();
 
-        IQueryable<Model> GetModels();
-        Model GetModel(int? id);
-        Model SaveModel(Model model);
-        Model ModelSetActive(int id, bool isInactive);
+        IQueryable<ItemModel> GetModels();
+        ItemModel GetModel(int? id);
+        ItemModel SaveModel(ItemModel model);
+        ItemModel ModelSetActive(int id, bool isInactive);
 
-        IQueryable<Brand> GetBrands();
-        Brand GetBrand(int? id);
-        Brand SaveBrand(Brand brand);
-        Brand BrandSetActive(int id, bool isInactive);
+        IQueryable<ItemBrand> GetBrands();
+        ItemBrand GetBrand(int? id);
+        ItemBrand SaveBrand(ItemBrand brand);
+        ItemBrand BrandSetActive(int id, bool isInactive);
     }
 }

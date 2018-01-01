@@ -19,9 +19,9 @@ namespace BusinessCore.Mapping
                 builder.Property(p => p.Logger).HasColumnName("Logger");
                 builder.Property(p => p.Message).HasColumnName("Message");
 
-                builder.Property(p => p.Username).HasColumnName("Username");
-                builder.Property(p => p.CallSite).HasColumnName("CallSite");
-                builder.Property(p => p.Thread).HasColumnName("Thread");
+                builder.Property(p => p.Username).HasColumnName("Username").HasMaxLength(100);
+                builder.Property(p => p.CallSite).HasColumnName("CallSite").HasMaxLength(100);
+                builder.Property(p => p.Thread).HasColumnName("Thread").HasMaxLength(100);
                 builder.Property(p => p.Exception).HasColumnName("Exception");
                 builder.Property(p => p.StackTrace).HasColumnName("StackTrace");
             };

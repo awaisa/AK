@@ -6,7 +6,6 @@ using System.Linq;
 
 namespace BusinessCore.Domain.Financials
 {
-    [Table("GeneralLedgerHeader")]
     public partial class GeneralLedgerHeader : BaseEntity, ICompanyBaseEntity
     {
         public GeneralLedgerHeader()

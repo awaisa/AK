@@ -1,10 +1,4 @@
-//-----------------------------------------------------------------------
-// <copyright file="EnumTypes.cs" company="AccountGo">
-// Copyright (c) AccountGo. All rights reserved.
-// <author>Marvin Perez</author>
-// <date>1/11/2015 9:48:38 AM</date>
-// </copyright>
-//-----------------------------------------------------------------------
+using System;
 
 namespace BusinessCore.Domain
 {
@@ -148,5 +142,20 @@ namespace BusinessCore.Domain
         Overdue,
         Closed,
         Void
+    }
+
+    public enum AuditEventTypes
+    {
+        Added = 1,
+        Deleted = 2,
+        Modified = 3
+    }
+
+    [Flags]
+    public enum Permissions
+    {
+        CreateCase = (1 << 0),
+        ViewCase = (1 << 1),
+        Admin = (CreateCase | ViewCase)
     }
 }

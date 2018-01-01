@@ -1,11 +1,3 @@
-//-----------------------------------------------------------------------
-// <copyright file="Item.cs" company="AccountGo">
-// Copyright (c) AccountGo. All rights reserved.
-// <author>Marvin Perez</author>
-// <date>1/11/2015 9:48:38 AM</date>
-// </copyright>
-//-----------------------------------------------------------------------
-
 using BusinessCore.Domain.Financials;
 using BusinessCore.Domain.Purchases;
 using BusinessCore.Domain.Sales;
@@ -16,7 +8,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessCore.Domain.Items
 {
-    [Table("Item")]
     public partial class Item : BaseEntity, ICompanyBaseEntity
     {
         public Item()
@@ -66,10 +57,10 @@ namespace BusinessCore.Domain.Items
         public virtual Company Company { get; set; }
 
         public int? BrandId { get; set; }
-        public virtual Brand Brand { get; set; }
+        public virtual ItemBrand Brand { get; set; }
 
         public int? ModelId { get; set; }
-        public virtual Model Model { get; set; }
+        public virtual ItemModel Model { get; set; }
 
         #region Not Mapped
         [NotMapped]

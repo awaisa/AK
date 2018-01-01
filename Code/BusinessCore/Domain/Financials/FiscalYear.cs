@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessCore.Domain.Financials
 {
-    [Table("FinancialYear")]
     public partial class FinancialYear : BaseEntity, ICompanyBaseEntity
     {
         [Required]

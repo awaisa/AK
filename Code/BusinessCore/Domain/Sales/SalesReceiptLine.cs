@@ -7,7 +7,6 @@ using BusinessCore.Domain.Items;
 
 namespace BusinessCore.Domain.Sales
 {
-    [Table("SalesReceiptLine")]
     public partial class SalesReceiptLine : BaseEntity, ICompanyBaseEntity
     {
         public SalesReceiptLine()

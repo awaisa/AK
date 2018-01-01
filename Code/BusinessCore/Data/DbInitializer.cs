@@ -1,4 +1,5 @@
-﻿using BusinessCore.Domain;
+﻿using Bogus;
+using BusinessCore.Domain;
 using BusinessCore.Domain.Auditing;
 using BusinessCore.Domain.Financials;
 using BusinessCore.Domain.Items;
@@ -46,7 +47,7 @@ namespace BusinessCore.Data
             foreach (var company in companies)
             {
                 //MockAppPrincipal(0, company.Id, "Joe", "Blog", "JoeBlog");
-                _context.AppPrincipal = TestPrincipal.MockAppPrincipal(_appPrincipal.UserId, company.Id, _appPrincipal.Firstname, _appPrincipal.Surname, _appPrincipal.Username);
+                _context.AppPrincipal.SetPrincipal(_appPrincipal.UserId, _appPrincipal.Username, _appPrincipal.Firstname, _appPrincipal.Surname, company.Id);
 
                 InitUsers();
 
@@ -100,7 +101,7 @@ namespace BusinessCore.Data
             users.ForEach(u => u.Id = 0);
 
             if (_context.AppPrincipal.CompanyId == 1)
-                users.Add(new User() { Lastname = "System", Firstname = "Administrator", Username = "admin", Password="admin" });
+                users.Add(new User() { Lastname = "System", Firstname = "Administrator", Username = "admin", Password = "admin" });
 
             _context.Users.AddRange(users);
 
@@ -429,10 +430,14 @@ namespace BusinessCore.Data
         }
         List<Item> InitItems()
         {
-            _context.Measurements.Add(new Measurement() { Code = "EA", Description = "Each" });
-            _context.Measurements.Add(new Measurement() { Code = "PK", Description = "Pack" });
-            _context.Measurements.Add(new Measurement() { Code = "MO", Description = "Monthly" });
-            _context.Measurements.Add(new Measurement() { Code = "HR", Description = "Hour" });
+            var measurements = new List<Measurement>()
+            {
+                new Measurement() { Code = "EA", Description = "Each" },
+                new Measurement() { Code = "PK", Description = "Pack" },
+                new Measurement() { Code = "MO", Description = "Monthly" },
+                new Measurement() { Code = "HR", Description = "Hour" }
+            };
+            _context.Measurements.AddRange(measurements);
             _context.SaveChanges();
 
             // Accounts = Sales A/C (40100), Inventory (10800), COGS (50300), Inv Adjustment (50500), Item Assm Cost (10900)
@@ -442,107 +447,72 @@ namespace BusinessCore.Data
             var cogs = _coa.Where(a => a.AccountCode == AccountCodes.CostOfGoodsSold_50300).FirstOrDefault();
             var assemblyCost = _coa.Where(a => a.AccountCode == AccountCodes.AssemblyCost_10900).FirstOrDefault();
 
-            var itemCat = new ItemCategory()
+            var itemCategories = new List<ItemCategory>()
             {
-                Name = "Charges",
-                Measurement = _context.Measurements.Where(m => m.Code == "EA").FirstOrDefault(),
-                ItemType = ItemTypes.Charge,
-                SalesAccount = sales,
-                InventoryAccount = inventory,
-                AdjustmentAccount = invAdjusment,
-                CostOfGoodsSoldAccount = cogs,
-                AssemblyAccount = assemblyCost
-            };
-            itemCat.Items.Add(new Item()
-            {
-                Description = "HOA Dues",
-                SellDescription = "HOA Dues",
-                PurchaseDescription = "HOA Dues",
-                Price = 350,
-                SmallestMeasurement = _context.Measurements.Where(m => m.Code == "MO").FirstOrDefault(),
-                SellMeasurement = _context.Measurements.Where(m => m.Code == "MO").FirstOrDefault(),
-                SalesAccount = _coa.Where(a => a.AccountCode == AccountCodes.HomeOwners_40200).FirstOrDefault(),
-                No = "1"
-            });
-            _context.ItemCategories.Add(itemCat);
-
-            var componentCategory = new ItemCategory()
-            {
-                Name = "Components",
-                Measurement = _context.Measurements.Where(m => m.Code == "EA").FirstOrDefault(),
-                ItemType = ItemTypes.Purchased,
-                SalesAccount = sales,
-                InventoryAccount = inventory,
-                AdjustmentAccount = invAdjusment,
-                CostOfGoodsSoldAccount = cogs,
-                AssemblyAccount = assemblyCost
-            };
-
-            var carStickerItem = new Item()
-            {
-                Description = "Car Sticker",
-                SellDescription = "Car Sticker",
-                PurchaseDescription = "Car Sticker",
-                Price = 100,
-                Cost = 40,
-                SmallestMeasurement = _context.Measurements.Where(m => m.Code == "EA").FirstOrDefault(),
-                SellMeasurement = _context.Measurements.Where(m => m.Code == "EA").FirstOrDefault(),
-                PurchaseMeasurement = _context.Measurements.Where(m => m.Code == "EA").FirstOrDefault(),
-                SalesAccount = sales,
-                InventoryAccount = inventory,
-                CostOfGoodsSoldAccount = cogs,
-                InventoryAdjustmentAccount = invAdjusment,
-                ItemTaxGroup = _context.ItemTaxGroups.Where(m => m.Name == "Regular").FirstOrDefault(),
-                No = "2"
+                new ItemCategory()
+                {
+                    Name = "Charges",
+                    Measurement = measurements.Where(m => m.Code == "EA").FirstOrDefault(),
+                    ItemType = ItemTypes.Charge,
+                    SalesAccount = sales,
+                    InventoryAccount = inventory,
+                    AdjustmentAccount = invAdjusment,
+                    CostOfGoodsSoldAccount = cogs,
+                    AssemblyAccount = assemblyCost
+                },
+                new ItemCategory()
+                {
+                    Name = "Components",
+                    Measurement = measurements.Where(m => m.Code == "EA").FirstOrDefault(),
+                    ItemType = ItemTypes.Purchased,
+                    SalesAccount = sales,
+                    InventoryAccount = inventory,
+                    AdjustmentAccount = invAdjusment,
+                    CostOfGoodsSoldAccount = cogs,
+                    AssemblyAccount = assemblyCost
+                },
+                new ItemCategory()
+                {
+                    Name = "Services",
+                    Measurement = measurements.Where(m => m.Code == "HR").FirstOrDefault(),
+                    ItemType = ItemTypes.Service,
+                    SalesAccount = sales,
+                    InventoryAccount = inventory,
+                    AdjustmentAccount = invAdjusment,
+                    CostOfGoodsSoldAccount = cogs,
+                    AssemblyAccount = assemblyCost
+                },
+                new ItemCategory()
+                {
+                    Name = "Systems",
+                    Measurement = measurements.Where(m => m.Code == "EA").FirstOrDefault(),
+                    ItemType = ItemTypes.Manufactured,
+                    SalesAccount = sales,
+                    InventoryAccount = inventory,
+                    AdjustmentAccount = invAdjusment,
+                    CostOfGoodsSoldAccount = cogs,
+                    AssemblyAccount = assemblyCost
+                }
             };
 
-            var otherItem = new Item()
-            {
-                Description = "Optical Mouse",
-                SellDescription = "Optical Mouse",
-                PurchaseDescription = "Optical Mouse",
-                Price = 80,
-                Cost = 30,
-                SmallestMeasurement = _context.Measurements.Where(m => m.Code == "EA").FirstOrDefault(),
-                SellMeasurement = _context.Measurements.Where(m => m.Code == "EA").FirstOrDefault(),
-                PurchaseMeasurement = _context.Measurements.Where(m => m.Code == "EA").FirstOrDefault(),
-                SalesAccount = sales,
-                InventoryAccount = inventory,
-                CostOfGoodsSoldAccount = cogs,
-                InventoryAdjustmentAccount = invAdjusment,
-                ItemTaxGroup = _context.ItemTaxGroups.Where(m => m.Name == "Regular").FirstOrDefault(),
-                No = "3"
-            };
-
-            componentCategory.Items.Add(carStickerItem);
-            componentCategory.Items.Add(otherItem);
-            _context.ItemCategories.Add(componentCategory);
-
-            _context.ItemCategories.Add(new ItemCategory()
-            {
-                Name = "Services",
-                Measurement = _context.Measurements.Where(m => m.Code == "HR").FirstOrDefault(),
-                ItemType = ItemTypes.Service,
-                SalesAccount = sales,
-                InventoryAccount = inventory,
-                AdjustmentAccount = invAdjusment,
-                CostOfGoodsSoldAccount = cogs,
-                AssemblyAccount = assemblyCost
-            });
-
-            _context.ItemCategories.Add(new ItemCategory()
-            {
-                Name = "Systems",
-                Measurement = _context.Measurements.Where(m => m.Code == "EA").FirstOrDefault(),
-                ItemType = ItemTypes.Manufactured,
-                SalesAccount = sales,
-                InventoryAccount = inventory,
-                AdjustmentAccount = invAdjusment,
-                CostOfGoodsSoldAccount = cogs,
-                AssemblyAccount = assemblyCost
-            });
+            _context.ItemCategories.AddRange(itemCategories);
 
             _context.SaveChanges();
+            
+            //foreach (var itemCategory in itemCategories)
+            //{
+            //    var fakerItem = new Faker<Item>()
+            //        .RuleFor(r=> r.No, f=> (f.IndexVariable++).ToString())
+            //        .RuleFor(r=> r.Code, f=> (f.IndexVariable++).ToString())
+            //        .RuleFor(r=> r.Description, f => f.Commerce.ProductName())
+            //        .RuleFor(r=> r.PurchaseDescription, f => f.Commerce.ProductName())
+            //        .RuleFor(r=> r.SellDescription, f => f.Commerce.ProductName())
+            //        .RuleFor(r=> r.Cost, f => f.Random.Decimal(10, 10000))
+            //        .RuleFor(r=> r.Price, f => f.Random.Decimal(10, 10000))
+            //        .RuleFor(r=> r., f => f.Random.Decimal(10, 10000))
+            //        ;
+                
+            //}
 
             return _context.Items.ToList();
         }

@@ -1,23 +1,17 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessCore.Domain.Security
 {
-    [Table("User", Schema = "dbo")]
     public class User : BaseEntity, ICompanyBaseEntity
     {
         public User()
         {
             Roles = new HashSet<SecurityUserRole>();
         }
-        //[Key]
-        //public int UserId { get; set; }
         /// <summary>
         /// Username / Email address
         /// </summary>
         public string Username { get; set; }
-        //public string EmailAddress { get; set; }
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public string Password { get; set; }

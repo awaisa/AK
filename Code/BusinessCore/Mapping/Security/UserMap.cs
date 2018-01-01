@@ -12,10 +12,10 @@ namespace BusinessCore.Mapping.Security
 
             TableColumns = () =>
             {
-                builder.Property(p => p.Username).HasColumnName("Username");
-                builder.Property(p => p.Firstname).HasColumnName("Firstname");
-                builder.Property(p => p.Lastname).HasColumnName("Lastname");
-                builder.Property(p => p.Password).HasColumnName("Password");
+                builder.Property(p => p.Username).HasColumnName("Username").HasMaxLength(100);
+                builder.Property(p => p.Firstname).HasColumnName("Firstname").HasMaxLength(100);
+                builder.Property(p => p.Lastname).HasColumnName("Lastname").HasMaxLength(100);
+                builder.Property(p => p.Password).HasColumnName("Password").HasMaxLength(100);
 
                 builder.Property(p => p.CompanyId).HasColumnName("CompanyId");
                 builder.HasOne(t => t.Company).WithMany().HasForeignKey(t => t.CompanyId);

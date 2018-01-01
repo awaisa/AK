@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessCore.Domain.Financials
 {
-    [Table("Bank")]
     public partial class Bank : BaseEntity, ICompanyBaseEntity
     {
         public BankTypes Type { get; set; }

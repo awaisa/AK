@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessCore.Domain
 {
-    [Table("Log")]
     public class Log : BaseEntity
     {
         public DateTime TimeStamp { get; set; }

@@ -1,11 +1,9 @@
 using System.Linq;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessCore.Domain.Financials
 {
-    [Table("Account")]
     public partial class Account : BaseEntity, ICompanyBaseEntity
     {
         public Account()
@@ -18,19 +16,11 @@ namespace BusinessCore.Domain.Financials
         public int? ParentAccountId { get; set; }
         public DrOrCrSide DrOrCrSide { get; set; }
         public int CompanyId { get; set; }
-        [Required]
-        [StringLength(50)]
         public string AccountCode { get; set; }
-        [Required]
-        [StringLength(200)]
         public string AccountName { get; set; }
-        [StringLength(200)]
         public string Description { get; set; }
         public bool IsCash { get; set; }
         public bool IsContraAccount { get; set; }
-        [Column(TypeName = "timestamp")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        [MaxLength(8)]
         public byte[] RowVersion { get; set; }
         public virtual Account ParentAccount { get; set; }
         public virtual AccountClass AccountClass { get; set; }

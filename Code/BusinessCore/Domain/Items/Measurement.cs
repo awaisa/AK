@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessCore.Domain.Items
 {
-    [Table("Measurement")]
     public partial class Measurement : BaseEntity, ICompanyBaseEntity
     {
         public string Code { get; set; }

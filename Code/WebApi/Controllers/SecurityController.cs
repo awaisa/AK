@@ -16,6 +16,7 @@ using WebApiCore.Infrastructure;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using WebApiCore.Infrastructure.ErrorHandling;
+using BusinessCore.Security;
 
 namespace WebApiCore.Controllers
 {
@@ -36,7 +37,7 @@ namespace WebApiCore.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("api/login")]
-        public IActionResult Login([FromBody]  UserIn loginUser)
+        public IActionResult Login([FromBody]  UserInModel loginUser)
         {
             var user = accountRepo.AuthenticateAndLoadUser(loginUser.Username, loginUser.Password);
 
@@ -49,11 +50,11 @@ namespace WebApiCore.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim("UserId", user.Id.ToString()),
-                    new Claim("Username", user.Username),
-                    new Claim("Firstname", user.Firstname),
-                    new Claim("Lastname", user.Lastname),
-                    new Claim("CompanyId", user.CompanyId.ToString())
+                    new Claim(AppClaims.UserId, user.Id.ToString()),
+                    new Claim(AppClaims.Username, user.Username),
+                    new Claim(AppClaims.Firstname, user.Firstname),
+                    new Claim(AppClaims.Lastname, user.Lastname),
+                    new Claim(AppClaims.CompanyId, user.CompanyId.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -62,7 +63,7 @@ namespace WebApiCore.Controllers
             var tokenString = tokenHandler.WriteToken(token);
 
             // return basic user info (without password) and token to store client side
-            return Ok(new UserOut
+            return Ok(new UserOutModel
             {
                 Id = user.Id,
                 Username = user.Username,

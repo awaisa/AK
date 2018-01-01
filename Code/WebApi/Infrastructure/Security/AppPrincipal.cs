@@ -10,34 +10,22 @@ namespace WebApiCore.Infrastructure.Security
 {
     public class AppPrincipal : IAppPrincipal
     {
-        private readonly ClaimsPrincipal _principal;
+        private ClaimsPrincipal _principal;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        //public AppPrincipal(IPrincipal principal)
-        //{
-        //    _principal = principal as ClaimsPrincipal;
-        //}
         public AppPrincipal(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
-            if(_httpContextAccessor.HttpContext!=null)
-            _principal = _httpContextAccessor.HttpContext.User;
+            if (_httpContextAccessor.HttpContext != null)
+                _principal = _httpContextAccessor.HttpContext.User;
             else
             {
-                _principal = new ClaimsPrincipal
-                    (
-                        new ClaimsIdentity(new Claim[]
-                        {
-                            new Claim("UserId", "0"),
-                            new Claim("Username", "ClaimsPrincipal_Username"),
-                            new Claim("Firstname", "ClaimsPrincipal_Firstname"),
-                            new Claim("Lastname", "ClaimsPrincipal_Lastname"),
-                            new Claim("CompanyId", "0")
-                        })
-                    );
+                SetPrincipal(0, "ClaimsPrincipal_Username", "ClaimsPrincipal_Firstname", "ClaimsPrincipal_Lastname", 0);
             }
         }
-        public int UserId { get
+        public int UserId
+        {
+            get
             {
                 var val = _principal.FindFirst("UserId")?.Value;
                 if (val == null) return 0;
@@ -74,6 +62,29 @@ namespace WebApiCore.Infrastructure.Security
                 if (val == null) return 0;
                 return Convert.ToInt32(val);
             }
+        }
+
+        public IIdentity Identity => throw new NotImplementedException();
+
+        public bool IsInRole(string role)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPrincipal SetPrincipal(int userId, string username, string firstname, string surname, int companyId)
+        {
+            _principal = new ClaimsPrincipal
+                    (
+                        new ClaimsIdentity(new Claim[]
+                        {
+                            new Claim(AppClaims.UserId, $"{userId}"),
+                            new Claim(AppClaims.Username, $"{username}"),
+                            new Claim(AppClaims.Firstname, $"{firstname}"),
+                            new Claim(AppClaims.Lastname, $"{surname}"),
+                            new Claim(AppClaims.CompanyId, $"{companyId}")
+                        })
+                    );
+            return _principal as IPrincipal;
         }
     }
 }

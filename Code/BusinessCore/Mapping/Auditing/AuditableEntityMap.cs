@@ -12,8 +12,8 @@ namespace BusinessCore.Mapping.Auditing
 
             TableColumns = () =>
             {
-                builder.Property(p => p.EntityName).HasColumnName("EntityName");
-                builder.Property(p => p.EnableAudit).HasColumnName("EnableAudit");
+                builder.Property(p => p.EntityName).HasColumnName("EntityName").HasMaxLength(100);
+                builder.Property(p => p.EnableAudit).HasColumnName("EnableAudit").HasMaxLength(100);
             };
 
             base.Configure(builder);

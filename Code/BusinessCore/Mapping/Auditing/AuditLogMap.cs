@@ -13,12 +13,12 @@ namespace BusinessCore.Mapping.Auditing
 
             TableColumns = () =>
             {
-                builder.Property(p => p.UserName).HasColumnName("UserName");
+                builder.Property(p => p.UserName).HasColumnName("UserName").HasMaxLength(100);
                 builder.Property(p => p.AuditEventDateUTC).HasColumnName("AuditEventDateUTC");
                 builder.Property(p => p.AuditEventType).HasColumnName("AuditEventType");
-                builder.Property(p => p.TableName).HasColumnName("TableName");
+                builder.Property(p => p.TableName).HasColumnName("TableName").HasMaxLength(100);
                 builder.Property(p => p.RecordId).HasColumnName("RecordId");
-                builder.Property(p => p.FieldName).HasColumnName("FieldName");
+                builder.Property(p => p.FieldName).HasColumnName("FieldName").HasMaxLength(100);
                 builder.Property(p => p.OriginalValue).HasColumnName("OriginalValue");
                 builder.Property(p => p.NewValue).HasColumnName("NewValue");
             };
