@@ -101,5 +101,18 @@ namespace WebApiCore.Controllers
             _service.DeleteCustomer(id);
             return Ok();
         }
+        [HttpPut]
+        [Produces(typeof(CustomerModel))]
+        public IActionResult UpdateCustomer([FromBody]CustomerModel model)
+        {
+            var o = _service.GetCustomerById(model.Id);
+            if (o == null)
+            {
+                return NotFound();
+            }
+            var obj = model.ToEntity();
+            _service.UpdateCustomer(obj);
+            return Ok();
+        }
     }    
 }

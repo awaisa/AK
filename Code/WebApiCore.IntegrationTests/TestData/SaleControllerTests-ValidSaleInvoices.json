@@ -1,15 +1,14 @@
 ﻿[
   {
     "no": "10",
-    "date": "30-DEC-2017",
-    "vendorId": 1,
-    "vendorInvoiceNo": null,
+    "date": "30-May-2018",
+    "CustomerId": 1,
     "description": null,
     "total": 100,
     "invoiceItems": [
       {
-        "itemId": 0,
-        "measurementId": null,
+        "itemId": 1,
+        "measurementId": 6,
         "quantity": 10,
         "cost": 10,
         "discount": 0,

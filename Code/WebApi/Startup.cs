@@ -31,6 +31,8 @@ using WebApiCore.Models.Mappings;
 using WebApiCore.Infrastructure.Security;
 using BusinessCore.Domain.Security;
 using BusinessCore.Domain.Purchases;
+using System;
+using Microsoft.Data.Sqlite;
 
 namespace WebApiCore
 {
@@ -67,7 +69,7 @@ namespace WebApiCore
                     var options = builder
                           .UseInMemoryDatabase()
                     #pragma warning restore CS0618 // Type or member is obsolete
-                          .Options;
+                                              .Options;
                 }
                 else
                 {

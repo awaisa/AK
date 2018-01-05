@@ -63,8 +63,10 @@ namespace WebApiCore.Controllers
             return Json(model);
         }
 
+       
         [HttpGet("{id:int}")]
-        public IActionResult Vendor(int? id)
+        [Produces(typeof(VendorModel))]
+        public IActionResult Vendor( int? id)
         {
             var o = _service.GetVendorById(id ?? 0);
             if (o == null)
@@ -88,6 +90,32 @@ namespace WebApiCore.Controllers
                 return Ok(model);
             }
             return new BadRequestObjectResult(ModelState);
+        }
+
+        [HttpDelete("{id:int}")]
+        public IActionResult DeleteVendor(int id)
+        {
+            var o = _service.GetVendorById(id);
+            if (o == null)
+            {
+                return NotFound();
+            }
+            _service.DeleteVendor(id);
+            return Ok();
+        }
+
+        [HttpPut]
+        [Produces(typeof(VendorModel))]
+        public IActionResult UpdateCustomer([FromBody]VendorModel model)
+        {
+            var o = _service.GetVendorById(model.Id);
+            if (o == null)
+            {
+                return NotFound();
+            }
+            var obj = model.ToEntity();
+            _service.UpdateVendor(obj);
+            return Ok();
         }
     }    
 }

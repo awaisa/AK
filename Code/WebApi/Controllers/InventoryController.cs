@@ -88,5 +88,30 @@ namespace WebApiCore.Controllers
             }
             return BadRequest(ModelState);
         }
+        [HttpDelete("{id:int}")]
+        public IActionResult DeleteItem(int id)
+        {
+            var item = _service.GetItemDetailById(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            _service.DeleteItem(id);
+            return Ok();
+        }
+        [HttpPut]
+        [Produces(typeof(ItemModel))]
+        public IActionResult UpdateItem([FromBody]ItemModel itemModel)
+        {
+            var items = _service.GetItemById(itemModel.Id);
+            if (items == null)
+            {
+                return NotFound();
+            }
+            var item = itemModel.ToEntity();
+            _service.SaveItem(item);
+            return Ok();
+
+        }
     }
 }

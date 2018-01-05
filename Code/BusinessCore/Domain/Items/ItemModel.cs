@@ -12,6 +12,7 @@ namespace BusinessCore.Domain.Items
 
         public string Code { get; set; }
         public string Name { get; set; }
+        //public string Description { get; set; }//des
 
         public virtual ICollection<Item> Items { get; set; }
 

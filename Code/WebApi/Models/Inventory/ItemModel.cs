@@ -19,6 +19,7 @@ namespace WebApiCore.Models.Inventory
         public int? SmallestMeasurementId { get; set; }
         public int? SellMeasurementId { get; set; }
         public int? PurchaseMeasurementId { get; set; }
+        public int? MeasurementId { get; set; }
 
         public int? PreferredVendorId { get; set; }
 

@@ -1,0 +1,46 @@
+﻿[
+  {
+    "no": "002",
+    "party": {
+      "name": "madni",
+      "email": "madni@gmail.com",
+      "website": "madni.com",
+      "phone": "99389384384389",
+      "fax": "9404948494",
+      "address": "NA",
+      "contacts": [
+        {
+          "firstName": "M",
+          "lastName": "madni",
+          "middleName": "kale",
+          "isPrimary": true
+        }
+      ]
+    },
+    "paymentTermId": null,
+    "taxGroupId": 3
+  },
+  {
+    "no": "008",
+    "party": {
+      "name": "akhter",
+      "email": "akhter@gmail.com",
+      "website": "akhter",
+      "phone": "0301758754587",
+      "fax": "435756334",
+      "address": "RWP",
+      "contacts": [
+        {
+          "firstName": "B",
+          "lastName": "akhter",
+          "middleName": "ahmad",
+          "isPrimary": true
+
+        }
+      ]
+
+    },
+    "paymentTermId": null,
+    "taxGroupId": 4
+  }
+]

@@ -27,6 +27,7 @@ namespace BusinessCore.Domain.Sales
         public virtual GeneralLedgerHeader GeneralLedgerHeader { get; set; }
         public virtual SalesDeliveryHeader SalesDeliveryHeader { get; set; }
 
+
         public virtual ICollection<SalesInvoiceLine> SalesInvoiceLines { get; set; }
         [NotMapped]
         public virtual ICollection<SalesReceiptHeader> SalesReceipts { get; set; }
@@ -39,12 +40,20 @@ namespace BusinessCore.Domain.Sales
         public decimal ComputeTotalTax()
         {
             decimal totalTax = 0;
+            foreach (var line in SalesInvoiceLines)
+            {
+                totalTax += line.TaxAmount;
+            }
             return totalTax;
         }
 
         public decimal ComputeTotalDiscount()
         {
             decimal totalDiscount = 0;
+            foreach (var line in SalesInvoiceLines)
+            {
+                totalDiscount += line.Discount;
+            }
             return totalDiscount;
         }
 
@@ -67,6 +76,7 @@ namespace BusinessCore.Domain.Sales
             {
                 totalInvoiceAmount += (line.Quantity * line.Amount) - line.Discount + line.TaxAmount;
             }
+            totalInvoiceAmount += ShippingHandlingCharge;
             return totalInvoiceAmount;
         }
     }

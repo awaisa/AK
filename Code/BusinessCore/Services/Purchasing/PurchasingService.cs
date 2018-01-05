@@ -255,6 +255,19 @@ namespace BusinessCore.Services.Purchasing
             return query;
         }
 
+        void IPurchasingService.UpdateVendor(Vendor vendor)
+        {
+            var dbObject = GetVendorById(vendor.Id);
+            if (dbObject != null)
+            {
+                dbObject.No = vendor.No;
+                dbObject.Party.Name = vendor.Party.Name;
+                dbObject.Party.Email = vendor.Party.Email;
+                dbObject.Party.Website = vendor.Party.Website;
+                _vendorRepo.Update(dbObject);
+            }
+        }
+
         public Vendor GetVendorById(int id)
         {
             Expression<Func<Vendor, object>>[] includeProperties =
@@ -266,6 +279,17 @@ namespace BusinessCore.Services.Purchasing
             };
             return _vendorRepo.GetAllIncluding(includeProperties).FirstOrDefault(o => o.Id == id);
         }
+
+        void IPurchasingService.DeleteVendor(int VendorId)
+        {
+            var dbObject = GetVendorById(VendorId);
+            if (dbObject != null)
+            {
+                dbObject.Deleted = true;
+                _vendorRepo.Update(dbObject);
+            }
+        }
+
 
         public IQueryable<PurchaseOrderHeader> GetPurchaseOrders()
         {
@@ -412,5 +436,8 @@ namespace BusinessCore.Services.Purchasing
                 _vendorPaymentRepo.Insert(payment);
             }
         }
+
+       
     }
 }
+

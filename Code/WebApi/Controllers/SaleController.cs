@@ -43,7 +43,7 @@ namespace WebApiCore.Controllers
             {
                 records = records
                     .Where(
-                    t => t.Description.Contains(searchText) 
+                    t => t.Description.Contains(searchText)
                         || t.Customer.No.Contains(searchText)
                         || t.Customer.Party.Name.Contains(searchText)
                         || t.Customer.Party.Address.Contains(searchText)
@@ -64,8 +64,8 @@ namespace WebApiCore.Controllers
                                 Id = t.Id,
                                 No = t.No,
                                 Date = t.Date,
-                                VendorId = t.CustomerId,
-                                VendorName = t.Customer.Party.Name,
+                                CustomerId = t.CustomerId,
+                                //CustomerName = t.Customer.Party.Name,
                                 Total = t.ComputeTotalAmount(),
 
             
@@ -86,8 +86,7 @@ namespace WebApiCore.Controllers
             return NotFound(id);
         }
 
-        [HttpPost("Invoice")]
-        [HttpPut("Invoice")]
+        [HttpPost]
         [ValidateModel]
         [Produces(typeof(InvoiceModel))]
         public IActionResult SaveInvoice([FromBody] InvoiceModel model)
@@ -100,6 +99,18 @@ namespace WebApiCore.Controllers
                 return Ok(model);
             }
             return BadRequest(ModelState);
+        }
+
+        [HttpDelete("Invoice/{id:int}")]
+        public IActionResult DeleteInvoice(int id)
+        {
+            var invoice = _service.GetSalesInvoiceById(id);
+            if (invoice == null)
+            {
+                return NotFound();
+            }
+            _service.DeleteInvoice(id);
+            return Ok();
         }
     }    
 }

@@ -52,7 +52,7 @@ namespace WebApiCore.Models.Mappings
                  .ForMember(x => x.InvoiceItems, opt => opt.MapFrom(mf => mf.PurchaseInvoiceLines));
             CreateMap<InvoiceModel, PurchaseInvoiceHeader>()
                 .ForPath(x => x.PurchaseInvoiceLines, opt => opt.MapFrom(mf => mf.InvoiceItems));
-            
+
             CreateMap<PurchaseInvoiceLine, InvoiceItemModel>();
             CreateMap<InvoiceItemModel, PurchaseInvoiceLine>();
 
@@ -70,10 +70,21 @@ namespace WebApiCore.Models.Mappings
             CreateMap<BusinessCore.Domain.Sales.Customer, Customer.SearchRowModel>();
             CreateMap<CustomerModel, BusinessCore.Domain.Sales.Customer>();
 
-            CreateMap<SalesInvoiceHeader, Sale.InvoiceModel>();
+            CreateMap<SalesInvoiceHeader, Sale.InvoiceModel>()
+                .ForPath(x => x.InvoiceItems, opt => opt.MapFrom(mf => mf.SalesInvoiceLines));
             CreateMap<SalesInvoiceHeader, Sale.SearchRowModel>();
-            CreateMap<Inventory.ItemModel, SalesInvoiceHeader>();
 
+            CreateMap<Sale.InvoiceItemModel, SalesInvoiceLine>()
+                .ForPath(x => x.DiscountAmount, opt => opt.MapFrom(mf => mf.Discount))
+                .ForPath(x => x.TaxAmount, opt => opt.MapFrom(mf => mf.Tax))
+                .ForPath(x => x.Tax, opt => opt.Ignore());
+
+            CreateMap<Sale.InvoiceModel, SalesInvoiceHeader>()
+                .ForPath(x => x.SalesInvoiceLines, opt => opt.MapFrom(mf => mf.InvoiceItems));
+            //CreateMap<Sale.InvoiceModel, SalesInvoiceLine>();
+
+            //CreateMap<Sale.InvoiceModel, SalesOrderHeader>()
+            //    .ForMember(x => x.SalesOrderLines, opt => opt.MapFrom(mf => mf.InvoiceItems.Select(y=>y.Discount)));
         }
     }
 }

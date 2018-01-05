@@ -27,17 +27,17 @@ namespace WebApiCore.Models.Mappings
             return entity.MapTo<Item, Inventory.SearchRowModel>();
         }
 
-        public static ItemModel ToModel(this Item entity)
+        public static Inventory.ItemModel ToModel(this Item entity)
         {
-            return entity.MapTo<Item, ItemModel>();
+            return entity.MapTo<Item, Inventory.ItemModel>();
         }
 
-        public static Item ToEntity(this ItemModel model)
+        public static Item ToEntity(this Inventory.ItemModel model)
         {
-            return model.MapTo<ItemModel, Item>();
+            return model.MapTo<Inventory.ItemModel, Item>();
         }
 
-        public static Item ToEntity(this ItemModel model, Item destination)
+        public static Item ToEntity(this Inventory.ItemModel model, Item destination)
         {
             return model.MapTo(destination);
         }

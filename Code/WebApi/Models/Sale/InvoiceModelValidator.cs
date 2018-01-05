@@ -16,7 +16,7 @@ namespace WebApiCore.Models.Sale
 
             RuleFor(m => m.No).NotEmpty();
             //RuleFor(m => m.Description).NotEmpty();
-            RuleFor(m => m.VendorId).Must(i => ValidateCustomerId(i.Value)).WithMessage("VendorId is not valid");
+            RuleFor(m => m.CustomerId).Must(i => ValidateCustomerId(i)).WithMessage("CustomerId is not valid");
 
             RuleFor(m => m.InvoiceItems)
                 .Must(i => i.Any())

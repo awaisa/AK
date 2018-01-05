@@ -117,7 +117,7 @@ namespace BusinessCore.Data
         }
         FinancialYear InitFiscalYear()
         {
-            var financialYear = new FinancialYear() { FiscalYearCode = "FY1516", FiscalYearName = "FY 2016/2017", StartDate = new DateTime(2016, 01, 01), EndDate = new DateTime(2016, 12, 31), IsActive = true };
+            var financialYear = new FinancialYear() { FiscalYearCode = "FY1516", FiscalYearName = "FY 2017/2018", StartDate = new DateTime(2018, 01, 01), EndDate = new DateTime(2018, 12, 31), IsActive = true };
             _context.FiscalYears.Add(financialYear);
             _context.SaveChanges();
 
@@ -430,6 +430,12 @@ namespace BusinessCore.Data
         }
         List<Item> InitItems()
         {
+            var items = new List<Item>()
+            {
+                new Item(){Code="202",CompanyId=1,Cost=7000}
+            };
+            _context.Items.AddRange(items);
+            _context.SaveChanges();
             var measurements = new List<Measurement>()
             {
                 new Measurement() { Code = "EA", Description = "Each" },
@@ -451,6 +457,7 @@ namespace BusinessCore.Data
             {
                 new ItemCategory()
                 {
+
                     Name = "Charges",
                     Measurement = measurements.Where(m => m.Code == "EA").FirstOrDefault(),
                     ItemType = ItemTypes.Charge,
@@ -458,7 +465,10 @@ namespace BusinessCore.Data
                     InventoryAccount = inventory,
                     AdjustmentAccount = invAdjusment,
                     CostOfGoodsSoldAccount = cogs,
-                    AssemblyAccount = assemblyCost
+                    AssemblyAccount = assemblyCost,
+                    //BrandId=201,
+                    //ModelId=1004,
+                    ItemCategoryId=101
                 },
                 new ItemCategory()
                 {
@@ -469,7 +479,10 @@ namespace BusinessCore.Data
                     InventoryAccount = inventory,
                     AdjustmentAccount = invAdjusment,
                     CostOfGoodsSoldAccount = cogs,
-                    AssemblyAccount = assemblyCost
+                    AssemblyAccount = assemblyCost,
+                    //BrandId=02,
+                    //ModelId=005,
+                    ItemCategoryId=102
                 },
                 new ItemCategory()
                 {
@@ -480,7 +493,10 @@ namespace BusinessCore.Data
                     InventoryAccount = inventory,
                     AdjustmentAccount = invAdjusment,
                     CostOfGoodsSoldAccount = cogs,
-                    AssemblyAccount = assemblyCost
+                    AssemblyAccount = assemblyCost,
+                    //BrandId=03,
+                    //ModelId=006,
+                    ItemCategoryId=103
                 },
                 new ItemCategory()
                 {
@@ -491,14 +507,17 @@ namespace BusinessCore.Data
                     InventoryAccount = inventory,
                     AdjustmentAccount = invAdjusment,
                     CostOfGoodsSoldAccount = cogs,
-                    AssemblyAccount = assemblyCost
+                    AssemblyAccount = assemblyCost,
+                    //BrandId=04,
+                    //ModelId=007,
+                    ItemCategoryId=104
                 }
             };
 
             _context.ItemCategories.AddRange(itemCategories);
 
             _context.SaveChanges();
-            
+
             //foreach (var itemCategory in itemCategories)
             //{
             //    var fakerItem = new Faker<Item>()
@@ -511,7 +530,7 @@ namespace BusinessCore.Data
             //        .RuleFor(r=> r.Price, f => f.Random.Decimal(10, 10000))
             //        .RuleFor(r=> r., f => f.Random.Decimal(10, 10000))
             //        ;
-                
+
             //}
 
             return _context.Items.ToList();

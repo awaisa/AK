@@ -135,13 +135,19 @@ namespace BusinessCore.Services.Inventory
                 objectToSave.InventoryAdjustmentAccountId = invAdjusment?.Id;
                 objectToSave.ItemTaxGroupId = taxGroup?.Id;
 
+
                 _itemRepo.Insert(objectToSave);
             }
         }
 
         public void DeleteItem(int itemId)
         {
-            throw new NotImplementedException();
+            var dbObject = GetItemById(itemId);
+            if (dbObject != null)
+            {
+                dbObject.Deleted = true;
+                _itemRepo.Update(dbObject);
+            }
         }
 
         public IQueryable<Item> GetAllItems()

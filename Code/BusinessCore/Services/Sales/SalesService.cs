@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using BusinessCore.Domain.TaxSystem;
 using BusinessCore.Services.Security;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessCore.Services.Sales
 {
@@ -18,6 +19,7 @@ namespace BusinessCore.Services.Sales
         private readonly IFinancialService _financialService;
         private readonly IInventoryService _inventoryService;
 
+        private readonly IRepository<ItemCategory> _itemCatagoryRepo;
         private readonly IRepository<SalesOrderHeader> _salesOrderRepo;
         private readonly IRepository<SalesInvoiceHeader> _salesInvoiceRepo;
         private readonly IRepository<SalesReceiptHeader> _salesReceiptRepo;
@@ -48,7 +50,8 @@ namespace BusinessCore.Services.Sales
             IRepository<Bank> bankRepo,
             IRepository<GeneralLedgerSetting> generalLedgerSetting,
             IRepository<Contact> contactRepo,
-            IRepository<TaxGroup> taxGroupRepo)
+            IRepository<TaxGroup> taxGroupRepo,
+            IRepository<ItemCategory> itemCatagoryRepo)
             : base(sequenceNumberRepo, generalLedgerSetting, paymentTermRepo, bankRepo)
         {
             _financialService = financialService;
@@ -68,6 +71,7 @@ namespace BusinessCore.Services.Sales
             _genetalLedgerSetting = generalLedgerSetting;
             _contactRepo = contactRepo;
             _taxGroupRepo = taxGroupRepo;
+            _itemCatagoryRepo = itemCatagoryRepo;
         }
 
         #region CUSTOMER
@@ -201,6 +205,18 @@ namespace BusinessCore.Services.Sales
                 _customerRepo.Update(dbObject);
             }
         }
+        public void UpdateCustomer(Customer customer)
+        {
+            var dbObject = GetCustomerById(customer.Id);
+            if (dbObject != null)
+            {
+                dbObject.No =customer.No;
+                dbObject.Party.Name = customer.Party.Name;
+                dbObject.Party.Email = customer.Party.Email;
+                dbObject.Party.Website = customer.Party.Website;
+                _customerRepo.Update(dbObject);
+            }
+        }
         #endregion
 
         #region SALE INVOICE
@@ -209,7 +225,7 @@ namespace BusinessCore.Services.Sales
             System.Linq.Expressions.Expression<Func<SalesInvoiceHeader, object>>[] includeProperties =
             {
                 p => p.SalesInvoiceLines,
-                p => p.SalesInvoiceLines.Select(p2 => p2.Item)
+                //p => p.SalesInvoiceLines.Select(p2 => p2.Item)
             };
             var query = _salesInvoiceRepo.GetAllIncluding(includeProperties);
             return query;
@@ -219,7 +235,7 @@ namespace BusinessCore.Services.Sales
             System.Linq.Expressions.Expression<Func<SalesInvoiceHeader, object>>[] includeProperties =
             {
                 p => p.SalesInvoiceLines,
-                p => p.SalesInvoiceLines.Select(p2 => p2.Item)
+               // p => p.SalesInvoiceLines.Select(p2 => p2.Item)
             };
 
             var salesInvoice = _salesInvoiceRepo.GetAllIncluding(includeProperties)
@@ -243,9 +259,16 @@ namespace BusinessCore.Services.Sales
 
             foreach (var lineItem in salesInvoice.SalesInvoiceLines)
             {
-                var item = _itemRepo.GetById(lineItem.ItemId);
+                var item = _inventoryService.GetItemDetailById(lineItem.ItemId);
 
                 var lineAmount = lineItem.Quantity * lineItem.Amount;
+
+                var itemCatagory = _itemCatagoryRepo.GetById(lineItem.ItemId);
+                item.CostOfGoodsSoldAccountId = itemCatagory.CostOfGoodsSoldAccountId;
+                item.InventoryAccountId = itemCatagory.InventoryAccountId;
+                item.SalesAccountId = itemCatagory.SalesAccountId;
+                item.InventoryAdjustmentAccountId = itemCatagory.AdjustmentAccountId;
+                item.ItemCategory=new ItemCategory { ItemType=itemCatagory.ItemType};
 
                 if (!item.GLAccountsValidated())
                     throw new Exception("Item is not correctly setup for financial transaction. Please check if GL accounts are all set.");
@@ -338,8 +361,8 @@ namespace BusinessCore.Services.Sales
                     p => p.GeneralLedgerHeader,
                     p => p.GeneralLedgerHeader.GeneralLedgerLines,
                     p => p.SalesInvoiceLines,
-                    p => p.SalesInvoiceLines.Select(p2 => p2.InventoryControlJournal)
-                };                
+                    //p => p.SalesInvoiceLines.Select(p2=>p2.InventoryControlJournal)
+                };
                 var dbObject = _salesInvoiceRepo.GetAllIncluding(includeProperties).Where(o => o.Id == salesInvoice.Id).FirstOrDefault();
                 #region UPDATE
                 if (dbObject != null)
@@ -440,6 +463,15 @@ namespace BusinessCore.Services.Sales
                 #endregion
             }
             return salesInvoice;
+        }
+        public void DeleteInvoice(int id)
+        {
+            var dbObject = GetSalesInvoiceById(id);
+            if (dbObject != null)
+            {
+                dbObject.Deleted = true;
+                _salesInvoiceRepo.Update(dbObject);
+            }
         }
         #endregion
 

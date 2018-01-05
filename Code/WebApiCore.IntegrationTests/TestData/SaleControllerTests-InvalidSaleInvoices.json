@@ -1,0 +1,38 @@
+﻿[
+  {
+    "no": "10",
+    "date": "30-May-2018",
+    "CustomerId": 8,
+    "description": null,
+    "total": null,
+    "invoiceItems": [
+      {
+        "itemId": 1,
+        "measurementId": 6,
+        "quantity": 10,
+        "cost": 10,
+        "discount": 0,
+        "tax": 0,
+        "amount": 100
+      }
+    ]
+  },
+  {
+    "no": null,
+    "date": "30-jun-2018",
+    "CustomerId": 1,
+    "description": null,
+    "total": 100,
+    "invoiceItems": [
+      {
+        "itemId": 2,
+        "measurementId": 6,
+        "quantity": 10,
+        "cost": 10,
+        "discount": 0,
+        "tax": 0,
+        "amount": 100
+      }
+    ]
+  }
+]

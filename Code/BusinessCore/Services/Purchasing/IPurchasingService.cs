@@ -14,6 +14,8 @@ namespace BusinessCore.Services.Purchasing
         void AddPurchaseOrderReceipt(PurchaseReceiptHeader purchaseOrderReceipt);
         IQueryable<Vendor> GetVendors();
         Vendor GetVendorById(int id);
+        void DeleteVendor(int id);
+        void UpdateVendor(Vendor vendor);
         IQueryable<PurchaseOrderHeader> GetPurchaseOrders();
         PurchaseOrderHeader GetPurchaseOrderById(int id);
         PurchaseReceiptHeader GetPurchaseReceiptById(int id);

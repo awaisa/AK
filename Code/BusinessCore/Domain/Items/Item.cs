@@ -36,6 +36,8 @@ namespace BusinessCore.Domain.Items
         public string SellDescription { get; set; }
         public decimal? Cost { get; set; }
         public decimal? Price { get; set; }
+        public int? ModelId { get; set; }
+        public int? BrandId { get; set; }
         public virtual ItemCategory ItemCategory { get; set; }
         public virtual ItemTaxGroup ItemTaxGroup { get; set; }
         public virtual Vendor PreferredVendor { get; set; }
@@ -55,11 +57,9 @@ namespace BusinessCore.Domain.Items
 
         public int CompanyId { get; set; }
         public virtual Company Company { get; set; }
-
-        public int? BrandId { get; set; }
+       
         public virtual ItemBrand Brand { get; set; }
 
-        public int? ModelId { get; set; }
         public virtual ItemModel Model { get; set; }
 
         #region Not Mapped
@@ -130,10 +130,10 @@ namespace BusinessCore.Domain.Items
         {
             bool validated = true;
 
-            if (this.CostOfGoodsSoldAccount == null
-                || this.InventoryAccount == null
-                || this.InventoryAdjustmentAccount == null
-                || this.SalesAccount == null)
+            if (this.CostOfGoodsSoldAccountId == null
+                || this.InventoryAccountId == null
+                || this.InventoryAdjustmentAccountId == null
+                || this.SalesAccountId == null)
             {
                 validated = false;
             }

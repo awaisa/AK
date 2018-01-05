@@ -19,7 +19,7 @@ namespace BusinessCore.Domain.Sales
         public int? InventoryControlJournalId { get; set; }
         public int? TaxId { get; set; }
         public decimal Quantity { get; set; }
-        public decimal Discount { get; set; }
+        public decimal Discount { get; set; } //percentage
         public decimal Amount { get; set; }
         public decimal TaxAmount { get; set; } //Tax(s) should be included at front and total of tax in amount comes here
         public decimal DiscountAmount { get; set; }

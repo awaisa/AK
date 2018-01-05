@@ -11,8 +11,8 @@ namespace WebApiCore.Models.Sale
     {
         public string No { get; set; }
         public DateTime Date { get; set; }
-        public int? VendorId { get; set; }
-        public string VendorName { get; set; }
+        public int? CustomerId { get; set; }
+        public string CustomerName { get; set; }
         public decimal? Total { get; set; }
     }
 }

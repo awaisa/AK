@@ -1,0 +1,69 @@
+﻿[
+  {
+    "no": "00711",
+    "party": {
+      "name": "Sarfraz",
+      "email": "Sarfraz@gmail.com",
+      "website": "Sarfraz.com",
+      "phone": "99389384384389",
+      "fax": null,
+      "address": "NA",
+      "contacts": [
+        {
+          "firstName": "Blouch",
+          "lastName": "Sarfraz",
+          "middleName": "kale",
+          "isPrimary": false
+        }
+      ]
+    },
+    "paymentTermId": null,
+    "taxGroupId": 3
+  },
+  {
+    "no": "008",
+    "party": {
+      "name": null,
+      "email": "bilal@gmail.com",
+      "website": "bilal",
+      "phone": "0301758754587",
+      "fax": "435756334",
+      "address": "RWP",
+      "contacts": [
+        {
+          "firstName": "Bilal",
+          "lastName": null,
+          "middleName": "ahmad",
+          "isPrimary": true
+
+        }
+      ]
+
+    },
+    "paymentTermId": null,
+    "taxGroupId": 5
+  },
+  {
+    "no": "008",
+    "party": {
+      "name": null,
+      "email": "rizwan@gmail.com",
+      "website": "rizwan.com",
+      "phone": "0301758754587",
+      "fax": "435756334",
+      "address": "RWP",
+      "contacts": [
+        {
+          "firstName": "rizwan",
+          "lastName": "shah",
+          "middleName": "ahmad",
+          "isPrimary": true
+
+        }
+      ]
+
+    },
+    "paymentTermId": null,
+    "taxGroupId": 6
+  }
+]

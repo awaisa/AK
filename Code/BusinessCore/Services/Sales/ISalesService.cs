@@ -10,6 +10,7 @@ namespace BusinessCore.Services.Sales
         void AddSalesOrder(SalesOrderHeader salesOrder, bool toSave);
         void UpdateSalesOrder(SalesOrderHeader salesOrder);
         SalesInvoiceHeader SaveSaleInvoice(SalesInvoiceHeader salesInvoice);
+        void DeleteInvoice(int id);
         IQueryable<SalesInvoiceHeader> GetSalesInvoices();
         SalesInvoiceHeader GetSalesInvoiceById(int id);
         //SalesInvoiceHeader GetSalesInvoiceByNo(string no);
@@ -21,7 +22,7 @@ namespace BusinessCore.Services.Sales
         void UpdateSalesReceipt(SalesReceiptHeader salesReceipt);
         IQueryable<Customer> GetCustomers();
         Customer GetCustomerById(int id);
-        //void UpdateCustomer(Customer customer);
+        void UpdateCustomer(Customer customer);
         //void AddCustomer(Customer customer);
         Customer SaveCustomer(Customer customer);
         void DeleteCustomer(int cutomerId);

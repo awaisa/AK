@@ -1,0 +1,42 @@
+﻿[
+  {
+    "Code": "1001",
+    "Description": "hp 1000",
+    "PurchaseDescription": null,
+    "SellDescription": "no",
+    "price": 25000,
+    "itemCategoryId": 22,
+    "brandId": 101,
+    "modelId": 2201,
+    "taxGroupId": 10001,
+    "smallestMeasurementId": 1012,
+    "sellMeasurementId": 4021,
+    "purchaseMeasurementId": 33,
+    "preferredVendorId": 66,
+    "inventoryAccountId": 88,
+    "salesAccountId": 99,
+    "costOfGoodsSoldAccountId": 7,
+    "adjustmentAccountId": 8,
+    "isActive": true
+  },
+  {
+    "Code": "11",
+    "Description": "lenovo z51",
+    "PurchaseDescription": "20 thousands",
+    "cost": 22000,
+    "price": 20000,
+    "itemCategoryId": 12,
+    "brandId": 101,
+    "modelId": 201,
+    "taxGroupId": 10091,
+    "smallestMeasurementId": 312,
+    "sellMeasurementId": 421,
+    "purchaseMeasurementId": 3,
+    "preferredVendorId": 62,
+    "inventoryAccountId": 83,
+    "salesAccountId": 19,
+    "costOfGoodsSoldAccountId": 12,
+    "adjustmentAccountId": 3,
+    "isActive": false
+  }
+]

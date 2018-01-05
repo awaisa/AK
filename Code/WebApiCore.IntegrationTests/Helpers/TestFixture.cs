@@ -123,6 +123,7 @@ namespace WebApiCore.IntegrationTests.Helpers
 
         public void Dispose()
         {
+            
             //throw new NotImplementedException();
         }
     }
