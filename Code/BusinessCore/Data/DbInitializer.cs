@@ -25,6 +25,10 @@ namespace BusinessCore.Data
         ApplicationContext _context;
         List<Account> _coa;
         List<TaxGroup> _taxGroups;
+        List<ItemTaxGroup> _itemTaxGroups;
+        List<Vendor> _vendors;
+        List<Customer> _customers;
+        List<Item> _items;
         string _cOAJSONfilename = Path.Combine(Directory.GetCurrentDirectory(), "csv.json");
         IAppPrincipal _appPrincipal;
 
@@ -63,11 +67,11 @@ namespace BusinessCore.Data
 
                 List<Bank> banks = InitBanks();
 
-                InitVendors();
+                _vendors = InitVendors();
 
-                var customers = InitCustomer();
+                _customers = InitCustomer();
 
-                List<Item> items = InitItems();
+                _items = InitItems();
             }
 
             _context.AppPrincipal = _appPrincipal;
@@ -269,7 +273,7 @@ namespace BusinessCore.Data
 
             _context.TaxGroupTax.AddRange(taxGroupTaxes);
 
-            var itemTaxGroups = new List<ItemTaxGroup>()
+            _itemTaxGroups = new List<ItemTaxGroup>()
             {
                 new ItemTaxGroup()
                 {
@@ -283,18 +287,18 @@ namespace BusinessCore.Data
                 }
             };
 
-            _context.ItemTaxGroups.AddRange(itemTaxGroups);
+            _context.ItemTaxGroups.AddRange(_itemTaxGroups);
 
             var ItemTaxGroupTaxes = new List<ItemTaxGroupTax>()
             {
                 new ItemTaxGroupTax()
                 {
-                    ItemTaxGroup = itemTaxGroups.FirstOrDefault(g=> g.Name == "Regular"),
+                    ItemTaxGroup = _itemTaxGroups.FirstOrDefault(g=> g.Name == "Regular"),
                     Tax = taxes.FirstOrDefault(t=> t.TaxCode == "VAT5%")
                 },
                 new ItemTaxGroupTax()
                 {
-                    ItemTaxGroup = itemTaxGroups.FirstOrDefault(g=> g.Name == "Preferenced"),
+                    ItemTaxGroup = _itemTaxGroups.FirstOrDefault(g=> g.Name == "Preferenced"),
                     Tax = taxes.FirstOrDefault(t=> t.TaxCode == "VAT12%")
                 }
             };
@@ -430,12 +434,6 @@ namespace BusinessCore.Data
         }
         List<Item> InitItems()
         {
-            var items = new List<Item>()
-            {
-                new Item(){Code="202",CompanyId=1,Cost=7000}
-            };
-            _context.Items.AddRange(items);
-            _context.SaveChanges();
             var measurements = new List<Measurement>()
             {
                 new Measurement() { Code = "EA", Description = "Each" },
@@ -447,11 +445,11 @@ namespace BusinessCore.Data
             _context.SaveChanges();
 
             // Accounts = Sales A/C (40100), Inventory (10800), COGS (50300), Inv Adjustment (50500), Item Assm Cost (10900)
-            var sales = _coa.Where(a => a.AccountCode == AccountCodes.Sales_40100).FirstOrDefault();
-            var inventory = _coa.Where(a => a.AccountCode == AccountCodes.Inventory_10800).FirstOrDefault();
-            var invAdjusment = _coa.Where(a => a.AccountCode == AccountCodes.PurchasePriceVariance_50500).FirstOrDefault();
-            var cogs = _coa.Where(a => a.AccountCode == AccountCodes.CostOfGoodsSold_50300).FirstOrDefault();
-            var assemblyCost = _coa.Where(a => a.AccountCode == AccountCodes.AssemblyCost_10900).FirstOrDefault();
+            var salesAccount = _coa.Where(a => a.AccountCode == AccountCodes.Sales_40100).FirstOrDefault();
+            var inventoryAccount = _coa.Where(a => a.AccountCode == AccountCodes.Inventory_10800).FirstOrDefault();
+            var invAdjusmentAccount = _coa.Where(a => a.AccountCode == AccountCodes.PurchasePriceVariance_50500).FirstOrDefault();
+            var cogsAccount = _coa.Where(a => a.AccountCode == AccountCodes.CostOfGoodsSold_50300).FirstOrDefault();
+            var assemblyCostAccount = _coa.Where(a => a.AccountCode == AccountCodes.AssemblyCost_10900).FirstOrDefault();
 
             var itemCategories = new List<ItemCategory>()
             {
@@ -461,11 +459,11 @@ namespace BusinessCore.Data
                     Name = "Charges",
                     Measurement = measurements.Where(m => m.Code == "EA").FirstOrDefault(),
                     ItemType = ItemTypes.Charge,
-                    SalesAccount = sales,
-                    InventoryAccount = inventory,
-                    AdjustmentAccount = invAdjusment,
-                    CostOfGoodsSoldAccount = cogs,
-                    AssemblyAccount = assemblyCost,
+                    SalesAccount = salesAccount,
+                    InventoryAccount = inventoryAccount,
+                    AdjustmentAccount = invAdjusmentAccount,
+                    CostOfGoodsSoldAccount = cogsAccount,
+                    AssemblyAccount = assemblyCostAccount,
                     //BrandId=201,
                     //ModelId=1004,
                     ItemCategoryId=101
@@ -475,11 +473,11 @@ namespace BusinessCore.Data
                     Name = "Components",
                     Measurement = measurements.Where(m => m.Code == "EA").FirstOrDefault(),
                     ItemType = ItemTypes.Purchased,
-                    SalesAccount = sales,
-                    InventoryAccount = inventory,
-                    AdjustmentAccount = invAdjusment,
-                    CostOfGoodsSoldAccount = cogs,
-                    AssemblyAccount = assemblyCost,
+                    SalesAccount = salesAccount,
+                    InventoryAccount = inventoryAccount,
+                    AdjustmentAccount = invAdjusmentAccount,
+                    CostOfGoodsSoldAccount = cogsAccount,
+                    AssemblyAccount = assemblyCostAccount,
                     //BrandId=02,
                     //ModelId=005,
                     ItemCategoryId=102
@@ -489,11 +487,11 @@ namespace BusinessCore.Data
                     Name = "Services",
                     Measurement = measurements.Where(m => m.Code == "HR").FirstOrDefault(),
                     ItemType = ItemTypes.Service,
-                    SalesAccount = sales,
-                    InventoryAccount = inventory,
-                    AdjustmentAccount = invAdjusment,
-                    CostOfGoodsSoldAccount = cogs,
-                    AssemblyAccount = assemblyCost,
+                    SalesAccount = salesAccount,
+                    InventoryAccount = inventoryAccount,
+                    AdjustmentAccount = invAdjusmentAccount,
+                    CostOfGoodsSoldAccount = cogsAccount,
+                    AssemblyAccount = assemblyCostAccount,
                     //BrandId=03,
                     //ModelId=006,
                     ItemCategoryId=103
@@ -503,11 +501,11 @@ namespace BusinessCore.Data
                     Name = "Systems",
                     Measurement = measurements.Where(m => m.Code == "EA").FirstOrDefault(),
                     ItemType = ItemTypes.Manufactured,
-                    SalesAccount = sales,
-                    InventoryAccount = inventory,
-                    AdjustmentAccount = invAdjusment,
-                    CostOfGoodsSoldAccount = cogs,
-                    AssemblyAccount = assemblyCost,
+                    SalesAccount = salesAccount,
+                    InventoryAccount = inventoryAccount,
+                    AdjustmentAccount = invAdjusmentAccount,
+                    CostOfGoodsSoldAccount = cogsAccount,
+                    AssemblyAccount = assemblyCostAccount,
                     //BrandId=04,
                     //ModelId=007,
                     ItemCategoryId=104
@@ -518,22 +516,57 @@ namespace BusinessCore.Data
 
             _context.SaveChanges();
 
-            //foreach (var itemCategory in itemCategories)
-            //{
-            //    var fakerItem = new Faker<Item>()
-            //        .RuleFor(r=> r.No, f=> (f.IndexVariable++).ToString())
-            //        .RuleFor(r=> r.Code, f=> (f.IndexVariable++).ToString())
-            //        .RuleFor(r=> r.Description, f => f.Commerce.ProductName())
-            //        .RuleFor(r=> r.PurchaseDescription, f => f.Commerce.ProductName())
-            //        .RuleFor(r=> r.SellDescription, f => f.Commerce.ProductName())
-            //        .RuleFor(r=> r.Cost, f => f.Random.Decimal(10, 10000))
-            //        .RuleFor(r=> r.Price, f => f.Random.Decimal(10, 10000))
-            //        .RuleFor(r=> r., f => f.Random.Decimal(10, 10000))
-            //        ;
+            A.Configure<ItemBrand>().Fill(p => p.Code)
+                                    .WithRandom(new string[] { "01", "02", "03", "04", "05", "06" })
+                                    .Fill(p=> p.Name)
+                                    .AsMusicGenreName()
+                                    .Fill(p=> p.Id, 0);
+            var itemBrands = A.ListOf<ItemBrand>(5);
+            _context.ItemBrands.AddRange(itemBrands);
 
-            //}
+            A.Configure<ItemModel>().Fill(p => p.Code)
+                        .WithRandom(new string[] { "01", "02", "03", "04", "05", "06" })
+                        .Fill(p => p.Name)
+                        .AsArticleTitle()
+                        .Fill(p => p.Id, 0);
+            var itemModels = A.ListOf<ItemModel>(5);
+            _context.ItemModels.AddRange(itemModels);
+            _context.SaveChanges();
+            List<Item> items = new List<Item>();
+            foreach (var itemCategory in itemCategories)
+            {
+                var fakerItem = new Faker<Item>()
+                    .RuleFor(r => r.No, f => (f.IndexVariable++).ToString())
+                    .RuleFor(r => r.Code, f => (f.IndexVariable++).ToString())
+                    .RuleFor(r => r.Description, f => f.Commerce.ProductName())
+                    .RuleFor(r => r.PurchaseDescription, f => f.Commerce.ProductName())
+                    .RuleFor(r => r.SellDescription, f => f.Commerce.ProductName())
+                    .RuleFor(r => r.Cost, f => f.Random.Decimal(10, 10000))
+                    .RuleFor(r => r.Price, f => f.Random.Decimal(10, 10000))
+                    .RuleFor(r => r.Brand, f => f.PickRandom(itemBrands))
+                    .RuleFor(r => r.Model, f => f.PickRandom(itemModels))
 
-            return _context.Items.ToList();
+                    .RuleFor(r => r.SellMeasurement, f => f.PickRandom(measurements))
+                    .RuleFor(r => r.SmallestMeasurement, f => f.PickRandom(measurements))
+                    .RuleFor(r => r.PurchaseMeasurement, f => f.PickRandom(measurements))
+
+                    .RuleFor(r => r.InventoryAccount, inventoryAccount)
+                    .RuleFor(r => r.SalesAccount, salesAccount)
+                    .RuleFor(r => r.CostOfGoodsSoldAccount, cogsAccount)
+                    .RuleFor(r => r.InventoryAdjustmentAccount, invAdjusmentAccount)
+
+                    .RuleFor(r => r.ItemCategory, itemCategory)
+                    .RuleFor(r => r.ItemTaxGroup, f => f.PickRandom(_itemTaxGroups))
+
+                    .RuleFor(r => r.PreferredVendor, f => f.PickRandom(_vendors))
+                    ;
+                items.AddRange(fakerItem.Generate(10));
+            }
+
+            _context.Items.AddRange(items);
+            _context.SaveChanges();
+
+            return items;
         }
         List<Bank> InitBanks()
         {

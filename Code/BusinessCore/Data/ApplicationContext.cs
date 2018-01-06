@@ -47,6 +47,8 @@ namespace BusinessCore.Data
         public DbSet<Measurement> Measurements { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<ItemCategory> ItemCategories { get; set; }
+        public DbSet<ItemBrand> ItemBrands { get; set; }
+        public DbSet<ItemModel> ItemModels { get; set; }
         public DbSet<SalesQuoteHeader> SalesQuoteHeaders { get; set; }
         public DbSet<SalesQuoteLine> SalesQuoteLines { get; set; }
         public DbSet<SalesOrderHeader> SalesOrderHeaders { get; set; }
