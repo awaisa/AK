@@ -10,6 +10,7 @@ using System.Linq;
 using System;
 using BusinessCore.Services.Security;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessCore.Services.Purchasing
 {
@@ -245,13 +246,11 @@ namespace BusinessCore.Services.Purchasing
 
         public IQueryable<Vendor> GetVendors()
         {
-            Expression<Func<Vendor, object>>[] includeProperties =
-            {
-                p => p.Party,
-                pt => pt.PaymentTerm,
-                tg => tg.TaxGroup,
-            };
-            var query = _vendorRepo.GetAllIncluding(includeProperties);
+            var query = _vendorRepo.Table
+                .Include(p => p.Party)
+                .Include(p => p.PaymentTerm)
+                .Include(p => p.TaxGroup)
+                ;
             return query;
         }
 
@@ -270,14 +269,12 @@ namespace BusinessCore.Services.Purchasing
 
         public Vendor GetVendorById(int id)
         {
-            Expression<Func<Vendor, object>>[] includeProperties =
-            {
-                p => p.Party,
-                p => p.Party.Contacts,
-                pt => pt.PaymentTerm,
-                tg => tg.TaxGroup,
-            };
-            return _vendorRepo.GetAllIncluding(includeProperties).FirstOrDefault(o => o.Id == id);
+            return _vendorRepo.Table
+                .Include(p => p.Party)
+                .ThenInclude(p => p.Contacts)
+                .Include(p => p.PaymentTerm)
+                .Include(p => p.TaxGroup)
+                .FirstOrDefault(o => o.Id == id);
         }
 
         void IPurchasingService.DeleteVendor(int VendorId)
@@ -398,16 +395,11 @@ namespace BusinessCore.Services.Purchasing
 
         public PurchaseInvoiceHeader GetPurchaseInvoiceById(int id)
         {
-            Expression<Func<PurchaseInvoiceHeader, object>>[] includePropertiesOfPurchaseInvoice =
-            {
-                p => p.PurchaseInvoiceLines,
-                p => p.Vendor,
-                p => p.GeneralLedgerHeader
-            };
-
-            var query = from invoice in _purchaseInvoiceRepo.GetAllIncluding(includePropertiesOfPurchaseInvoice)
-                        where invoice.Id == id
-                        select invoice;
+            var query = _purchaseInvoiceRepo.Table
+                        .Include(p => p.PurchaseInvoiceLines)
+                        .Include(p => p.Vendor)
+                        .Include(p => p.GeneralLedgerHeader)
+                        .Where(invoice => invoice.Id == id);
 
             return query.FirstOrDefault();
         }

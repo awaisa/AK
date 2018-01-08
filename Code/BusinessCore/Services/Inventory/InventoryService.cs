@@ -9,6 +9,7 @@ using BusinessCore.Domain.TaxSystem;
 using BusinessCore.Services.Security;
 using BusinessCore.Security;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessCore.Services.Inventory
 {
@@ -168,28 +169,22 @@ namespace BusinessCore.Services.Inventory
 
         public Item GetItemDetailById(int id)
         {
-            Expression<Func<Item, object>>[] includePropertiesOfItem =
-            {
-                p => p.ItemCategory,
-                p => p.Model,
-                p => p.Brand,
-                p => p.ItemTaxGroup,
-                p => p.SmallestMeasurement,
-                p => p.SellMeasurement,
-                p => p.PurchaseMeasurement,
-                p => p.PreferredVendor,
+            return _itemRepo.Table
+                        .Include(p => p.ItemCategory)
+                        .Include(p => p.Model)
+                        .Include(p => p.Brand)
+                        .Include(p => p.ItemTaxGroup)
+                        .Include(p => p.SmallestMeasurement)
+                        .Include(p => p.SellMeasurement)
+                        .Include(p => p.PurchaseMeasurement)
+                        .Include(p => p.PreferredVendor)
 
-                p => p.InventoryAccount,
-                p => p.SalesAccount,
-                p => p.CostOfGoodsSoldAccount,
-                p => p.InventoryAdjustmentAccount,
-            };
-
-            var query = from item in _itemRepo.GetAllIncluding(includePropertiesOfItem)
-                        where item.Id == id
-                        select item;
-
-            return query.FirstOrDefault();
+                        .Include(p => p.InventoryAccount)
+                        .Include(p => p.SalesAccount)
+                        .Include(p => p.CostOfGoodsSoldAccount)
+                        .Include(p => p.InventoryAdjustmentAccount)
+                        .Where(item => item.Id == id)
+                        .FirstOrDefault();
         }
         #endregion
 

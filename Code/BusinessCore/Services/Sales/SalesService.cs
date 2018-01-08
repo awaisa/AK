@@ -77,31 +77,21 @@ namespace BusinessCore.Services.Sales
         #region CUSTOMER
         public IQueryable<Customer> GetCustomers()
         {
-            System.Linq.Expressions.Expression<Func<Customer, object>>[] includeProperties =
-            {
-                p => p.Party,
-                c => c.AccountsReceivableAccount,
-                p => p.PaymentTerm,
-                //p => p.PrimaryContact,
-                p => p.TaxGroup
-            };
-
-            var customers = _customerRepo.GetAllIncluding(includeProperties);
+            var customers = _customerRepo.Table
+                .Include(p=> p.Party)
+                .Include(p=> p.AccountsReceivableAccount)
+                .Include(p=> p.PaymentTerm)
+                .Include(p=> p.TaxGroup);
 
             return customers;
         }
         public Customer GetCustomerById(int id)
         {
-            System.Linq.Expressions.Expression<Func<Customer, object>>[] includeProperties =
-            {
-                p => p.Party,
-                p => p.Party.Contacts,
-                c => c.AccountsReceivableAccount,
-                p => p.PaymentTerm,
-                p => p.TaxGroup
-            };
-
-            var customer = _customerRepo.GetAllIncluding(includeProperties)
+            var customer = _customerRepo.Table
+                .Include(p => p.Party)
+                .Include(p => p.AccountsReceivableAccount)
+                .Include(p => p.PaymentTerm)
+                .Include(p => p.TaxGroup)
                 .Where(c => c.Id == id).FirstOrDefault();
 
             return customer;
@@ -222,23 +212,14 @@ namespace BusinessCore.Services.Sales
         #region SALE INVOICE
         public IQueryable<SalesInvoiceHeader> GetSalesInvoices()
         {
-            System.Linq.Expressions.Expression<Func<SalesInvoiceHeader, object>>[] includeProperties =
-            {
-                p => p.SalesInvoiceLines,
-                //p => p.SalesInvoiceLines.Select(p2 => p2.Item)
-            };
-            var query = _salesInvoiceRepo.GetAllIncluding(includeProperties);
+            var query = _salesInvoiceRepo.Table
+                .Include(p => p.SalesInvoiceLines);
             return query;
         }
         public SalesInvoiceHeader GetSalesInvoiceById(int id)
         {
-            System.Linq.Expressions.Expression<Func<SalesInvoiceHeader, object>>[] includeProperties =
-            {
-                p => p.SalesInvoiceLines,
-               // p => p.SalesInvoiceLines.Select(p2 => p2.Item)
-            };
-
-            var salesInvoice = _salesInvoiceRepo.GetAllIncluding(includeProperties)
+            var salesInvoice = _salesInvoiceRepo.Table
+                .Include(p => p.SalesInvoiceLines)
                 .Where(c => c.Id == id).FirstOrDefault();
             return salesInvoice;
         }
@@ -263,12 +244,12 @@ namespace BusinessCore.Services.Sales
 
                 var lineAmount = lineItem.Quantity * lineItem.Amount;
 
-                var itemCatagory = _itemCatagoryRepo.GetById(lineItem.ItemId);
-                item.CostOfGoodsSoldAccountId = itemCatagory.CostOfGoodsSoldAccountId;
-                item.InventoryAccountId = itemCatagory.InventoryAccountId;
-                item.SalesAccountId = itemCatagory.SalesAccountId;
-                item.InventoryAdjustmentAccountId = itemCatagory.AdjustmentAccountId;
-                item.ItemCategory=new ItemCategory { ItemType=itemCatagory.ItemType};
+                //var itemCatagory = _itemCatagoryRepo.GetById(lineItem.ItemId);
+                item.CostOfGoodsSoldAccountId = item.CostOfGoodsSoldAccountId;
+                item.InventoryAccountId = item.InventoryAccountId;
+                item.SalesAccountId = item.SalesAccountId;
+                item.InventoryAdjustmentAccountId = item.InventoryAdjustmentAccountId;
+                //item.ItemCategory=new ItemCategory { ItemType=itemCatagory.ItemType};
 
                 if (!item.GLAccountsValidated())
                     throw new Exception("Item is not correctly setup for financial transaction. Please check if GL accounts are all set.");
@@ -357,13 +338,13 @@ namespace BusinessCore.Services.Sales
             {
                 salesInvoice.GeneralLedgerHeader = glHeader;
 
-                System.Linq.Expressions.Expression<Func<SalesInvoiceHeader, object>>[] includeProperties = {
-                    p => p.GeneralLedgerHeader,
-                    p => p.GeneralLedgerHeader.GeneralLedgerLines,
-                    p => p.SalesInvoiceLines,
-                    //p => p.SalesInvoiceLines.Select(p2=>p2.InventoryControlJournal)
-                };
-                var dbObject = _salesInvoiceRepo.GetAllIncluding(includeProperties).Where(o => o.Id == salesInvoice.Id).FirstOrDefault();
+                var dbObject = _salesInvoiceRepo.Table
+                    .Include(p => p.GeneralLedgerHeader)
+                    .ThenInclude(p => p.GeneralLedgerLines)
+                    .Include(p => p.SalesInvoiceLines)
+                    .ThenInclude(p2=> p2.InventoryControlJournal)
+                    .Where(o => o.Id == salesInvoice.Id).FirstOrDefault();
+
                 #region UPDATE
                 if (dbObject != null)
                 {
@@ -403,7 +384,7 @@ namespace BusinessCore.Services.Sales
                         generalLedgerLine.Deleted = true;
                     }
                     var salesInvoiceLinesToUpdateIds = dbObject.SalesInvoiceLines.Select(c => c.Id).ToList();
-                    foreach (var salesInvoiceLine in dbObject.SalesInvoiceLines)
+                    foreach (var salesInvoiceLine in salesInvoice.SalesInvoiceLines)
                     {
                         var existingSalesInvoiceLine = dbObject.SalesInvoiceLines.FirstOrDefault(c => c.Id == salesInvoiceLine.Id);
                         if (existingSalesInvoiceLine != null)
@@ -682,32 +663,28 @@ namespace BusinessCore.Services.Sales
 
         public IQueryable<SalesOrderHeader> GetSalesOrders()
         {
-            var salesOrders = _salesOrderRepo.GetAllIncluding(c => c.Customer,
-                pt => pt.PaymentTerm,
-                lines => lines.SalesOrderLines);
-
-            foreach (var salesOrder in salesOrders)
-            {
-                salesOrder.Customer.Party = GetCustomerById(salesOrder.CustomerId.Value).Party;
-            }
+            var salesOrders = _salesOrderRepo.Table
+                .Include(p => p.Customer)
+                .ThenInclude(p => p.Party)
+                .Include(p => p.PaymentTerm)
+                .Include(p => p.SalesOrderLines);
 
             return salesOrders;
         }
 
         public SalesOrderHeader GetSalesOrderById(int id)
         {
-            var salesOrder = _salesOrderRepo.GetAllIncluding(lines => lines.SalesOrderLines,
-                c => c.Customer,
-                p => p.PaymentTerm)
+            var salesOrder = _salesOrderRepo.Table
+                .Include(p => p.Customer)
+                .ThenInclude(p => p.Party)
+                .Include(p => p.PaymentTerm)
+                .Include(p => p.SalesOrderLines)
+                .ThenInclude(p => p.Item)
+                .Include(p => p.SalesOrderLines)
+                .ThenInclude(p => p.Measurement)
                 .Where(o => o.Id == id).FirstOrDefault()
                 ;
-
-            foreach (var line in salesOrder.SalesOrderLines)
-            {
-                line.Item = _itemRepo.GetById(line.ItemId);
-                line.Measurement = _measurementRepo.GetById(line.MeasurementId);
-            }
-
+            
             return salesOrder;
         }
 

@@ -14,6 +14,6 @@ namespace BusinessCore.Data
         void Delete(T entity);
         IQueryable<T> Table { get; }
 
-        IQueryable<T> GetAllIncluding(params System.Linq.Expressions.Expression<Func<T, object>>[] includeProperties);
+        //IQueryable<T> GetAllIncluding(params System.Linq.Expressions.Expression<Func<T, object>>[] includeProperties);
     }
 }

@@ -86,7 +86,7 @@ namespace WebApiCore.Controllers
             return NotFound(id);
         }
 
-        [HttpPost]
+        [HttpPost("Invoice")]
         [ValidateModel]
         [Produces(typeof(InvoiceModel))]
         public IActionResult SaveInvoice([FromBody] InvoiceModel model)
