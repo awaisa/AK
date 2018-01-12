@@ -17,18 +17,17 @@ namespace BusinessCore.Domain.Sales
         public int ItemId { get; set; }
         public int MeasurementId { get; set; }
         public int? InventoryControlJournalId { get; set; }
-        public int? TaxId { get; set; }
+        //public int? TaxId { get; set; }
         public decimal Quantity { get; set; }
         public decimal Discount { get; set; } //percentage
         public decimal Amount { get; set; }
-        public decimal TaxAmount { get; set; } //Tax(s) should be included at front and total of tax in amount comes here
+        // decimal TaxAmount { get; set; } //Tax(s) should be included at front and total of tax in amount comes here
         public decimal DiscountAmount { get; set; }
         public virtual SalesInvoiceHeader SalesInvoiceHeader { get; set; }
         public virtual Item Item { get; set; }
         public virtual Measurement Measurement { get; set; }
         public virtual InventoryControlJournal InventoryControlJournal { get; set; }
-        public virtual Tax Tax { get; set; }
-
+        public virtual ICollection<SalesInvoiceLineTax> Taxes { get; set; }
         public virtual ICollection<SalesReceiptLine> SalesReceiptLines { get; set; }
 
 

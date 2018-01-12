@@ -83,8 +83,8 @@ namespace WebApiCore.IntegrationTests
         /// <param name="vendorModel"></param>
         /// <returns></returns>
         [Theory]
-        [MemberData(nameof(TestFixture.GetJsonObjects), @"TestData\CustomerControllerTests-InvalidCustomer.json", typeof(List<VendorModel>), MemberType = typeof(TestFixture))]
-        public async Task Post_Customer_With_InValid_Data_Then_Returns_Bad_Request(VendorModel vendorModel)
+        [MemberData(nameof(TestFixture.GetJsonObjects), @"TestData\VendorControllerTests-InvalidVendor.json", typeof(List<VendorModel>), MemberType = typeof(TestFixture))]
+        public async Task Post_Vendor_With_InValid_Data_Then_Returns_Bad_Request(VendorModel vendorModel)
         {
             string stringData = JsonConvert.SerializeObject(vendorModel);
             var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
@@ -95,7 +95,7 @@ namespace WebApiCore.IntegrationTests
         }
 
         [Fact]
-        public async Task Get_All_Customers_Then_Returns_Ok()
+        public async Task Get_All_Vendors_Then_Returns_Ok()
         {
             var response = await _testFixture.Client.GetAsync($"{_baseApiUrl}/");
             var contents = await response.Content.ReadAsStringAsync();

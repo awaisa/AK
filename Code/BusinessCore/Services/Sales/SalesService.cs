@@ -213,7 +213,7 @@ namespace BusinessCore.Services.Sales
         public IQueryable<SalesInvoiceHeader> GetSalesInvoices()
         {
             var query = _salesInvoiceRepo.Table
-                .Include(p => p.SalesInvoiceLines);
+                .Include(p => p.SalesInvoiceLines).Include(p=>p.Customer).ThenInclude(p2=>p2.Party);
             return query;
         }
         public SalesInvoiceHeader GetSalesInvoiceById(int id)
@@ -261,13 +261,15 @@ namespace BusinessCore.Services.Sales
 
                 totalAmount += totalLineAmount;
 
-                var lineTaxes = _financialService.ComputeOutputTax(salesInvoice.CustomerId, item.Id, lineItem.Quantity, lineItem.Amount, lineItem.Discount);
+                //TODO: Sarfraz has to build Taxes list
+                var itemTaxesToAdd = lineItem.Taxes.Select(t => new Tax() { Id = t.TaxId, Rate = t.Rate }).ToList();
+                var lineTaxes = _financialService.ComputeOutputTax(item.Id, lineItem.Quantity, lineItem.Amount, lineItem.Discount, itemTaxesToAdd);
 
                 foreach (var t in lineTaxes)
                     taxes.Add(t);
 
-                lineItem.TaxAmount = lineTaxes != null && lineTaxes.Count > 0 ? lineTaxes.Sum(t => t.Value) : 0;
-                totalLineAmount = totalLineAmount - lineItem.TaxAmount;
+                //lineItem.TaxAmount = lineTaxes != null && lineTaxes.Count > 0 ? lineTaxes.Sum(t => t.Value) : 0;
+                //totalLineAmount = totalLineAmount - lineItem.TaxAmount;
 
                 sales.Add(new KeyValuePair<int, decimal>(item.SalesAccountId.Value, totalLineAmount));
 
@@ -282,8 +284,13 @@ namespace BusinessCore.Services.Sales
                         lineItem.Quantity * item.Price);
                 }
             }
-
-            totalAmount += salesInvoice.ShippingHandlingCharge;
+            decimal totalTax = 0;
+            foreach(var tax in taxes)
+            {
+                totalTax += tax.Value;
+            }
+            totalAmount += salesInvoice.ShippingHandlingCharge+totalTax;
+            
             var debitCustomerAR = _financialService.CreateGeneralLedgerLine(DrOrCrSide.Dr, customer.AccountsReceivableAccount.Id, Math.Round(totalAmount, 2, MidpointRounding.ToEven));
             glHeader.GeneralLedgerLines.Add(debitCustomerAR);
 
@@ -391,11 +398,11 @@ namespace BusinessCore.Services.Sales
                         {
                             existingSalesInvoiceLine.ItemId = salesInvoiceLine.ItemId;
                             existingSalesInvoiceLine.MeasurementId = salesInvoiceLine.MeasurementId;
-                            existingSalesInvoiceLine.TaxId = salesInvoiceLine.TaxId;
+                           // existingSalesInvoiceLine.TaxId = salesInvoiceLine.TaxId;
                             existingSalesInvoiceLine.Quantity = salesInvoiceLine.Quantity;
                             existingSalesInvoiceLine.Discount = salesInvoiceLine.Discount;
                             existingSalesInvoiceLine.Amount = salesInvoiceLine.Amount;
-                            existingSalesInvoiceLine.TaxAmount = salesInvoiceLine.TaxAmount;
+                            //existingSalesInvoiceLine.TaxAmount = salesInvoiceLine.TaxAmount;
                             existingSalesInvoiceLine.DiscountAmount = salesInvoiceLine.DiscountAmount;
                             existingSalesInvoiceLine.IsActive = salesInvoiceLine.IsActive;
                             if (salesInvoiceLine.InventoryControlJournal != null)
@@ -426,6 +433,8 @@ namespace BusinessCore.Services.Sales
                         {
                             dbObject.SalesInvoiceLines.Add(salesInvoiceLine);
                         }
+
+                        //TODO: Apply Line Tax update
                     }
                     foreach (var salesInvoiceLine in dbObject.SalesInvoiceLines.Where(c => salesInvoiceLinesToUpdateIds.Contains(c.Id)))
                     {

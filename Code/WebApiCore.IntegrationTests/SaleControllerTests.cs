@@ -101,7 +101,7 @@ namespace WebApiCore.IntegrationTests
          
             var response = await _testFixture.Client.PostAsync($"{_baseApiUrl}/Invoice", contentData);
             var contents = await response.Content.ReadAsStringAsync();
-            response.StatusCode.Should().Be(HttpStatusCode.OK, $"Expected OK but received {response.StatusCode}.");
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest, $"Expected OK but received {response.StatusCode}.");
         }
 
         [Fact]

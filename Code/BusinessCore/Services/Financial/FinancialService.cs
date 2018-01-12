@@ -471,6 +471,7 @@ namespace BusinessCore.Services.Financial
         /// <param name="quantity"></param>
         /// <param name="amount"></param>
         /// <returns></returns>
+        [Obsolete]
         public List<KeyValuePair<int, decimal>> ComputeOutputTax(int customerId, int itemId, decimal quantity, decimal amount, decimal discount)
         {
             decimal taxAmount = 0, amountXquantity = 0, discountAmount = 0, subTotalAmount = 0;
@@ -481,7 +482,7 @@ namespace BusinessCore.Services.Financial
 
             amountXquantity = amount * quantity;
 
-            if(discount > 0)
+            if (discount > 0)
                 discountAmount = (discount / 100) * amountXquantity;
 
             subTotalAmount = amountXquantity - discountAmount;
@@ -489,6 +490,31 @@ namespace BusinessCore.Services.Financial
             var intersectionTaxes = _taxService.GetIntersectionTaxes(itemId, customerId, BusinessCore.Domain.PartyTypes.Customer);
 
             foreach (var tax in intersectionTaxes)
+            {
+                taxAmount = subTotalAmount - (subTotalAmount / (1 + (tax.Rate / 100)));
+                taxes.Add(new KeyValuePair<int, decimal>(tax.Id, taxAmount));
+            }
+
+            return taxes;
+        }
+
+        public List<KeyValuePair<int, decimal>> ComputeOutputTax(int itemId, decimal quantity, decimal amount, decimal discount, IEnumerable<Tax> itemTaxes)
+        
+{
+            decimal taxAmount = 0, amountXquantity = 0, discountAmount = 0, subTotalAmount = 0;
+
+            var taxes = new List<KeyValuePair<int, decimal>>();
+
+            amountXquantity = amount * quantity;
+
+            if (discount > 0)
+                discountAmount = (discount / 100) * amountXquantity;
+
+            subTotalAmount = amountXquantity - discountAmount;
+
+            //var intersectionTaxes = _taxService.GetIntersectionTaxes(itemId, customerId, BusinessCore.Domain.PartyTypes.Customer);
+
+            foreach (var tax in itemTaxes)
             {
                 taxAmount = subTotalAmount - (subTotalAmount / (1 + (tax.Rate / 100)));
                 taxes.Add(new KeyValuePair<int, decimal>(tax.Id, taxAmount));

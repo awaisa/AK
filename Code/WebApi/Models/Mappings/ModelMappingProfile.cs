@@ -35,6 +35,10 @@ namespace WebApiCore.Models.Mappings
             CreateMap<Tax, TaxModel>();
             CreateMap<TaxModel, Tax>();
 
+            CreateMap<TaxModel, SalesInvoiceLineTax>();
+                
+
+
             CreateMap<TaxGroup, TaxGroupModel>();
             CreateMap<TaxGroupModel, TaxGroup>();
 
@@ -71,16 +75,28 @@ namespace WebApiCore.Models.Mappings
             CreateMap<CustomerModel, BusinessCore.Domain.Sales.Customer>();
 
             CreateMap<SalesInvoiceHeader, Sale.InvoiceModel>()
-                .ForPath(x => x.InvoiceItems, opt => opt.MapFrom(mf => mf.SalesInvoiceLines));
+                .ForMember(x => x.InvoiceItems, opt => opt.MapFrom(mf => mf.SalesInvoiceLines))
+                .ForMember(x=>x.Total,opt=>opt.MapFrom(mf=>mf.ComputeTotalAmount()));
             CreateMap<SalesInvoiceHeader, Sale.SearchRowModel>();
-
-            CreateMap<Sale.InvoiceItemModel, SalesInvoiceLine>()
-                .ForPath(x => x.DiscountAmount, opt => opt.MapFrom(mf => mf.Discount))
-                .ForPath(x => x.TaxAmount, opt => opt.MapFrom(mf => mf.Tax))
-                .ForPath(x => x.Tax, opt => opt.Ignore());
 
             CreateMap<Sale.InvoiceModel, SalesInvoiceHeader>()
                 .ForPath(x => x.SalesInvoiceLines, opt => opt.MapFrom(mf => mf.InvoiceItems));
+                //.ForPath(x => x.ComputeTotalAmount(), opt => opt.MapFrom(mf => mf.Total));
+
+            CreateMap<Sale.InvoiceItemModel, SalesInvoiceLine>()
+                .ForPath(x => x.DiscountAmount, opt => opt.MapFrom(mf => mf.Discount))
+                .ForPath(x => x.Taxes, opt => opt.MapFrom(mf => mf.Taxes))
+                ;
+
+            CreateMap<TaxModel, SalesInvoiceLineTax>()
+                .ForPath(x => x.TaxId, opt => opt.MapFrom(mf => mf.Id))
+                .ForPath(x => x.Id, opt => opt.Ignore());
+            CreateMap<SalesInvoiceLineTax, TaxModel>()
+                .ForMember(x => x.Id, opt => opt.MapFrom(mf => mf.TaxId));
+
+            //.ForPath(x => x.TaxAmount, opt => opt.MapFrom(mf => mf.Tax))
+            //.ForPath(x => x.Taxes, opt => opt.MapFrom(mf => mf.Taxes));
+
             //CreateMap<Sale.InvoiceModel, SalesInvoiceLine>();
 
             //CreateMap<Sale.InvoiceModel, SalesOrderHeader>()

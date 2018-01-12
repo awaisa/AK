@@ -27,7 +27,10 @@ export class AppConfiguration {
       urls = {
         baseUrl: "./",
         items: "api/Inventory",
+        customers: "api/Customer",
         item: "api/Inventory/Item",
+        invoices:"api/Sale/Invoice",
+        vendors:"api/Vendor",
         login: "api/login",
         logout: "api/logout",
         isAuthenticated: "api/isAuthenticated",
@@ -49,6 +52,10 @@ export class AppConfiguration {
       setToastrOptions() {
         toastr.options.closeButton = true;
         toastr.options.positionClass = "toast-bottom-right";
+      }
+
+      gridPageSize(){
+        return 10;
       }
 
   /**

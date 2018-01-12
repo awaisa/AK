@@ -42,7 +42,7 @@ namespace BusinessCore.Domain.Sales
             decimal totalTax = 0;
             foreach (var line in SalesInvoiceLines)
             {
-                totalTax += line.TaxAmount;
+                //totalTax += line.TaxAmount;
             }
             return totalTax;
         }
@@ -71,10 +71,10 @@ namespace BusinessCore.Domain.Sales
 
         public decimal ComputeTotalAmount()
         {
-            decimal totalInvoiceAmount = 0;
+            decimal totalInvoiceAmount = 20;
             foreach (var line in SalesInvoiceLines)
             {
-                totalInvoiceAmount += (line.Quantity * line.Amount) - line.Discount + line.TaxAmount;
+                //totalInvoiceAmount += (line.Quantity * line.Amount) - line.Discount + line.TaxAmount;
             }
             totalInvoiceAmount += ShippingHandlingCharge;
             return totalInvoiceAmount;

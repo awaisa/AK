@@ -24,13 +24,13 @@ namespace BusinessCore.Mapping.Sales
                 builder.Property(p => p.InventoryControlJournalId).HasColumnName("InventoryControlJournalId");
                 builder.HasOne(t => t.InventoryControlJournal).WithMany().HasForeignKey(t => t.InventoryControlJournalId);
 
-                builder.Property(p => p.TaxId).HasColumnName("TaxId");
-                builder.HasOne(t => t.Tax).WithMany().HasForeignKey(t => t.TaxId);
+                //builder.Property(p => p.TaxId).HasColumnName("TaxId");
+                //builder.HasOne(t => t.Taxes).WithMany().HasForeignKey(t => t.TaxId);
 
                 builder.Property(p => p.Quantity).HasColumnName("Quantity");
                 builder.Property(p => p.Discount).HasColumnName("Discount");
                 builder.Property(p => p.Amount).HasColumnName("Amount");
-                builder.Property(p => p.TaxAmount).HasColumnName("TaxAmount");
+                //builder.Property(p => p.TaxAmount).HasColumnName("TaxAmount");
                 builder.Property(p => p.DiscountAmount).HasColumnName("DiscountAmount");
 
                 builder.Property(p => p.CompanyId).HasColumnName("CompanyId");

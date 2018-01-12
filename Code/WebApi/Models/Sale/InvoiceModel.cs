@@ -2,6 +2,7 @@
 using BusinessCore.Domain.Sales;
 using System;
 using System.Collections.Generic;
+using WebApiCore.Models.Common;
 
 namespace WebApiCore.Models.Sale
 {
@@ -23,7 +24,7 @@ namespace WebApiCore.Models.Sale
         public int? MeasurementId { get; set; }
         public decimal Quantity { get; set; }
         public decimal Amount { get; set; }
-        public decimal Tax { get; set; }
+        public List<TaxModel> Taxes { get; set; }
         public decimal? Discount { get; set; }
     }
 }

@@ -65,7 +65,7 @@ namespace WebApiCore.Controllers
                                 No = t.No,
                                 Date = t.Date,
                                 CustomerId = t.CustomerId,
-                                //CustomerName = t.Customer.Party.Name,
+                                CustomerName = t.Customer.Party.Name,
                                 Total = t.ComputeTotalAmount(),
 
             
