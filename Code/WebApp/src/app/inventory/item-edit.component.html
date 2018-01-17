@@ -1,9 +1,10 @@
-﻿<div class="container"  >
+{{diagnostic}}
+<div class="container"  >
 
-  <!--<div *ngIf="item.Id !== 0" class="btn-group" style="margin-bottom: 10px;">
+  <!--<div *ngIf="item.id !== 0" class="btn-group" style="margin-bottom: 10px;">
     <a href="#/items" class="btn btn-sm btn-default"><i class="fa fa-list"></i> List</a>
-    <a href="#/item/{{item.Id}}" class="btn btn-sm btn-default"><i class="fa fa-eye"></i> View</a>
-    <a [href]="item.AmazonUrl" class="btn btn-sm btn-default"><i class="fa fa-dollar"></i> Buy</a>
+    <a href="#/item/{{item.id}}" class="btn btn-sm btn-default"><i class="fa fa-eye"></i> View</a>
+    <a [href]="item.amazonUrl" class="btn btn-sm btn-default"><i class="fa fa-dollar"></i> Buy</a>
   </div>
 
   <div class="separator"></div>-->
@@ -13,19 +14,20 @@
   <div [ngClass]="{ 'hidden': !loaded}" [@slideIn]="'in'">
 
     <form name="form1" action="javascript:{}" #form1="ngForm" novalidate>
+        
       <div class="form-group">
         <label for="Code">Code:</label>
         <input id="Code" type="text" class="form-control input-sm"
                placeholder="Code"
                name="Code" required
-               [(ngModel)]="item.Code" autofocus />
+               [(ngModel)]="item.code" autofocus />
       </div>
       <div class="form-group">
         <label for="Description">Description:</label>
         <textarea class="form-control input-sm" id="Description"
                   placeholder="Item description"
                   required
-                  [(ngModel)]="item.Description"
+                  [(ngModel)]="item.description"
                   name="Description"></textarea>
       </div>
       <div class="form-group">
@@ -33,7 +35,7 @@
         <textarea class="form-control input-sm" id="PurchaseDescription"
                   placeholder="Item purchase description"
                   required
-                  [(ngModel)]="item.PurchaseDescription"
+                  [(ngModel)]="item.purchaseDescription"
                   name="PurchaseDescription"></textarea>
       </div>
       <div class="form-group">
@@ -41,7 +43,7 @@
         <textarea class="form-control input-sm" id="SellDescription"
                   placeholder="Item sell description"
                   required
-                  [(ngModel)]="item.SellDescription"
+                  [(ngModel)]="item.sellDescription"
                   name="SellDescription"></textarea>
       </div>
 
@@ -51,7 +53,7 @@
                required
                name="Cost"
                placeholder="Cost"
-               [(ngModel)]="item.Cost" />
+               [(ngModel)]="item.cost" />
       </div>
       <div class="form-group">
         <label for="Price">Price:</label>
@@ -59,9 +61,88 @@
                required
                name="Price"
                placeholder="Price"
-               [(ngModel)]="item.Price" />
+               [(ngModel)]="item.price" />
       </div>
 
+      <div class="form-group">
+        <label for="name">Brand:</label>
+        <select class="form-control" id="name" required 
+        [(ngModel)]="item.brandId" name="name" #name="ngModel">
+          <option *ngFor="let brand of brands" [value]="brand.id">{{brand.name}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="model">Model:</label>
+        <select class="form-control" id="model" required 
+        [(ngModel)]="item.modelId" name="model" #name="ngModel">
+          <option *ngFor="let model of models" [value]="model.id">{{model.name}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="catagory">Catagory:</label>
+        <select class="form-control" id="catagory" required 
+        [(ngModel)]="item.itemCategoryId" name="catagory" #name="ngModel">
+          <option *ngFor="let catagory of catagories" [value]="catagory.id">{{catagory.name}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="taxgroup">TaxGroup:</label>
+        <select class="form-control" id="taxgroup" required 
+        [(ngModel)]="item.taxGroupId" name="taxgroup" #name="ngModel">
+          <option *ngFor="let taxgroup of taxgroups" [value]="taxgroup.id">{{taxgroup.name}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="account">CostOfGoodsSoldAccount:</label>
+        <select class="form-control" id="account" required 
+        [(ngModel)]="item.costOfGoodsSoldAccountId" name="account" #name="ngModel">
+          <option *ngFor="let account of accounts" [value]="account.id">{{account.name}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="inventoryaccount">InventoryAccount:</label>
+        <select class="form-control" id="inventoryaccount" required 
+        [(ngModel)]="item.inventoryAccountId" name="inventoryaccount" #name="ngModel">
+          <option *ngFor="let inventoryaccount of accounts" [value]="inventoryaccount.id">{{inventoryaccount.name}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="salesaccount">SalesAccount:</label>
+        <select class="form-control" id="salesaccount" required 
+        [(ngModel)]="item.salesAccountId" name="salesaccount" #name="ngModel">
+          <option *ngFor="let salesaccount of accounts" [value]="salesaccount.id">{{salesaccount.name}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="measurement">SellMeasurement:</label>
+        <select class="form-control" id="measurement" required 
+        [(ngModel)]="item.sellMeasurementId" name="measurement" #code="ngModel">
+          <option *ngFor="let measurement of measurements" [value]="measurement.id">{{measurement.code}}-{{ measurement.description}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="smallestmeasurement">SellMeasurement:</label>
+        <select class="form-control" id="smallestmeasurement" required 
+        [(ngModel)]="item.smallestMeasurementId" name="smallestmeasurement" #code="ngModel">
+          <option *ngFor="let smallestmeasurement of measurements" [value]="smallestmeasurement.id">{{smallestmeasurement.code}}-{{ smallestmeasurement.description}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="purchasetmeasurement">SellMeasurement:</label>
+        <select class="form-control" id="purchasetmeasurement" required 
+        [(ngModel)]="item.purchaseMeasurementId" name="purchasetmeasurement" #code="ngModel">
+          <option *ngFor="let purchasetmeasurement of measurements" [value]="purchasetmeasurement.id">{{purchasetmeasurement.code}}-{{ purchasetmeasurement.description}}</option>
+        </select>
+      </div>
       <hr />
       <div class="well well-sm">
         <button type="submit" (click)="saveItem(item)"
@@ -69,7 +150,7 @@
                 [disabled]="form1.invalid" accesskey="S">
           <i class="fa fa-check"></i> Save
         </button>
-        <a href="#/inventory/item/{{item.Id}}" class="btn btn-default">
+        <a href="#/inventory/items" class="btn btn-default">
           <i class="fa fa-remove"></i> Cancel
         </a>
       </div>

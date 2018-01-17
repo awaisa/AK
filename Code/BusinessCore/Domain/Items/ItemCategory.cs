@@ -13,7 +13,7 @@ namespace BusinessCore.Domain.Items
         }        
         
         public ItemTypes ItemType { get; set; }
-        public int? ItemCategoryId { get; set; }
+        public int? ParentCategoryId { get; set; }
         public int? MeasurementId { get; set; }
         public int? SalesAccountId { get; set; }
         public int? InventoryAccountId { get; set; }
@@ -21,6 +21,7 @@ namespace BusinessCore.Domain.Items
         public int? AdjustmentAccountId { get; set; }
         public int? AssemblyAccountId { get; set; }
         public string Name { get; set; }
+        public virtual ItemCategory ParentCategory { get; set; }
         public virtual Measurement Measurement { get; set; }
         public virtual Account SalesAccount { get; set; }
         public virtual Account InventoryAccount { get; set; }

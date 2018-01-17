@@ -26,7 +26,6 @@ namespace BusinessCore.Services.Inventory
         private readonly IRepository<ItemModel> _modelRepo;
         private readonly IRepository<ItemBrand> _brandRepo;
 
-
         private Expression<Func<Item, object>>[] includePropertiesOfItem =
             {
                 p => p.Brand,
@@ -207,7 +206,19 @@ namespace BusinessCore.Services.Inventory
                         select f;
             return query;
         }
-
+        public IQueryable<ItemBrand> GetItemBrands()
+        {
+            return _brandRepo.Table;
+        }
+        public IQueryable<ItemModel> GetItemModels()
+        {
+            return _modelRepo.Table;
+        }
+        public IQueryable<ItemTaxGroup> GetItemTaxGroups()
+        {
+            return _itemTaxGroup.Table;
+        }
+        
         #region Manage Models
         public Item GetItemByNo(string itemNo)
         {

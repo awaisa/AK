@@ -11,6 +11,13 @@ declare var toastr:any;
 declare var window:any;
 
 import {slideInLeft, slideIn} from "../common/animations";
+import { Brand } from '../entities/brand';
+import { resetFakeAsyncZone } from '@angular/core/testing';
+import { Catagory } from '../entities/catagory';
+import { Model } from '../entities/model';
+import { TaxGroup } from '../entities/taxGroup';
+import { Measurement } from '../entities/measurement';
+import { Account } from '../entities/account';
 
 @Component({
     templateUrl: 'item-edit.component.html',
@@ -27,6 +34,15 @@ export class ItemEditComponent implements OnInit {
   loaded =  false;
   aniFrame = 'in';
 
+  brands:Brand[]=[];
+  catagories:Catagory[]=[];
+  models:Model[]=[];
+  taxgroups:TaxGroup[]=[];
+  measurements:Measurement[]=[];
+  accounts:Account[]=[];
+
+
+
   ngOnInit() {
     
     //this.config.isSearchAllowed = false;
@@ -37,6 +53,59 @@ export class ItemEditComponent implements OnInit {
       this.loaded = true;
       return;
     }
+    this.inventoryService.getBrands()
+      .subscribe(result=>{
+        this.brands=result;
+        this.loaded=true;
+      },
+      err => {
+        this.error.error(err);
+      });
+
+      this.inventoryService.getCatagories()
+      .subscribe(result=>{
+        this.catagories=result;
+        this.loaded=true;
+      },
+      err => {
+        this.error.error(err);
+      });
+
+      this.inventoryService.getModels()
+      .subscribe(result=>{
+        this.models=result;
+        this.loaded=true;
+      },
+      err => {
+        this.error.error(err);
+      });
+
+      this.inventoryService.getMeasurements()
+      .subscribe(result=>{
+        this.measurements=result;
+        this.loaded=true;
+      },
+      err => {
+        this.error.error(err);
+      });
+
+      this.inventoryService.getTaxGroups()
+      .subscribe(result=>{
+        this.taxgroups=result;
+        this.loaded=true;
+      },
+      err => {
+        this.error.error(err);
+      });
+
+      this.inventoryService.getAccounts()
+      .subscribe(result=>{
+        this.accounts=result;
+        this.loaded=true;
+      },
+      err => {
+        this.error.error(err);
+      });
 
     this.inventoryService.getItem(id)
       .subscribe(result => {
@@ -46,6 +115,8 @@ export class ItemEditComponent implements OnInit {
         err => {
           this.error.error(err);
         });
+
+        
   }
 
   saveItem(item) {

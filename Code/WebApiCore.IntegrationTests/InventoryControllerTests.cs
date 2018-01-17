@@ -38,8 +38,9 @@ namespace WebApiCore.IntegrationTests
         {
             var inventoryService = _testFixture.GetService<IInventoryService>();
             var items = inventoryService.GetItemCategories().LastOrDefault();
+
             //itemModel.Id = items.Id;
-            itemModel.ItemCategoryId = items.ItemCategoryId;
+            itemModel.ItemCategoryId =items.ParentCategoryId;
             //itemModel.ModelId = items.ModelId;
             //itemModel.BrandId = items.BrandId;
             itemModel.InventoryAccountId = items.InventoryAccountId;
@@ -98,7 +99,7 @@ namespace WebApiCore.IntegrationTests
             var inventoryService = _testFixture.GetService<IInventoryService>();
             var items = inventoryService.GetItemCategories().FirstOrDefault();
             itemModel.Id = items.Id;
-            itemModel.ItemCategoryId = items.ItemCategoryId;
+            itemModel.ItemCategoryId = items.ParentCategoryId;
             //itemModel.ModelId = items.ModelId;
             //itemModel.BrandId = items.BrandId;
             itemModel.InventoryAccountId = items.InventoryAccountId;

@@ -167,5 +167,28 @@ namespace WebApiCore.Models.Mappings
             return model.MapTo(destination);
         }
         #endregion
+
+        #region Reference Controller
+        public static Inventory.ItemBrandModel ToModel(this BusinessCore.Domain.Items.ItemBrand entity)
+        {
+            return entity.MapTo<BusinessCore.Domain.Items.ItemBrand, Inventory.ItemBrandModel>();
+        }
+        public static Inventory.ItemModelModel ToModel(this BusinessCore.Domain.Items.ItemModel entity)
+        {
+            return entity.MapTo<BusinessCore.Domain.Items.ItemModel, Inventory.ItemModelModel>();
+        }
+        public static Inventory.MeasurementModel ToModel(this BusinessCore.Domain.Items.Measurement entity)
+        {
+            return entity.MapTo<BusinessCore.Domain.Items.Measurement, Inventory.MeasurementModel>();
+        }
+        public static Common.AccountModel ToModel(this BusinessCore.Domain.Financials.Account entity)
+        {
+            return entity.MapTo<BusinessCore.Domain.Financials.Account, Common.AccountModel>();
+        }
+        public static Inventory.ItemTaxGroupModel ToModel(this BusinessCore.Domain.TaxSystem.ItemTaxGroup entity)
+        {
+            return entity.MapTo<BusinessCore.Domain.TaxSystem.ItemTaxGroup, Inventory.ItemTaxGroupModel>();
+        }
+        #endregion
     }
 }

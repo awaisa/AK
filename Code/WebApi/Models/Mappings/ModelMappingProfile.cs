@@ -41,6 +41,8 @@ namespace WebApiCore.Models.Mappings
 
             CreateMap<TaxGroup, TaxGroupModel>();
             CreateMap<TaxGroupModel, TaxGroup>();
+            
+            CreateMap<ItemTaxGroup, ItemTaxGroupModel>();
 
             CreateMap<Measurement, MeasurementModel>();
             CreateMap<MeasurementModel, Measurement>();
@@ -94,13 +96,7 @@ namespace WebApiCore.Models.Mappings
             CreateMap<SalesInvoiceLineTax, TaxModel>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(mf => mf.TaxId));
 
-            //.ForPath(x => x.TaxAmount, opt => opt.MapFrom(mf => mf.Tax))
-            //.ForPath(x => x.Taxes, opt => opt.MapFrom(mf => mf.Taxes));
-
-            //CreateMap<Sale.InvoiceModel, SalesInvoiceLine>();
-
-            //CreateMap<Sale.InvoiceModel, SalesOrderHeader>()
-            //    .ForMember(x => x.SalesOrderLines, opt => opt.MapFrom(mf => mf.InvoiceItems.Select(y=>y.Discount)));
+            
         }
     }
 }

@@ -27,8 +27,14 @@ export class AppConfiguration {
       urls = {
         baseUrl: "./",
         items: "api/Inventory",
+        brands:"api/Reference/GetBrand",
+        catagories:"api/Reference/GetCatagory",
+        models:"api/Reference/GetModel",
+        taxgroups:"api/Reference/GetTaxGroup",
+        measuremets:"api/Reference/GetMeasuremets",
+        accounts:"api/Reference/GetAccounts",
+
         customers: "api/Customer",
-        item: "api/Inventory/Item",
         invoices:"api/Sale/Invoice",
         vendors:"api/Vendor",
         login: "api/login",
