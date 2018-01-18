@@ -1,0 +1,78 @@
+button, a{
+    cursor: pointer;
+}
+.fade.show{
+    background: rgba(0,0,0,0.5);   
+}
+.modal_wrapper{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background: rgba(0,0,0,0.5);
+    right: 0px;
+    border: 0px;
+    width: 100%;
+    max-width: 100%;
+    z-index: 1000;
+    height: 100%;
+    max-height: 100%
+}
+
+
+@media (max-width: 480px)
+{
+    .modal_wrapper
+    {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        background: rgba(0,0,0,0.5);
+        right: 0px;
+        border: 0px;
+        width: 100%;
+        max-width: 100%;
+        z-index: 1000;
+        height: 100%;
+        max-height: 100%;
+        overflow: scroll;
+    }
+      
+}
+@media (max-width: 360px)
+{
+    .modal_wrapper
+    {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        background: rgba(0,0,0,0.5);
+        right: 0px;
+        border: 0px;
+        width: 100%;
+        max-width: 100%;
+        z-index: 1000;
+        height: 100%;
+        max-height: 100%;
+        overflow: scroll;
+    }
+      
+}
+@media (max-width: 320px)
+{
+    .modal_wrapper
+    {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        background: rgba(0,0,0,0.5);
+        right: 0px;
+        border: 0px;
+        width: 100%;
+        max-width: 100%;
+        z-index: 1000;
+        height: 100%;
+        max-height: 100%;
+        overflow: scroll;
+    }
+      
+}

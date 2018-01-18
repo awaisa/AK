@@ -5,8 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ErrorDisplayComponent } from './error-display.component';
 import { ErrorInfo } from './ErrorInfo';
 
-@NgModule({
-    
+@NgModule({ 
     imports: [
         CommonModule
     ],
