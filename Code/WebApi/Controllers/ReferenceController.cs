@@ -33,9 +33,9 @@ namespace WebApiCore.Controllers
         [Produces(typeof(ItemCategoryModel))]
         public IActionResult GetCatagory()
         {
-            var CatagoryIdList = _service.GetItemCategories().Select(c => c.ToModel());
+            var catagories = _service.GetItemCategories().Select(c => c.ToModel());
 
-            return Ok(CatagoryIdList);
+            return Ok(catagories);
         }
 
         [HttpGet("GetBrand")]
@@ -51,24 +51,24 @@ namespace WebApiCore.Controllers
         [Produces(typeof(ItemModelModel))]
         public IActionResult GetModel()
         {
-            var ModelIdList = _service.GetItemModels().Select(c => c.ToModel());
-            return Ok(ModelIdList);
+            var models = _service.GetItemModels().Select(c => c.ToModel());
+            return Ok(models);
         }
 
         [HttpGet("GetTaxGroup")] 
         [Produces(typeof(ItemTaxGroupModel))]
         public IActionResult GetTaxGroup()
         {
-            var TaxGroupIdList = _service.GetItemTaxGroups().Select(x=>x.ToModel());
-            return Ok(TaxGroupIdList);
+            var taxGroups = _service.GetItemTaxGroups().Select(x=>x.ToModel());
+            return Ok(taxGroups);
         }
 
         [HttpGet("GetMeasuremets")]
         [Produces(typeof(MeasurementModel))]
         public IActionResult GetMeasuremets()
         {
-            var MeasuremetIdList = _service.GetMeasurements().Select(c => c.ToModel());
-            return Ok(MeasuremetIdList);
+            var measurements = _service.GetMeasurements().Select(c => c.ToModel());
+            return Ok(measurements);
         }
 
         [HttpGet("GetAccounts")]
@@ -83,8 +83,8 @@ namespace WebApiCore.Controllers
         [Produces(typeof(VendorModel))]
         public IActionResult GetVendors()
         {
-            var accounts = _purchasingService.GetVendors().Select(c => c.ToModel());
-            return Ok(accounts);
+            var vendors = _purchasingService.GetVendors().Select(c => c.ToModel());
+            return Ok(vendors);
         }
     }
 }

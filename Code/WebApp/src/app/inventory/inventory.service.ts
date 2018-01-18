@@ -10,6 +10,7 @@ import {  Account } from '../entities/account';
 import { TaxGroup } from '../entities/taxGroup';
 import { Measurement } from '../entities/measurement';
 import { Model } from '../entities/model';
+import { Vendor } from '../entities/vendors';
 
 @Injectable()
 export class InventoryService {
@@ -135,6 +136,23 @@ export class InventoryService {
                 this.accountList = response.json();
 
                 return this.accountList;
+            })
+            .catch(new ErrorInfo().parseObservableResponseError);
+
+    }
+
+    vendorList:Vendor[]=[];
+    getVendors(force: boolean = false): Observable<Vendor[]> {
+
+        // use locally cached version
+        if (force !== true && (this.vendorList && this.vendorList.length > 0))
+            return Observable.of(this.vendorList) as Observable<Vendor[]>;
+
+        return this.httpClient.get(this.config.urls.url("vendorss"))
+            .map(response => {
+                this.vendorList = response.json();
+
+                return this.vendorList;
             })
             .catch(new ErrorInfo().parseObservableResponseError);
 

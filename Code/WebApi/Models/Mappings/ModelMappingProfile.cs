@@ -18,9 +18,12 @@ namespace WebApiCore.Models.Mappings
     {
         public ModelMappingProfile()
         {
-            CreateMap<Item, Inventory.ItemModel>();
+            CreateMap<Item, Inventory.ItemModel>()
+                .ForMember(x=>x.TaxGroupId,opt=>opt.MapFrom(mf=>mf.ItemTaxGroupId));
+            CreateMap<Inventory.ItemModel, Item>()
+                .ForMember(x=>x.ItemTaxGroupId,opt=>opt.MapFrom(mf=>mf.TaxGroupId));
             CreateMap<Item, Inventory.SearchRowModel>();
-            CreateMap<Inventory.ItemModel, Item>();
+            
 
             CreateMap<ItemCategory, ItemCategoryModel>();
             CreateMap<ItemCategoryModel, ItemCategory>();

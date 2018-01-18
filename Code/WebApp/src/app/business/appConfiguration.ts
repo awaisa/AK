@@ -33,6 +33,7 @@ export class AppConfiguration {
         taxgroups:"api/Reference/GetTaxGroup",
         measuremets:"api/Reference/GetMeasuremets",
         accounts:"api/Reference/GetAccounts",
+        vendorss:"api/Reference/GetVendors",
 
         customers: "api/Customer",
         invoices:"api/Sale/Invoice",

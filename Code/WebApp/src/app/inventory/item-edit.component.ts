@@ -18,6 +18,7 @@ import { Model } from '../entities/model';
 import { TaxGroup } from '../entities/taxGroup';
 import { Measurement } from '../entities/measurement';
 import { Account } from '../entities/account';
+import { Vendor } from '../entities/vendors';
 
 @Component({
     templateUrl: 'item-edit.component.html',
@@ -40,6 +41,7 @@ export class ItemEditComponent implements OnInit {
   taxgroups:TaxGroup[]=[];
   measurements:Measurement[]=[];
   accounts:Account[]=[];
+  vendors:Vendor[]=[];
 
 
 
@@ -49,7 +51,7 @@ export class ItemEditComponent implements OnInit {
     //this.bandTypeAhead();
 
     var id = this.route.snapshot.params["id"];
-    if (id < 1) {
+    if (id < 0) {
       this.loaded = true;
       return;
     }
@@ -107,6 +109,15 @@ export class ItemEditComponent implements OnInit {
         this.error.error(err);
       });
 
+      this.inventoryService.getVendors()
+      .subscribe(result=>{
+        this.vendors=result;
+        this.loaded=true;
+      },
+      err => {
+        this.error.error(err);
+      });
+if(id>0)
     this.inventoryService.getItem(id)
       .subscribe(result => {
           this.item = result;

@@ -15,7 +15,7 @@ export class ErrorInfo {
     iconColor: string;
 
     response: Response = null;
-
+    
     reset() {
         this.message = "";
         this.header = "";

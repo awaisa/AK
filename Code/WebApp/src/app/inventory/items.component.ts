@@ -11,7 +11,7 @@ export class ItemsComponent implements OnInit {
     constructor(private config: AppConfiguration, private user:UserInfo) {
 
     }
-
+    
     error: ErrorInfo = new ErrorInfo();
     dtOptions: DataTables.Settings = {};
     
