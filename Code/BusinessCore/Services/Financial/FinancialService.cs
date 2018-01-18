@@ -108,11 +108,9 @@ namespace BusinessCore.Services.Financial
             return line;
         }
 
-        public IEnumerable<Account> GetAccounts()
+        public IQueryable<Account> GetAccounts()
         {
-            var query = from f in _accountRepo.Table
-                        select f;
-            return query.AsEnumerable();
+            return _accountRepo.Table;
         }
 
         public Account GetAccount(int id)

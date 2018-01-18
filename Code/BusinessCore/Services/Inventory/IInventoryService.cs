@@ -1,5 +1,6 @@
 using BusinessCore.Domain;
 using BusinessCore.Domain.Items;
+using BusinessCore.Domain.TaxSystem;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,7 +22,6 @@ namespace BusinessCore.Services.Inventory
         Item GetItemDetailById(int id);
         Item GetItemByNo(string itemNo);
         IQueryable<Item> GetAllItems();
-
         IEnumerable<Measurement> GetMeasurements();
         Measurement GetMeasurementById(int id);
 
@@ -37,5 +37,9 @@ namespace BusinessCore.Services.Inventory
         ItemBrand GetBrand(int? id);
         ItemBrand SaveBrand(ItemBrand brand);
         ItemBrand BrandSetActive(int id, bool isInactive);
+
+        IQueryable<ItemBrand> GetItemBrands();
+        IQueryable<ItemModel> GetItemModels();
+        IQueryable<ItemTaxGroup> GetItemTaxGroups();
     }
 }

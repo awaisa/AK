@@ -3,6 +3,7 @@ using BusinessCore.Domain.Financials;
 using BusinessCore.Domain.TaxSystem;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BusinessCore.Services.Financial
 {
@@ -12,7 +13,7 @@ namespace BusinessCore.Services.Financial
         void SaveGeneralLedgerEntry(GeneralLedgerHeader entry);
         GeneralLedgerLine CreateGeneralLedgerLine(DrOrCrSide DrCr, int accountId, decimal amount);
         GeneralLedgerHeader CreateGeneralLedgerHeader(DocumentTypes documentType, DateTime Date, string description);
-        IEnumerable<Account> GetAccounts();
+        IQueryable<Account> GetAccounts();
         IEnumerable<JournalEntryHeader> GetJournalEntries();
         void AddJournalEntry(JournalEntryHeader journalEntry);
         ICollection<TrialBalance> TrialBalance(DateTime? from = null, DateTime? to = null);

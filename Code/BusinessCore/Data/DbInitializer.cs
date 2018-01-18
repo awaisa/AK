@@ -466,7 +466,7 @@ namespace BusinessCore.Data
                     AssemblyAccount = assemblyCostAccount,
                     //BrandId=201,
                     //ModelId=1004,
-                    ItemCategoryId=101
+                    ParentCategoryId=null
                 },
                 new ItemCategory()
                 {
@@ -480,7 +480,7 @@ namespace BusinessCore.Data
                     AssemblyAccount = assemblyCostAccount,
                     //BrandId=02,
                     //ModelId=005,
-                    ItemCategoryId=102
+                    ParentCategoryId=null
                 },
                 new ItemCategory()
                 {
@@ -494,7 +494,7 @@ namespace BusinessCore.Data
                     AssemblyAccount = assemblyCostAccount,
                     //BrandId=03,
                     //ModelId=006,
-                    ItemCategoryId=103
+                    ParentCategoryId=null
                 },
                 new ItemCategory()
                 {
@@ -508,7 +508,7 @@ namespace BusinessCore.Data
                     AssemblyAccount = assemblyCostAccount,
                     //BrandId=04,
                     //ModelId=007,
-                    ItemCategoryId=104
+                    ParentCategoryId=null
                 }
             };
 

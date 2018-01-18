@@ -15,7 +15,7 @@ import { ItemEditComponent } from './item-edit.component';
     imports: [RouterModule.forChild([
         { path: '', redirectTo: 'items', pathMatch: 'full' },
         { path: 'items', component: ItemsComponent, canActivate: [EnsureAuthenticated]},
-        { path: 'item/:id', component: ItemEditComponent, canActivate: [EnsureAuthenticated]}
+        { path: 'item/:id', component: ItemEditComponent, canActivate: [EnsureAuthenticated]},
     ])],
     exports: [RouterModule]
 })

@@ -33,6 +33,9 @@ namespace BusinessCore.Mapping.Items
 
                 builder.Property(p => p.Name).HasColumnName("Name").HasMaxLength(100);
 
+                builder.Property(p => p.ParentCategoryId).HasColumnName("ParentCategoryId");
+                builder.HasOne(t => t.ParentCategory).WithMany().HasForeignKey(t => t.ParentCategoryId);
+
                 builder.Property(p => p.CompanyId).HasColumnName("CompanyId");
                 builder.HasOne(t => t.Company).WithMany().HasForeignKey(t => t.CompanyId);
             };

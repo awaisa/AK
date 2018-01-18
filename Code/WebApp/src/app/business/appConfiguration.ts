@@ -25,18 +25,25 @@ export class AppConfiguration {
       isSearchAllowed = true;
 
       urls = {
-        baseUrl: './',
-        items: 'api/Inventory',
-        customers: 'api/Customer',
-        item: 'api/Inventory/Item',
-        invoices: 'api/Sale/Invoice',
-        vendors: 'api/Vendor',
-        login: 'api/login',
-        logout: 'api/logout',
-        isAuthenticated: 'api/isAuthenticated',
-        reloadData: 'api/reloadData',
-        url: (name, parm1?, parm2?, parm3?) => {
-          let url = this.urls.baseUrl + this.urls[name];
+        baseUrl: "./",
+        items: "api/Inventory",
+        brands:"api/Reference/GetBrand",
+        catagories:"api/Reference/GetCatagory",
+        models:"api/Reference/GetModel",
+        taxgroups:"api/Reference/GetTaxGroup",
+        measuremets:"api/Reference/GetMeasuremets",
+        accounts:"api/Reference/GetAccounts",
+        vendorss:"api/Reference/GetVendors",
+
+        customers: "api/Customer",
+        invoices:"api/Sale/Invoice",
+        vendors:"api/Vendor",
+        login: "api/login",
+        logout: "api/logout",
+        isAuthenticated: "api/isAuthenticated",
+        reloadData: "api/reloadData",
+        url: (name,parm1?,parm2?,parm3?) => {
+          var url = this.urls.baseUrl + this.urls[name];
           if (parm1)
             url += '/' + parm1;
           if (parm2)
