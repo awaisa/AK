@@ -31,40 +31,40 @@ export class PurchaseOrdersComponent implements OnInit  {
                 $("#SearchBox").focus();
             }, 200);
     
-            var t = this.user.token;
-            this.dtOptions = {
-                ajax: {
-                    url: this.config.urls.url("items"),
-                    beforeSend: function(xhr, settings) { 
-                        xhr.setRequestHeader('Authorization','Bearer ' + t); 
-                    } 
-                }, 
-                serverSide: true,
-                ordering: true,
-                paging: true,
-                pageLength:2,
-                lengthChange: false,
-                columns: [{
-                  title: 'Code',
-                  data: 'Code'
-                }, {
-                  title: 'Description',
-                  data: 'Description'
-                }, {
-                  title: 'Price',
-                  data: 'Price'
-                },
-                {
-                    data: null,
-                    className: "text-center",
-                    orderable: false,
-                    render: function(val, type, row){
-                        var a = '<a href="#/inventory/item/'+val.Id+'">Edit</a>'
-                        return a;
-                        //return '<a href="#/inventory/item?id='+val.Code+'" class="btn btn-link">Edit</a> / <a href="" class="editor_remove">Delete</a>';
-                    }
-                }]
-              };
+            // var t = this.user.token;
+            // this.dtOptions = {
+            //     ajax: {
+            //         url: this.config.urls.url("items"),
+            //         beforeSend: function(xhr, settings) { 
+            //             xhr.setRequestHeader('Authorization','Bearer ' + t); 
+            //         } 
+            //     }, 
+            //     serverSide: true,
+            //     ordering: true,
+            //     paging: true,
+            //     pageLength:2,
+            //     lengthChange: false,
+            //     columns: [{
+            //       title: 'Code',
+            //       data: 'Code'
+            //     }, {
+            //       title: 'Description',
+            //       data: 'Description'
+            //     }, {
+            //       title: 'Price',
+            //       data: 'Price'
+            //     },
+            //     {
+            //         data: null,
+            //         className: "text-center",
+            //         orderable: false,
+            //         render: function(val, type, row){
+            //             //var a = '<a href="#/inventory/item/'+val.Id+'">Edit</a>'
+            //             //return a;
+            //             //return '<a href="#/inventory/item?id='+val.Code+'" class="btn btn-link">Edit</a> / <a href="" class="editor_remove">Delete</a>';
+            //         }
+            //     }
+            //   }];
     
             //this.getItems();
         }

@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {Http, Headers, Response, RequestOptions} from "@angular/http";
 import {AppConfiguration} from "./appConfiguration";
 import {Observable} from "rxjs";
@@ -29,11 +29,11 @@ export class UserInfo {
   };
 
   get userName() {
-      return this._currentUser.Username;
+      return this._currentUser.username;
   };
 
   get fullName() {
-      return this._currentUser.FirstName + ' ' + this._currentUser.LastName;
+      return this._currentUser.firstName + ' ' + this._currentUser.lastName;
   };
 
   get token() {
@@ -49,17 +49,17 @@ export class UserInfo {
 
 
   login(username, password) {
-    return this.http.post(this.config.urls.url("login"), { username: username, password: password})
+    return this.http.post(this.config.urls.url("login"), { username: username, password: password })
       .map((response: Response) => {
           // login successful if there's a jwt token in the response
-          let user = response.json();
+        let user = response.json();
           if (user && user.token) {
               // store user details and jwt token in local storage to keep user logged in between page refreshes
               localStorage.setItem('currentUser', JSON.stringify(user));
           }
       })
       .catch( (response) => {
-        if(response.status === 401)
+         if(response.status === 401)
           this.isAuthenticated = false;
 
         return  new ErrorInfo().parseObservableResponseError(response);
@@ -80,7 +80,7 @@ export class UserInfo {
    * @returns {Observable<R>}
    */
   checkAuthentication() {
-    var url = this.config.urls.url( "isAuthenticated" );
+    var url = this.config.urls.url("isAuthenticated");
     console.log(url);
     return this.http.get(url,
                          new RequestOptions({withCredentials: true}))
@@ -93,8 +93,7 @@ export class UserInfo {
         this.isAuthenticated = false;
 
         // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
-        
+        localStorage.removeItem('currentUser'); 
         return Observable.throw( response );
       });
   }

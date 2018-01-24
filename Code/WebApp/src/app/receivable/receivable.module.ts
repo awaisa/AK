@@ -12,12 +12,16 @@ import { CustomersComponent } from './customers.component';
 import { ReceivableRoutingModule } from './receivable-routing.module';
 
 import { DataTablesModule } from 'angular-datatables';
+import { EditCustomerComponent } from './edit-customer/edit-customer.component'
+import { ReactiveFormsModule } from '@angular/forms';
+import { AddCustomerComponent } from './add-customer/add-customer.component'; 
 
 @NgModule({
   imports: [
       SharedModule, CommonModule,
-      ReceivableRoutingModule, DataTablesModule
+      ReceivableRoutingModule, DataTablesModule,
+      ReactiveFormsModule
   ],
-  declarations: [QuotationsComponent, OrdersComponent, ReceiptsComponent, InvoicesComponent, CustomersComponent]
+  declarations: [QuotationsComponent, OrdersComponent, ReceiptsComponent, InvoicesComponent, CustomersComponent,EditCustomerComponent, AddCustomerComponent]
 })
 export class ReceivableModule { }

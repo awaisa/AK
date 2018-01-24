@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 
-import {RequestOptions} from "@angular/http";
+import {RequestOptions} from '@angular/http';
 declare var toastr: any;
 declare var location: any;
 
@@ -14,14 +14,14 @@ export class AppConfiguration {
           //if(location.port && (location.port == "3999"))
           //this.urls.baseUrl = "http://localhost:5000/"; // kestrel
 
-          this.urls.baseUrl = "http://localhost:26448/"; // iis Express
+          this.urls.baseUrl = 'http://localhost:26448/'; // iis Express
           //this.urls.baseUrl = "http://localhost/ak/"; // iis
           //this.urls.baseUrl = "http://vmcore.westus.cloudapp.azure.com/";  // online
       }
 
       // top level search text
-      searchText = "";
-      activeTab = "about";
+      searchText = '';
+      activeTab = 'about';
       isSearchAllowed = true;
 
       urls = {
@@ -45,11 +45,11 @@ export class AppConfiguration {
         url: (name,parm1?,parm2?,parm3?) => {
           var url = this.urls.baseUrl + this.urls[name];
           if (parm1)
-            url += "/" + parm1;
+            url += '/' + parm1;
           if (parm2)
-            url += "/" + parm2;
+            url += '/' + parm2;
           if (parm3)
-            url += "/" + parm3;
+            url += '/' + parm3;
 
           return url;
         }
@@ -58,7 +58,7 @@ export class AppConfiguration {
 
       setToastrOptions() {
         toastr.options.closeButton = true;
-        toastr.options.positionClass = "toast-bottom-right";
+        toastr.options.positionClass = 'toast-bottom-right';
       }
 
       gridPageSize(){
