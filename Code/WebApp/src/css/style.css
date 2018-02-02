@@ -47,7 +47,7 @@ h3 {
 }
 
 form input:not([type=submit]):not([type=checkbox]):not([type=radio]):not([type=file]):not(.ng-pristine):not(.ng-untouched).ng-invalid,
-select:not(ng-pristine).ng-invalid, textarea:not(.ng-pristine).ng-invalid {
+select:not(ng-pristine):not(.ng-untouched).ng-invalid, textarea:not(.ng-pristine).ng-invalid {
   background: lightpink;
   border-left: 5px solid red;
 }

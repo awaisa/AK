@@ -1,163 +1,158 @@
-<div  class="container">
-
-  <div class="btn-group" style="margin-bottom: 10px;">
-    <a routerLink="/albums" class="btn btn-sm btn-default"><i class="fa fa-list"></i> List</a>
-    <a [routerLink]="['/album',album.Id]" class="btn btn-sm btn-default"><i class="fa fa-eye"></i> View</a>
-    <a (click)="openPopup()" class="btn btn-sm btn-default"><i class="fa fa-dollar"></i> Add</a>
-  </div>
-
-  <div class="separator"></div>
-
-  <!-- <error-display [error]="error"></error-display> -->
-
+<div class="container">
+    <error-display [error]="_error"></error-display>
   <div class="row">
+    <div class="col-md-12" style="border: 0.5px solid;">
+      <div class="col-md-12">
+        <h3>Vendor Detail</h3>
+        <div class="separator"></div>
+      </div>
 
-    <div class="col-sm-5">
-      <form name="form1" action="javascript:{}" #form1="ngForm" novalidate>
-        <div class="form-group">
-          <label for="AlbumName">Album Name:</label>
-          <input id="AlbumName" type="text" class="form-control input-sm"
-                 placeholder="Album Name"
-                 name="Title" required
-                 [(ngModel)]="album.Title" autofocus />
+      <div class="col-md-12">
+          <form name="form1" action="javascript:{}" #form1="ngForm" novalidate>
+        <div class="form-group" style="margin-top: 10px;">
+          <label>Vendor No:</label>
+          <span class="label label-info">123</span>
+        </div>
+        <div class="form-group col-md-6" [formGroup]="vendorPartyForm">
+          <label for="name">Name:</label>
+          <input id="name" type="text" class="form-control input-sm"
+            placeholder="Name" formControlName="name" name="name" />
 
         </div>
-        <div class="form-group">
-          <label for="BandName">Band Name:</label>
-          <input type="text" class="form-control input-sm typeahead" id="BandName"
-                 required
-                 autocomplete="off"
-                 data-provide="typeahead"
-                 placeholder="Band Name"
-                 name="ArtistName"
-                 [(ngModel)]="album.Artist.ArtistName" />
-
+        <div class="form-group col-md-6" [formGroup]="vendorPartyForm">
+          <label for="BandName">Address:</label>
+          <input type="text" class="form-control input-sm typeahead" id="address" required autocomplete="off" data-provide="typeahead"
+            placeholder="Address" formControlName="address" name="address" />
+        </div>
+        <div class="form-group col-md-6" [formGroup]="vendorPartyForm">
+          <label for="Description">Email:</label>
+          <input class="form-control input-sm" id="email" placeholder="Email" required formControlName="email" name="email">
 
         </div>
-        <div class="form-group">
-          <label for="Description">Album Description:</label>
-          <textarea class="form-control input-sm" id="Description"
-                    placeholder="Album description or review"
-                    required
-                    [(ngModel)]="album.Description"
-                    name="Description"
-                    style="height: 115px"></textarea>
+        <div class="form-group col-md-6" [formGroup]="vendorPartyForm">
+          <label for="Description">Phone:</label>
+          <input class="form-control input-sm" id="email" placeholder="Phone" required formControlName="phone" name="phone">
 
         </div>
 
-        <div class="form-group">
+        <div class="form-group col-md-6" [formGroup]="vendorPartyForm">
+          <label for="Description">Website:</label>
           <div class="input-group">
-            <span class="input-group-addon" title="Image Url"><i class="fa fa-image fa-fw"></i></span>
-            <input type="text" class="form-control input-sm" id="ImageUrl"
-                   required
-                   name="ImageUrl"
-                   placeholder="Image Url" [(ngModel)]="album.ImageUrl" />
-
+            <span class="input-group-addon" title="Url where to buy">
+              <i class="fa fa-link fa-fw"></i>
+            </span>
+            <input type="text" class="form-control input-sm" id="AmazonUrl" placeholder="website URL" formControlName="website" name="website"
+            />
           </div>
         </div>
-
-        <div class="form-group">
-          <div class="input-group">
-            <span class="input-group-addon" title="Url where to buy"><i class="fa fa-dollar fa-fw"></i></span>
-            <input type="text" class="form-control input-sm" id="AmazonUrl"
-                   placeholder="Purchase Url"
-                   name="AmazonUrl"
-                   [(ngModel)]="album.AmazonUrl"/>
+        <div class="form-group col-md-6" [formGroup]="contactVendorPartyForm">
+            <label for="Description">Temporary ID:</label>
+            <div class="input-group">
+              <span class="input-group-addon" title="Url where to buy">
+                <i class="fa fa-link fa-fw"></i>
+              </span>
+              <input type="text" class="form-control input-sm" id="AmazonUrl" placeholder="website URL" formControlName="id" name="id"
+              />
+            </div>
           </div>
+
+        <div class="form-group col-md-6" [formGroup]="vendorPartyForm">
+          <label for="YearReleased">Fax:</label>
+          <input type="number" class="form-control input-sm" id="YearReleased" required formControlName="fax" name="fax" placeholder="Fax Number"
+          />
         </div>
-
-        <div class="form-group">
-          <div class="input-group">
-            <span class="input-group-addon" title="Url where to buy"><i class="fa fa-spotify fa-fw"></i></span>
-            <input type="text" class="form-control input-sm" id="SpotifyUrl"
-                   placeholder="Listen Url"
-                   name="SpotifyUrl"
-                   [(ngModel)]="album.SpotifyUrl" />
-          </div>
+        <div class="col-md-12">
+          <hr/>
         </div>
-
-        <div class="form-group">
-          <label for="YearReleased">Year released:</label>
-          <input type="number" class="form-control input-sm" id="YearReleased"
-                 required
-                 name="Year"
-                 placeholder="Year of album release"
-                 [(ngModel)]="album.Year"/>
+        
+        <div class="col-md-12">
+          <h4>Contacts:
+            <span style="cursor:pointer;" class="label label-primary" (click)="addContact()">Add</span>
+          </h4>
+          <div class="separator"></div>
         </div>
+        <div class="col-md-12" style="margin-top: 20px;">
+          <!--TODO: class="table-responsive" missing for responsive-->
 
-        <hr/>
+          <table class="table table-condensed">
+            <thead>
+              <th>First Name</th>
+              <th>Middle Name</th>
+              <th>Surname</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let contact of partyContacts;let counter=index">
+                <td>{{contact.firstName}}</td>
+                <td>{{contact.middleName}}</td>
+                <td>{{contact.lastName}}</td>
+                <td>
+                  <span style="cursor:pointer;" (click)="deleteContact(counter)" class="label label-danger">Delete</span>
+                </td>
+              </tr>
+              <tr *ngIf="addContactFlag">
+                <td colspan="4">
 
-        <!-- <album-songlist [tracks]="album.Tracks" [allowEditing]="true"></album-songlist> -->
+                  <table class="table tablewrapper">
+                    <tr>
+                      <td width="25%" class="innerTable" [formGroup]="contactVendorPartyForm">
+                        <input class="form-control" type="text"  placeholder="First name" id="example-url-input" formControlName="firstName" name="firstname">
+                      </td>
+                      <td width="25%" class="innerTable" [formGroup]="contactVendorPartyForm">
+                        <input class="form-control" type="text" placeholder="Middle Name" id="example-url-input" formControlName="middleName" name="middleName">
+                      </td>
+                      <td width="25%" class="innerTable" [formGroup]="contactVendorPartyForm">
+                        <input class="form-control" type="text" placeholder="Last Name" id="example-url-input" formControlName="lastName" name="lastName">
+                      </td>
+                      <td class="innerTable">
+                        <span style="cursor:pointer;" (click)="cancle()" class="label label-default">Cancel</span>
+                        <span style="cursor:pointer;" class="label label-primary" (click)="submitContact()">Add</span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
 
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-12">
+          <h4>Accounts</h4>
+          <div class="separator"></div>
+        </div>
+        <div class="form-group col-md-6" [formGroup]="vendorForm">
+          <label for="payabale">Payable a/c:</label>
+          <select class="form-control" required formControlName="payment" name="payment">
+            <option *ngFor="let model of accounts" [value]="model.id">{{model.name}}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-6" [formGroup]="vendorForm">
+            <label for="payabale">Purchase a/c:</label>
+            <select class="form-control"  required formControlName="purchase" name="puchase">
+              <option *ngFor="let model of accounts" [value]="model.id">{{model.name}}</option>
+            </select>
+        </div>
+        <div class="form-group col-md-6" [formGroup]="vendorForm">
+            <label for="payabale">Discount a/c:</label>
+            <select class="form-control" required formControlName="discount" name="discount">
+              <option *ngFor="let model of accounts" [value]="model.id">{{model.name}}</option>
+            </select>
+        </div>
+      </form>
+      </div>
+      <div class="col-md-12">
         <div class="well well-sm">
-          <button *ngIf="enableEditId !== ''" type="submit" (click)="submitForm()"
-                  class="btn btn-success"
-                  [disabled]="form1.invalid" accesskey="S">
-            <i class="fa fa-check"></i> Save
-          </button>
-          <button *ngIf="enableEditId === ''" type="submit" (click)="add(album)"
-          class="btn btn-success"
-          [disabled]="form1.invalid" accesskey="S">
+          <button type="submit" (click)="addVendor()" class="btn btn-success" accesskey="S">
             <i class="fa fa-check"></i> Add
-          </button>                
+          </button>
           <a (click)="cancel()" class="btn btn-default">
             <i class="fa fa-remove"></i> Cancel
           </a>
         </div>
 
-        <div class="separator"></div>
-
-      </form>
-    </div>
-
-    <div class="col-sm-7">
-      <h3>Preview</h3>
-      <img [src]="album.ImageUrl" onerror="this.src=''" class="album-image-big"/>
-      <div style="margin-top: 10px;">
-        <h2 class="album-title-big">{{album.Title}}</h2>
-        <div class="album-artist">by {{album.Artist.ArtistName}} {{(album.Year ? 'in ' + album.Year : '')}}
-          - <a [href]="album.AmazonUrl"><i class="fa fa-dollar"></i> Buy on Amazon</a>
-        </div>
-        <div class="album-descript line-breaks" [innerHTML]="album.Description"></div>
-
-        <hr/>
-
-        <!-- <album-songlist [tracks]="album.Tracks"></album-songlist> -->
-
+        <!-- <div class="separator"></div> -->
       </div>
     </div>
 
-
-  </div>
-
-</div>
-
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      
-
-<table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Name</th>
-      <th scope="col">Brand</th>
-      <th scope="col">Image</th>
-      <th scope="col">Year</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let album of albums;let counter=index">
-      <th scope="row">{{counter+1}}</th>
-      <td>{{album.Title}}</td>
-      <td>{{album.Artist.ArtistName}}</td>
-      <td>{{album.Year}}</td>
-      <td (click)="edit(album.Id)">Edit</td>
-    </tr>
-  </tbody>
-</table>
-    </div>
   </div>
 </div>
-<app-add-customer-component [submit]="add" [close]="openPopup" *ngIf="enablePopup"></app-add-customer-component>

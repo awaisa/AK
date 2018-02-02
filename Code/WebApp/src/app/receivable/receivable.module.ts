@@ -1,6 +1,6 @@
 ﻿import { NgModule } from '@angular/core';
 
-import { SharedModule }           from '../shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 
 import { CommonModule } from '@angular/common';
 import { QuotationsComponent } from './quotations.component';
@@ -16,12 +16,16 @@ import { EditCustomerComponent } from './edit-customer/edit-customer.component'
 import { ReactiveFormsModule } from '@angular/forms';
 import { AddCustomerComponent } from './add-customer/add-customer.component'; 
 
+import { InventoryService } from '../inventory/inventory.service';
+import { ReceivableService } from './receivable.service';
+
 @NgModule({
   imports: [
       SharedModule, CommonModule,
       ReceivableRoutingModule, DataTablesModule,
       ReactiveFormsModule
   ],
-  declarations: [QuotationsComponent, OrdersComponent, ReceiptsComponent, InvoicesComponent, CustomersComponent,EditCustomerComponent, AddCustomerComponent]
+  declarations: [QuotationsComponent, OrdersComponent, ReceiptsComponent, InvoicesComponent, CustomersComponent,EditCustomerComponent, AddCustomerComponent],
+  providers:[InventoryService, ReceivableService]
 })
 export class ReceivableModule { }
