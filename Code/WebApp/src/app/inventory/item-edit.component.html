@@ -1,129 +1,126 @@
-<div class="container">
- <error-display [error]="error"></error-display>
-  <div [ngClass]="{ 'hidden': !loaded}" [@slideIn]="'in'">
-    <form name="form1" action="javascript:{}" #form1="ngForm" novalidate class="form-horizontal">
-      <div class="form-group">
-        <div class="col-md-4">
-          <label for="Code" class="control-label">Code:</label>
-          <input id="Code" type="text" class="form-control input-sm" placeholder="Code" name="Code" required [(ngModel)]="item.code"
-            autofocus />
-        </div>
-        <div class="col-md-4">
-          <label for="Cost" class="control-label">Cost:</label>
-          <input type="number" class="form-control input-sm" id="Cost" required name="Cost" placeholder="Cost" [(ngModel)]="item.cost"
-          />
-        </div>
-        <div class="col-md-4">
-          <label for="Price" class="control-label">Price:</label>
-          <input type="number" class="form-control input-sm" id="Price" required name="Price" placeholder="Price" [(ngModel)]="item.price"/>
-        </div>
+<error-display [error]="error"></error-display>
+<div [ngClass]="{ 'hidden': !loaded}" [@slideIn]="'in'">
+  <form name="form1" action="javascript:{}" #form1="ngForm" novalidate class="form-horizontal">
+    <div class="form-group">
+      <div class="col-md-4">
+        <label for="Code" class="control-label">Code:</label>
+        <input id="Code" type="text" class="form-control input-sm" placeholder="Code" name="Code" required [(ngModel)]="item.code"
+          autofocus />
       </div>
-      <div class="form-group">
-        <div class="col-md-4">
-          <label for="Description" class="control-label">Description:</label>
-          <textarea class="form-control input-sm" id="Description" placeholder="Item description" required [(ngModel)]="item.description"
-            name="Description"></textarea>
-        </div>
-        <div class="col-md-4">
-          <label for="PurchaseDescription" class="control-label">Purchase Description:</label>
-          <textarea class="form-control input-sm" id="PurchaseDescription" placeholder="Item purchase description" required [(ngModel)]="item.purchaseDescription"
-            name="PurchaseDescription"></textarea>
-        </div>
-        <div class="col-md-4">
-          <label for="SellDescription" class="control-label">Sell Description:</label>
-          <textarea class="form-control input-sm" id="SellDescription" placeholder="Item sell description" required [(ngModel)]="item.sellDescription"
-            name="SellDescription"></textarea>
-        </div>
+      <div class="col-md-4">
+        <label for="Cost" class="control-label">Cost:</label>
+        <input type="number" class="form-control input-sm" id="Cost" required name="Cost" placeholder="Cost" [(ngModel)]="item.cost"
+        />
       </div>
-      <div class="form-group">
-        <div class="col-md-4">
-          <label for="catagory" class="control-label">Catagory:</label>
-          <select class="form-control" id="catagory" required [(ngModel)]="item.itemCategoryId" name="catagory" #name="ngModel">
-            <option *ngFor="let catagory of catagories" [value]="catagory.id">{{catagory.name}}</option>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label for="model" class="control-label">Model:</label>
-          <select class="form-control" id="model" required [(ngModel)]="item.modelId" name="model" #name="ngModel">
-            <option *ngFor="let model of models" [value]="model.id">{{model.name}}</option>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label for="name" class="control-label">Brand:</label>
-          <select class="form-control" id="name" required [(ngModel)]="item.brandId" name="name" #name="ngModel">
-            <option *ngFor="let brand of brands" [value]="brand.id">{{brand.name}}</option>
-          </select>
-        </div>
+      <div class="col-md-4">
+        <label for="Price" class="control-label">Price:</label>
+        <input type="number" class="form-control input-sm" id="Price" required name="Price" placeholder="Price" [(ngModel)]="item.price"/>
       </div>
-      <div class="form-group">
-        <div class="col-md-4">
-          <label for="measurement" class="control-label">SellMeasurement:</label>
-          <select class="form-control" id="measurement" required [(ngModel)]="item.sellMeasurementId" name="measurement" #code="ngModel">
-            <option *ngFor="let measurement of measurements" [value]="measurement.id">{{measurement.code}}-{{ measurement.description}}</option>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label for="smallestmeasurement" class="control-label">SmallestMeasurement:</label>
-          <select class="form-control" id="smallestmeasurement" required [(ngModel)]="item.smallestMeasurementId" name="smallestmeasurement"
-            #code="ngModel">
-            <option *ngFor="let smallestmeasurement of measurements" [value]="smallestmeasurement.id">{{smallestmeasurement.code}}-{{ smallestmeasurement.description}}</option>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label for="purchasetmeasurement" class="control-label">PurchaseMeasurement:</label>
-          <select class="form-control" id="purchasetmeasurement" required [(ngModel)]="item.purchaseMeasurementId" name="purchasetmeasurement"
-            #code="ngModel">
-            <option *ngFor="let purchasetmeasurement of measurements" [value]="purchasetmeasurement.id">{{purchasetmeasurement.code}}-{{ purchasetmeasurement.description}}</option>
-          </select>
-        </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-4">
+        <label for="Description" class="control-label">Description:</label>
+        <textarea class="form-control input-sm" id="Description" placeholder="Item description" required [(ngModel)]="item.description"
+          name="Description"></textarea>
       </div>
-      <div class="form-group">
-        <div class="col-md-6">
-          <label for="taxgroup" class="control-label">TaxGroup:</label>
-          <select class="form-control" id="taxgroup" required [(ngModel)]="item.taxGroupId" name="taxgroup" #name="ngModel">
-            <option *ngFor="let taxgroup of taxgroups" [value]="taxgroup.id">{{taxgroup.name}}</option>
-          </select>
-        </div>
-        <div class="col-md-6">
-          <label for="vendor" class="control-label">Vendor:</label>
-          <select class="form-control" id="vendor" required [(ngModel)]="item.preferredVendorId" name="vendor" #name="ngModel">
-            <option *ngFor="let vendor of vendors" [value]="vendor.id">{{vendor.no}}-{{vendor.party.name}}</option>
-          </select>
-        </div>
-      </div> 
-      <div class="form-group">
-        <div class="col-md-4">
-          <label for="account" class="control-label">CostOfGoodsSoldAccount:</label>
-          <select class="form-control" id="account" required [(ngModel)]="item.costOfGoodsSoldAccountId" name="account" #name="ngModel">
-            <option *ngFor="let account of accounts" [value]="account.id">{{account.name}}</option>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label for="inventoryaccount" class="control-label">InventoryAccount:</label>
-          <select class="form-control" id="inventoryaccount" required [(ngModel)]="item.inventoryAccountId" name="inventoryaccount"
-            #name="ngModel">
-            <option *ngFor="let inventoryaccount of accounts" [value]="inventoryaccount.id">{{inventoryaccount.name}}</option>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label for="salesaccount" class="control-label">SalesAccount:</label>
-          <select class="form-control" id="salesaccount" required [(ngModel)]="item.salesAccountId" name="salesaccount" #name="ngModel">
-            <option *ngFor="let salesaccount of accounts" [value]="salesaccount.id">{{salesaccount.name}}</option>
-          </select>
-        </div>
+      <div class="col-md-4">
+        <label for="PurchaseDescription" class="control-label">Purchase Description:</label>
+        <textarea class="form-control input-sm" id="PurchaseDescription" placeholder="Item purchase description" required [(ngModel)]="item.purchaseDescription"
+          name="PurchaseDescription"></textarea>
       </div>
-      <hr />
-      <div class="well well-sm">
-        <button type="submit" (click)="saveItem(item)" class="btn btn-success" [disabled]="form1.invalid" accesskey="S">
-          <i class="fa fa-check"></i> Save
-        </button>
-        <a href="#/inventory/items" class="btn btn-default">
-          <i class="fa fa-remove"></i> Cancel
-        </a>
+      <div class="col-md-4">
+        <label for="SellDescription" class="control-label">Sell Description:</label>
+        <textarea class="form-control input-sm" id="SellDescription" placeholder="Item sell description" required [(ngModel)]="item.sellDescription"
+          name="SellDescription"></textarea>
       </div>
-      <div class="separator"></div>
-    </form>
-
-  </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-4">
+        <label for="catagory" class="control-label">Catagory:</label>
+        <select class="form-control" id="catagory" required [(ngModel)]="item.itemCategoryId" name="catagory" #name="ngModel">
+          <option *ngFor="let catagory of catagories" [value]="catagory.id">{{catagory.name}}</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="model" class="control-label">Model:</label>
+        <select class="form-control" id="model" required [(ngModel)]="item.modelId" name="model" #name="ngModel">
+          <option *ngFor="let model of models" [value]="model.id">{{model.name}}</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="name" class="control-label">Brand:</label>
+        <select class="form-control" id="name" required [(ngModel)]="item.brandId" name="name" #name="ngModel">
+          <option *ngFor="let brand of brands" [value]="brand.id">{{brand.name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-4">
+        <label for="measurement" class="control-label">SellMeasurement:</label>
+        <select class="form-control" id="measurement" required [(ngModel)]="item.sellMeasurementId" name="measurement" #code="ngModel">
+          <option *ngFor="let measurement of measurements" [value]="measurement.id">{{measurement.code}}-{{ measurement.description}}</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="smallestmeasurement" class="control-label">SmallestMeasurement:</label>
+        <select class="form-control" id="smallestmeasurement" required [(ngModel)]="item.smallestMeasurementId" name="smallestmeasurement"
+          #code="ngModel">
+          <option *ngFor="let smallestmeasurement of measurements" [value]="smallestmeasurement.id">{{smallestmeasurement.code}}-{{ smallestmeasurement.description}}</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="purchasetmeasurement" class="control-label">PurchaseMeasurement:</label>
+        <select class="form-control" id="purchasetmeasurement" required [(ngModel)]="item.purchaseMeasurementId" name="purchasetmeasurement"
+          #code="ngModel">
+          <option *ngFor="let purchasetmeasurement of measurements" [value]="purchasetmeasurement.id">{{purchasetmeasurement.code}}-{{ purchasetmeasurement.description}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-6">
+        <label for="taxgroup" class="control-label">TaxGroup:</label>
+        <select class="form-control" id="taxgroup" required [(ngModel)]="item.taxGroupId" name="taxgroup" #name="ngModel">
+          <option *ngFor="let taxgroup of taxgroups" [value]="taxgroup.id">{{taxgroup.name}}</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="vendor" class="control-label">Vendor:</label>
+        <select class="form-control" id="vendor" required [(ngModel)]="item.preferredVendorId" name="vendor" #name="ngModel">
+          <option *ngFor="let vendor of vendors" [value]="vendor.id">{{vendor.no}}-{{vendor.party.name}}</option>
+        </select>
+      </div>
+    </div> 
+    <div class="form-group">
+      <div class="col-md-4">
+        <label for="account" class="control-label">CostOfGoodsSoldAccount:</label>
+        <select class="form-control" id="account" required [(ngModel)]="item.costOfGoodsSoldAccountId" name="account" #name="ngModel">
+          <option *ngFor="let account of accounts" [value]="account.id">{{account.name}}</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="inventoryaccount" class="control-label">InventoryAccount:</label>
+        <select class="form-control" id="inventoryaccount" required [(ngModel)]="item.inventoryAccountId" name="inventoryaccount"
+          #name="ngModel">
+          <option *ngFor="let inventoryaccount of accounts" [value]="inventoryaccount.id">{{inventoryaccount.name}}</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="salesaccount" class="control-label">SalesAccount:</label>
+        <select class="form-control" id="salesaccount" required [(ngModel)]="item.salesAccountId" name="salesaccount" #name="ngModel">
+          <option *ngFor="let salesaccount of accounts" [value]="salesaccount.id">{{salesaccount.name}}</option>
+        </select>
+      </div>
+    </div>
+    <hr />
+    <div class="well well-sm">
+      <button type="submit" (click)="saveItem(item)" class="btn btn-success" [disabled]="form1.invalid" accesskey="S">
+        <i class="fa fa-check"></i> Save
+      </button>
+      <a href="#/inventory/items" class="btn btn-default">
+        <i class="fa fa-remove"></i> Cancel
+      </a>
+    </div>
+    <div class="separator"></div>
+  </form>
 
 </div>

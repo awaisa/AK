@@ -3,12 +3,13 @@ import { AppConfiguration } from "../business/appConfiguration";
 import { ErrorInfo } from "../shared/ErrorInfo";
 import { ErrorDisplayComponent } from '../shared/error-display.component';
 import {UserInfo} from "../business/userInfo";
+import { BreadcrumbsService } from 'ng2-breadcrumbs';
 
 @Component({
     templateUrl: './items.component.html'
 })
 export class ItemsComponent implements OnInit {
-    constructor(private config: AppConfiguration, private user:UserInfo) {
+    constructor(private config: AppConfiguration, private user:UserInfo, private breadcrumbs:BreadcrumbsService) {
 
     }
     
@@ -16,6 +17,8 @@ export class ItemsComponent implements OnInit {
     dtOptions: DataTables.Settings = {};
     
     ngOnInit(): void {
+
+        this.breadcrumbs.store([{label: 'Home' , url: '/', params: []},{label: 'Careers' , url: '/careers', params: []}, {label:  'MyCustomRouteLabel' , url: '', params: []} ])
 
         this.config.searchText = "";
         this.config.isSearchAllowed = true;

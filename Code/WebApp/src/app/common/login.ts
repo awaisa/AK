@@ -1,5 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import {Router, ActivatedRoute} from "@angular/router";
+import 'rxjs/Rx';
 
 import {UserInfo} from "../business/userInfo";
 import {ErrorInfo} from "../shared/ErrorInfo";

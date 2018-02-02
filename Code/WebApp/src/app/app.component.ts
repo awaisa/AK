@@ -1,5 +1,6 @@
 ﻿import { Component } from '@angular/core';
 import {UserInfo} from './business/userInfo';
+import { BreadcrumbComponent } from 'ng2-breadcrumbs';
 
 @Component({
   selector: 'app-root',
