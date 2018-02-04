@@ -17,17 +17,17 @@ import { vendor } from '../entities';
 export class ReceivableService {
     constructor(private httpClient: HttpClientService,
         private config: AppConfiguration) {
-        //console.log("InventoryService ctor");
+        // console.log("InventoryService ctor");
     }
 
     itemList: Item[] = [];
-    vendor:vendor;
-    
+    vendor: vendor;
+
     saveVendor(vendor): Observable<any> {
         return this.httpClient.post(this.config.urls.url('vendors'), vendor, null)
             .map(response => {
                 this.vendor = response.json();
-                
+
                 // explicitly update the list with the updated data
                 // this.updateItem(this.item);
                 return this.vendor;

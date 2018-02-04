@@ -17,7 +17,6 @@ export class ItemsComponent implements OnInit {
     
     ngOnInit(): void {
 
-        this.config.searchText = "";
         this.config.isSearchAllowed = true;
         this.config.activeTab = "inventory";
 

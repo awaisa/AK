@@ -20,7 +20,7 @@ export class AppConfiguration {
       }
 
       // top level search text
-      searchText = '';
+      // searchText = '';
       activeTab = 'about';
       isSearchAllowed = true;
 

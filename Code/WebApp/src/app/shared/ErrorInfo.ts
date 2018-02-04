@@ -97,7 +97,7 @@ export class ErrorInfo {
      * @returns {Promise<void>|Promise<T>}
      */
     parsePromiseResponseError(response) {
-        debugger
+
         if (response.hasOwnProperty("message"))
             return Promise.reject(response);
         if (response.hasOwnProperty("Message")) {

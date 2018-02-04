@@ -8,15 +8,14 @@ import {UserInfo} from "../business/userInfo";
   templateUrl: './vendors.component.html'
 })
 export class VendorsComponent implements OnInit{
-  
+
   constructor(private config: AppConfiguration, private user:UserInfo) {}
 
   error: ErrorInfo = new ErrorInfo();
   dtOptions: DataTables.Settings = {};
-  
+
   ngOnInit(): void {
 
-      this.config.searchText = "";
       this.config.isSearchAllowed = true;
       this.config.activeTab = "vendor";
 
