@@ -17,34 +17,23 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-left">
-        <li [ngClass]="{ active: config.activeTab == 'login'}"><a href="#">Login</a></li>
-        <li [ngClass]="{ active: config.activeTab == 'about'}">
-          <a href="#/about">
-            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>About
-          </a>
-        </li>
-        <li [ngClass]="{ active: config.activeTab == 'options'}">
-          <a href="#/options">
-            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Options
-          </a>
-        </li>
 
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Receivable <span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sales <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a routerLink="../receivable/quotations" routerLinkActive="active">Quotations</a></li>
+            <!-- <li><a routerLink="../receivable/quotations" routerLinkActive="active">Quotations</a></li>
             <li><a routerLink="../receivable/orders" routerLinkActive="active">Orders</a></li>
-            <li><a routerLink="../receivable/receipts" routerLinkActive="active">Receipts</a></li>
-            <li><a routerLink="../receivable/invoices" routerLinkActive="active">Invoices</a></li>
+            <li><a routerLink="../receivable/receipts" routerLinkActive="active">Receipts</a></li> -->
+            <li><a routerLink="../receivable/invoices" routerLinkActive="active">Sales Invoices</a></li>
             <li role="separator" class="divider"></li>
             <li><a routerLink="../receivable/customers" routerLinkActive="active">Customers</a></li>
           </ul>
         </li>
 
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Payable <span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Purchases <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a routerLink="../payable/purchase-orders" routerLinkActive="active">Purchase Orders</a></li>
+            <!-- <li><a routerLink="../payable/purchase-orders" routerLinkActive="active">Purchase Orders</a></li> -->
             <li><a routerLink="../payable/purchase-invoices" routerLinkActive="active">Purchase Invoices</a></li>
             <li role="separator" class="divider"></li>
             <li><a routerLink="../payable/vendors" routerLinkActive="active">Vendors</a></li>

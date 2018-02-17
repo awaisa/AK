@@ -1,7 +1,7 @@
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent }       from './common/login';
-import { EnsureAuthenticated } from './ensure-authenticated.service';
+import { EnsureAuthenticated } from './ensureauthenticated';
 
 const loginRoutes: Routes = [
   { path: 'login', component: LoginComponent }

@@ -1,43 +1,30 @@
-﻿
-import {NgModule, Injectable} from '@angular/core';
+﻿import { NgModule, Injectable} from '@angular/core';
+import { BrowserModule} from "@angular/platform-browser";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import {FormsModule} from "@angular/forms";
-import {BrowserModule} from "@angular/platform-browser";
-
-import { AppRoutingModule } from "./app-routing.module";
-import {AppComponent} from "./app.component";
-
-import {
-  HttpModule, Http, ConnectionBackend, Request, RequestOptionsArgs, Response,
-  RequestOptions, XHRBackend, ResponseOptions, BrowserXhr, XSRFStrategy
-} from "@angular/http";
+import { FormsModule} from "@angular/forms";
+import { HttpModule, Http, ConnectionBackend, Request, RequestOptionsArgs, Response, RequestOptions, XHRBackend, ResponseOptions, BrowserXhr, XSRFStrategy } from "@angular/http";
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
+import {BreadcrumbsModule} from 'ng2-breadcrumbs';
+
+import { HttpClientService } from "./business/http-client.service";
+import { SharedModule }           from './shared/shared.module';
+import { AppRoutingModule } from "./app-routing.module";
+
+import {AppComponent} from "./app.component";
+import { AppConfiguration } from './business/appConfiguration';
+import { UserInfo } from "./business/userInfo";
 
 // components
 import { AppHeader } from './common/appHeader';
 import {AppFooter} from "./common/appFooter";
-
-import { AppConfiguration } from './business/appConfiguration';
-import { UserInfo } from "./business/userInfo";
-
-// directives and shared components
-
-import { OptionsComponent } from "./Options/options";
 import {LoginComponent} from "./common/login";
-
-import { HttpClientService } from "./business/http-client.service";
-import {AboutComponent} from "./options/about";
-
-
-// Enable production mode
-// import { enableProdMode } from '@angular/core';
-// enableProdMode();
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   imports: [
-    BrowserModule,
+    BreadcrumbsModule,
+    SharedModule, BrowserModule,
     FormsModule,
     HttpModule,
     AppRoutingModule,
@@ -49,12 +36,8 @@ import {AboutComponent} from "./options/about";
     AppComponent,
     AppHeader,
     AppFooter,
-
-    AboutComponent,
-
     LoginComponent,
-    OptionsComponent
-
+    HomeComponent
   ],
   // services, pipes and providers
   providers   : [
