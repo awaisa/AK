@@ -11,6 +11,7 @@ using System;
 using BusinessCore.Services.Security;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using BusinessCore.Domain.TaxSystem;
 
 namespace BusinessCore.Services.Purchasing
 {
@@ -31,6 +32,7 @@ namespace BusinessCore.Services.Purchasing
         private readonly IRepository<GeneralLedgerSetting> _generalLedgerSettingRepo;
         private readonly IRepository<PaymentTerm> _paymentTermRepo;
         private readonly IRepository<Bank> _bankRepo;
+        private readonly IRepository<Tax> _taxRepo;
 
         public PurchasingService(IFinancialService financialService,
             IInventoryService inventoryService,
@@ -45,7 +47,8 @@ namespace BusinessCore.Services.Purchasing
             IRepository<VendorPayment> vendorPaymentRepo,
             IRepository<GeneralLedgerSetting> generalLedgerSettingRepo,
             IRepository<PaymentTerm> paymentTermRepo,
-            IRepository<Bank> bankRepo
+            IRepository<Bank> bankRepo,
+            IRepository<Tax> taxRepo
             )
             : base(sequenceNumberRepo, generalLedgerSettingRepo, paymentTermRepo, bankRepo)
         {
@@ -64,6 +67,7 @@ namespace BusinessCore.Services.Purchasing
             _generalLedgerSettingRepo = generalLedgerSettingRepo;
             _paymentTermRepo = paymentTermRepo;
             _bankRepo = bankRepo;
+            _taxRepo = taxRepo;
         }
 
         public void SavePurchaseInvoice(PurchaseInvoiceHeader purchaseIvoice)
@@ -242,6 +246,17 @@ namespace BusinessCore.Services.Purchasing
                 purchaseOrderReceipt.No = GetNextNumber(SequenceNumberTypes.PurchaseReceipt).ToString();
                 _purchaseReceiptRepo.Insert(purchaseOrderReceipt);
             }
+        }
+
+        public IQueryable<Measurement> GetItems()
+        {
+            var query = _measurementRepo.Table;
+            return query;
+        }
+        public IQueryable<Tax> GetTaxes()
+        {
+            var query = _taxRepo.Table;
+            return query;
         }
 
         public IQueryable<Vendor> GetVendors()

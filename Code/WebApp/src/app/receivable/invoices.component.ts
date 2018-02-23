@@ -41,10 +41,14 @@ export class InvoicesComponent implements OnInit{
           }, {
             title: 'CustomerName',
             data: 'customerName'
+          }, {
+            title:'Date',
+            data:'Date'
           },{
             title:'Total',
             data:'total'
           },
+         
           {
               data: null,
               className: "text-center",

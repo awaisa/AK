@@ -1,0 +1,132 @@
+<div class="container">
+    <error-display [error]="error"></error-display>
+    <div [ngClass]="{ 'hidden': !loaded}" [@slideIn]="'in'">
+        <form name="form1" action="javascript:{}" #form1="ngForm" novalidate class="form-horizontal">
+            <div class="form-group">
+                <div class="col-md-6">
+                    <label class="control-label">Date:</label>
+                    <input type="date" class="form-control input-sm" required placeholder="Date" name="date" [(ngModel)]="invoice.date"
+                    />
+                </div>
+                <div class="col-md-6">
+                    <label class="control-label">NO:</label>
+                    <input type="number" class="form-control input-sm" required placeholder="No" name="no" [(ngModel)]="invoice.no"
+                    />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-6">
+                    <label class="control-label">Description:</label>
+                    <textarea class="form-control input-sm" placeholder="Item description" required name="description" [(ngModel)]="invoice.description"></textarea>
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label">Vendor:</label>
+                    <select class="form-control" required name="vendor" [(ngModel)]="invoice.preferredVendorId">
+                        <option *ngFor="let vendor of vendors" [value]="vendor.id">{{vendor.no}} - {{vendor.party.name}}</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label">Ref No:</label>
+                    <input type="number" class="form-control input-sm" required placeholder="Ref No" name="refno" [(ngModel)]="invoice.vendorInvoiceNo" />
+                </div>
+            </div>
+            <table class="table table-striped table-bordered" ng-controller="MainCtrl">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let lineItem of invoice.lineItems; let i = index">
+                        <td>
+                            <select class="form-control" [(ngModel)]="lineItem.itemId" name="{{lineItem.itemId}}">
+                                <option *ngFor="let item of items" [value]="item.id">{{item.code}} - {{item.description}}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input name="quantity_{{lineItem.id}}_{{lineItem.quantity}}" [(ngModel)]="lineItem.quantity" class="form-control" type="text" (keyup)="updatePrevSum(i)" (keypress)="isNumber()"/>
+                        </td>
+                        <td>
+                            <input name="unitPrice_{{lineItem.id}}_{{lineItem.unitPrice}}" [(ngModel)]="lineItem.unitPrice" class="form-control" type="text" (keyup)="updatePrevSum(i)" (keypress)="isNumber()" />
+                        </td>
+                        <td>
+                            <input name="total_{{lineItem.id}}_{{lineItem.total}}" [(ngModel)]="lineItem.total" disabled class="form-control" type="text" />
+                        </td>
+                        <td>
+                            <button class="btn btn-default" type="button" (click)="deleteFieldValue(i)">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select class="form-control" [(ngModel)]="newLineItem.itemId" name="dsc" required #codeDes="ngModel">
+                                <option *ngFor="let item of items" [value]="item.id">{{item.code}} - {{item.description}}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" id="newAttributeQty" required #Qty="ngModel" [(ngModel)]="newLineItem.quantity" name="newAttributeQty"
+                                (keyup)="updateSum(newLineItem)" (keypress)="isNumber()" />
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" id="newAttributePrice" required #Price="ngModel" [(ngModel)]="newLineItem.unitPrice"
+                                name="newAttributePrice" (keyup)="updateSum(newLineItem)" (keypress)="isNumber()"/>
+                        </td>
+                        <td>
+                            <input class="form-control" id="newAttributeTotal" type="text" disabled [(ngModel)]="newLineItem.total" name="newAttributeTotal"
+                            />
+                        </td>
+                        <td>
+                            <button class="btn btn-default" [disabled]="!Qty.valid||!Price.valid||!codeDes.valid" name="button" type="button" (click)="addFieldValue()">Add</button>
+                        </td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+            <table class="table-striped table-bordered" align="right">
+                <tbody>
+                    <tr>
+                        <td>
+                            Sub-Total:
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" [(ngModel)]="invoice.subTotal" disabled name="SubTotal">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Tax:
+                        </td>
+                        <td>
+                                <!-- <select class="form-control" id="tax" required [(ngModel)]="invoice.tax" name="tax" #name="ngModel">
+                                        <option *ngFor="let tax of taxes" [value]="tax.id">{{tax.taxName}}</option>
+                                    </select> -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Discount:
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" [(ngModel)]="invoice.discount" name="Discount">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Total:
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" [(ngModel)]="invoice.total" name="grandtotal">
+                        </td>
+                        </tr>
+                </tbody>
+
+            </table>
+        </form>
+
+    </div>
+
+</div>

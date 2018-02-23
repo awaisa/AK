@@ -176,4 +176,7 @@ select:not(ng-pristine):not(.ng-untouched).ng-invalid, textarea:not(.ng-pristine
   .navbar-fixed-bottom .navbar-collapse {
     display: block !important;
   }
+  td{
+    padding: 8px;
+  }
 }
