@@ -3,6 +3,7 @@ using BusinessCore.Domain.Items;
 using BusinessCore.Domain.Purchases;
 using WebApiCore.Models.Common;
 using WebApiCore.Models.Customer;
+using WebApiCore.Models.Financial;
 using WebApiCore.Models.Inventory;
 using WebApiCore.Models.Purchase;
 using WebApiCore.Models.Vendor;
