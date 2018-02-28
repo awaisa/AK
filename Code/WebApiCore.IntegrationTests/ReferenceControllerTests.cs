@@ -76,5 +76,20 @@ namespace WebApiCore.IntegrationTests
             Assert.True(response.StatusCode == HttpStatusCode.OK, $"Expected OK but received {response.StatusCode}");
         }
 
+        [Fact]
+        public async Task Get_Items_Then_Returns_Ok()
+        {
+            var response = await _testFixture.Client.GetAsync($"{_baseApiUrl}/GetItems");
+            var contents = await response.Content.ReadAsStringAsync();
+            Assert.True(response.StatusCode == HttpStatusCode.OK, $"Expected OK but received {response.StatusCode}");
+        }
+
+        [Fact]
+        public async Task Get_All_Taxes_Then_Returns_Ok()
+        {
+            var response = await _testFixture.Client.GetAsync($"{_baseApiUrl}/GetTaxes");
+            var contents = await response.Content.ReadAsStringAsync();
+            Assert.True(response.StatusCode == HttpStatusCode.OK, $"Expected OK but received {response.StatusCode}");
+        }
     }
 }

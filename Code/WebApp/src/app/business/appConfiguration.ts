@@ -34,9 +34,12 @@ export class AppConfiguration {
         measuremets:"api/Reference/GetMeasuremets",
         accounts:"api/Reference/GetAccounts",
         vendorss:"api/Reference/GetVendors",
+        AllItems:"api/Reference/GetItems",
+        Taxes:"api/Reference/GetTaxes",
 
         customers: "api/Customer",
-        invoices:"api/Sale/Invoice",
+        invoices:"api/Sale",
+        purchaseInvoices:"api/Purchase",
         vendors:"api/Vendor",
         login: "api/login",
         logout: "api/logout",

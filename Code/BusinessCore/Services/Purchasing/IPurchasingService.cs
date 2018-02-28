@@ -1,4 +1,6 @@
+using BusinessCore.Domain.Items;
 using BusinessCore.Domain.Purchases;
+using BusinessCore.Domain.TaxSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +14,9 @@ namespace BusinessCore.Services.Purchasing
         void SavePurchaseInvoice(PurchaseInvoiceHeader purchaseIvoice);
         void AddPurchaseOrder(PurchaseOrderHeader purchaseOrder, bool toSave);
         void AddPurchaseOrderReceipt(PurchaseReceiptHeader purchaseOrderReceipt);
+        IQueryable<Measurement> GetItems();
         IQueryable<Vendor> GetVendors();
+        IQueryable<Tax> GetTaxes();
         Vendor GetVendorById(int id);
         void DeleteVendor(int id);
         void UpdateVendor(Vendor vendor);

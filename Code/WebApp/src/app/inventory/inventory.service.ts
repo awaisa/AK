@@ -39,7 +39,20 @@ export class InventoryService {
             })
             .catch(new ErrorInfo().parseObservableResponseError);
     }
+    getAllItems(force: boolean = false): Observable<Item[]> {
 
+        // use locally cached version
+        if (force !== true && (this.itemList && this.itemList.length > 0))
+            return Observable.of(this.itemList) as Observable<Item[]>;
+
+        return this.httpClient.get(this.config.urls.url("AllItems"))
+            .map(response => {
+                this.itemList = response.json();
+
+                return this.itemList;
+            })
+            .catch(new ErrorInfo().parseObservableResponseError);
+    }
     brandList:Brand[]=[];
     getBrands(force: boolean = false): Observable<Brand[]> {
 

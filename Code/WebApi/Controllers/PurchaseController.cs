@@ -25,7 +25,7 @@ namespace WebApiCore.Controllers
             _log = log;
         }
 
-        [HttpGet("")]
+        [HttpGet]
         [Produces(typeof(SearchModel))]
         public IActionResult Invoice()
         {
@@ -68,7 +68,7 @@ namespace WebApiCore.Controllers
             return Json(model);
         }
 
-        [HttpGet("Invoice/{id:int}")]
+        [HttpGet("{id:int}")]
         [Produces(typeof(InvoiceModel))]
         public IActionResult Invoice(int? id)
         {

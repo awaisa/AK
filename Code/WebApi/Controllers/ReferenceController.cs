@@ -85,6 +85,20 @@ namespace WebApiCore.Controllers
         {
             var vendors = _purchasingService.GetVendors().Select(c => c.ToModel());
             return Ok(vendors);
-         }
+        }
+        [HttpGet("GetItems")]
+        [Produces(typeof(ItemModel))]
+        public IActionResult GetItems()
+        {
+            var items = _service.GetAllItems().Select(c=>c.ToModel());
+            return Ok(items);
+        }
+        [HttpGet("GetTaxes")]
+        [Produces(typeof(ItemModel))]
+        public IActionResult GetTaxes()
+        {
+            var items = _purchasingService.GetTaxes();
+            return Ok(items);
+        }
     }
 }
