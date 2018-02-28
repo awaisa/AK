@@ -8,6 +8,7 @@ using BusinessCore.Domain.TaxSystem;
 using System.Linq;
 using WebApiCore.Models.Common;
 using WebApiCore.Models.Customer;
+using WebApiCore.Models.Financial;
 using WebApiCore.Models.Inventory;
 using WebApiCore.Models.Purchase;
 using WebApiCore.Models.Vendor;

@@ -63,7 +63,7 @@ namespace WebApiCore.Controllers
         [Produces(typeof(FinancialAccountModel))]
         public IActionResult Account( int? id)
         {
-            var o = _service.GetVendorById(id ?? 0);
+            var o = _service.GetAccount(id ?? 0);
             if (o == null)
             {
                 return NotFound();
