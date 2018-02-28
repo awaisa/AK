@@ -108,17 +108,17 @@ namespace WebApiCore.Models.Mappings
             return entity.MapTo<BusinessCore.Domain.Purchases.Vendor, Vendor.SearchRowModel>();
         }
 
-        public static VendorModel ToModel(this BusinessCore.Domain.Purchases.Vendor entity)
+        public static FinancialAccountModel ToModel(this BusinessCore.Domain.Purchases.Vendor entity)
         {
-            return entity.MapTo<BusinessCore.Domain.Purchases.Vendor, VendorModel>();
+            return entity.MapTo<BusinessCore.Domain.Purchases.Vendor, FinancialAccountModel>();
         }
 
-        public static BusinessCore.Domain.Purchases.Vendor ToEntity(this VendorModel model)
+        public static BusinessCore.Domain.Purchases.Vendor ToEntity(this FinancialAccountModel model)
         {
-            return model.MapTo<VendorModel, BusinessCore.Domain.Purchases.Vendor>();
+            return model.MapTo<FinancialAccountModel, BusinessCore.Domain.Purchases.Vendor>();
         }
 
-        public static BusinessCore.Domain.Purchases.Vendor ToEntity(this VendorModel model, BusinessCore.Domain.Purchases.Vendor destination)
+        public static BusinessCore.Domain.Purchases.Vendor ToEntity(this FinancialAccountModel model, BusinessCore.Domain.Purchases.Vendor destination)
         {
             return model.MapTo(destination);
         }
@@ -189,6 +189,30 @@ namespace WebApiCore.Models.Mappings
         {
             return entity.MapTo<BusinessCore.Domain.TaxSystem.ItemTaxGroup, Inventory.ItemTaxGroupModel>();
         }
+        #endregion
+
+        #region Financial Accounts
+
+        public static Financial.SearchRowModel ToRowModel(this BusinessCore.Domain.Financials.Account entity)
+        {
+            return entity.MapTo<BusinessCore.Domain.Financials.Account, Financial.SearchRowModel>();
+        }
+
+        //public static VendorModel ToModel(this BusinessCore.Domain.Purchases.Vendor entity)
+        //{
+        //    return entity.MapTo<BusinessCore.Domain.Purchases.Vendor, VendorModel>();
+        //}
+
+        //public static BusinessCore.Domain.Financials.Account ToEntity(this VendorModel model)
+        //{
+        //    return model.MapTo<VendorModel, BusinessCore.Domain.Financials.Account>();
+        //}
+
+        //public static BusinessCore.Domain.Financials.Account ToEntity(this VendorModel model, BusinessCore.Domain.Financials.Account destination)
+        //{
+        //    return model.MapTo(destination);
+        //}
+
         #endregion
     }
 }

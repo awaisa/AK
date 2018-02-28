@@ -68,9 +68,9 @@ namespace WebApiCore.Models.Mappings
             CreateMap<Party, PartyModel>();
             CreateMap<PartyModel, Party>();
 
-            CreateMap<BusinessCore.Domain.Purchases.Vendor, VendorModel>();
+            CreateMap<BusinessCore.Domain.Purchases.Vendor, FinancialAccountModel>();
             CreateMap<BusinessCore.Domain.Purchases.Vendor, Vendor.SearchRowModel>();
-            CreateMap<VendorModel, BusinessCore.Domain.Purchases.Vendor>();
+            CreateMap<FinancialAccountModel, BusinessCore.Domain.Purchases.Vendor>();
 
             CreateMap<Contact, ContactModel>();
             CreateMap<ContactModel, Contact>();

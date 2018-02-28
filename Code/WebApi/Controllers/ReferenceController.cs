@@ -85,6 +85,6 @@ namespace WebApiCore.Controllers
         {
             var vendors = _purchasingService.GetVendors().Select(c => c.ToModel());
             return Ok(vendors);
-        }
+         }
     }
 }
