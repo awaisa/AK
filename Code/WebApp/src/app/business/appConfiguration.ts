@@ -20,7 +20,7 @@ export class AppConfiguration {
       }
 
       // top level search text
-      // searchText = '';
+      searchText = '';
       activeTab = 'about';
       isSearchAllowed = true;
 
@@ -30,12 +30,14 @@ export class AppConfiguration {
         brands:"api/Reference/GetBrand",
         catagories:"api/Reference/GetCatagory",
         models:"api/Reference/GetModel",
-        taxgroups:"api/Reference/GetTaxGroup",
+        taxgroups:"api/Reference/GetItemTaxGroup",
         measuremets:"api/Reference/GetMeasuremets",
         accounts:"api/Reference/GetAccounts",
         vendorss:"api/Reference/GetVendors",
         AllItems:"api/Reference/GetItems",
         Taxes:"api/Reference/GetTaxes",
+        Taxgrouptax:"api/Reference/GetTaxGroupTax",
+        TaxGroup:"api/Reference/GetTaxGroup",
 
         customers: "api/Customer",
         invoices:"api/Sale",

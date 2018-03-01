@@ -33,6 +33,8 @@ namespace BusinessCore.Services.Purchasing
         private readonly IRepository<PaymentTerm> _paymentTermRepo;
         private readonly IRepository<Bank> _bankRepo;
         private readonly IRepository<Tax> _taxRepo;
+        private readonly IRepository<TaxGroupTax> _taxGroupTaxRepo;
+        private readonly IRepository<TaxGroup> _taxGroupRepo;
 
         public PurchasingService(IFinancialService financialService,
             IInventoryService inventoryService,
@@ -48,7 +50,9 @@ namespace BusinessCore.Services.Purchasing
             IRepository<GeneralLedgerSetting> generalLedgerSettingRepo,
             IRepository<PaymentTerm> paymentTermRepo,
             IRepository<Bank> bankRepo,
-            IRepository<Tax> taxRepo
+            IRepository<Tax> taxRepo,
+            IRepository<TaxGroupTax> taxGroupTaxRepo,
+            IRepository<TaxGroup> taxGroupRepo
             )
             : base(sequenceNumberRepo, generalLedgerSettingRepo, paymentTermRepo, bankRepo)
         {
@@ -68,6 +72,8 @@ namespace BusinessCore.Services.Purchasing
             _paymentTermRepo = paymentTermRepo;
             _bankRepo = bankRepo;
             _taxRepo = taxRepo;
+            _taxGroupTaxRepo = taxGroupTaxRepo;
+            _taxGroupRepo = taxGroupRepo;
         }
 
         public void SavePurchaseInvoice(PurchaseInvoiceHeader purchaseIvoice)
@@ -258,7 +264,15 @@ namespace BusinessCore.Services.Purchasing
             var query = _taxRepo.Table;
             return query;
         }
-
+        public IQueryable<TaxGroup> GetTaxGroup()
+        {
+            var query= _taxGroupRepo.Table;
+            return query;
+        }
+        public  IQueryable<TaxGroupTax> GetTaxGroupTax()
+        {
+            return _taxGroupTaxRepo.Table;
+        }
         public IQueryable<Vendor> GetVendors()
         {
             var query = _vendorRepo.Table

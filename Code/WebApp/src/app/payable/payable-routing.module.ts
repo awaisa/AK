@@ -19,7 +19,7 @@ import { InvoiceEditComponent } from './purchase-invoice-edit';
         { path: 'purchase-orders', component: PurchaseOrdersComponent },
         { path: 'purchase-invoices', component: PurchaseInvoicesComponent },
         { path: 'vendors', component: VendorsComponent },
-        { path: 'invoice/:id', component: InvoiceEditComponent},
+        { path: 'purchase-invoice-edit/:id', component: InvoiceEditComponent},
     ])],
     exports: [RouterModule]
 })

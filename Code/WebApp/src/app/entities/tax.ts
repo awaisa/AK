@@ -3,6 +3,6 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class Tax {
     id:number = 0;
-    name:string = null;
+    taxName:string = null;
     rate:number = null;
 }

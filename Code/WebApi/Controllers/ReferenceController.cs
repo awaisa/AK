@@ -55,9 +55,9 @@ namespace WebApiCore.Controllers
             return Ok(models);
         }
 
-        [HttpGet("GetTaxGroup")] 
+        [HttpGet("GetItemTaxGroup")] 
         [Produces(typeof(ItemTaxGroupModel))]
-        public IActionResult GetTaxGroup()
+        public IActionResult GetItemTaxGroup()
         {
             var taxGroups = _service.GetItemTaxGroups().Select(x=>x.ToModel());
             return Ok(taxGroups);
@@ -94,11 +94,24 @@ namespace WebApiCore.Controllers
             return Ok(items);
         }
         [HttpGet("GetTaxes")]
-        [Produces(typeof(ItemModel))]
+        [Produces(typeof(TaxModel))]
         public IActionResult GetTaxes()
         {
             var items = _purchasingService.GetTaxes();
             return Ok(items);
+        }
+        [HttpGet("GetTaxGroup")]
+        public IActionResult GetTaxGroup()
+        {
+            var taxgrouptax = _purchasingService.GetTaxGroup();
+            return Ok(taxgrouptax);
+        }
+        [HttpGet("GetTaxGroupTax")]
+        [Produces(typeof(TaxGroupModel))]
+        public IActionResult GetTaxGroupTax()
+        {
+            var taxgrouptax = _purchasingService.GetTaxGroupTax();
+            return Ok(taxgrouptax);
         }
     }
 }
