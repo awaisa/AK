@@ -20,7 +20,7 @@ export class ItemsComponent implements OnInit {
 
         this.breadcrumbs.store([{label: 'Home' , url: '/', params: []},{label: 'Careers' , url: '/careers', params: []}, {label:  'MyCustomRouteLabel' , url: '', params: []} ])
 
-        this.config.searchText = "";
+        //this.config.searchText = "";
         this.config.isSearchAllowed = true;
         this.config.activeTab = "inventory";
 

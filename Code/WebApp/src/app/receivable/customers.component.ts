@@ -15,7 +15,7 @@ export class CustomersComponent implements OnInit {
   
   ngOnInit(): void {
 
-      this.config.searchText = "";
+      //this.config.searchText = "";
       this.config.isSearchAllowed = true;
       this.config.activeTab = "customer";
 

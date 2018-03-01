@@ -82,13 +82,13 @@ namespace WebApiCore.Controllers
         public IActionResult Save([FromBody] VendorModel model)
         {
             //server side validations add in ModelState .AddModelError([field], [message])
-            if (ModelState.IsValid)
-            {
-                var obj = model.ToEntity();
-                _service.SaveVendor(obj);
-                model = obj.ToModel();
-                return Ok(model);
-            }
+            //if (ModelState.IsValid)
+            //{
+            //    var obj = model.ToEntity();
+            //    _service.SaveVendor(obj);
+            //    model = obj.ToModel();
+            //    return Ok(model);
+            //}
             return new BadRequestObjectResult(ModelState);
         }
 
@@ -108,13 +108,13 @@ namespace WebApiCore.Controllers
         [Produces(typeof(VendorModel))]
         public IActionResult UpdateCustomer([FromBody]VendorModel model)
         {
-            var o = _service.GetVendorById(model.Id);
-            if (o == null)
-            {
-                return NotFound();
-            }
-            var obj = model.ToEntity();
-            _service.UpdateVendor(obj);
+            //var o = _service.GetVendorById(model.Id);
+            //if (o == null)
+            //{
+            //    return NotFound();
+            //}
+            //var obj = model.ToEntity();
+            //_service.UpdateVendor(obj);
             return Ok();
         }
     }    

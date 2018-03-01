@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AppConfiguration } from "../business/appConfiguration";
 import { ErrorInfo } from "../shared/ErrorInfo";
 import { ErrorDisplayComponent } from '../shared/error-display.component';
@@ -15,7 +15,7 @@ export class PurchaseInvoicesComponent {
   
   ngOnInit(): void {
 
-      this.config.searchText = "";
+      //this.config.searchText = "";
       this.config.isSearchAllowed = true;
       this.config.activeTab = "invoice";
 
