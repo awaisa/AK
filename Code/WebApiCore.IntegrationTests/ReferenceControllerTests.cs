@@ -47,7 +47,7 @@ namespace WebApiCore.IntegrationTests
         [Fact]
         public async Task Get_All_TaxGroup_Then_Returns_Ok()
         {
-            var response = await _testFixture.Client.GetAsync($"{_baseApiUrl}/GetTaxGroup");
+            var response = await _testFixture.Client.GetAsync($"{_baseApiUrl}/GetItemTaxGroup");
             var contents = await response.Content.ReadAsStringAsync();
             Assert.True(response.StatusCode == HttpStatusCode.OK, $"Expected OK but received {response.StatusCode}");
         }

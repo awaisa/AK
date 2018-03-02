@@ -36,6 +36,7 @@
                         <th>Item</th>
                         <th>Qty</th>
                         <th>Price</th>
+                        <th>Tax</th>
                         <th>Total</th>
                         <th>Action</th>
                     </tr>
@@ -52,6 +53,9 @@
                         </td>
                         <td>
                             <input name="unitPrice_{{lineItem.id}}_{{lineItem.unitPrice}}" [(ngModel)]="lineItem.unitPrice" class="form-control" type="text" (keyup)="updatePrevSum(i)" (keypress)="isNumber()" />
+                        </td>
+                        <td>
+                            <input name="taxAmount_{{lineItem.id}}_{{lineItem.taxAmount}}" class="form-control" type="text" id="newAttributeTax" disabled [(ngModel)]="lineItem.taxAmount" />
                         </td>
                         <td>
                             <input name="total_{{lineItem.id}}_{{lineItem.total}}" [(ngModel)]="lineItem.total" disabled class="form-control" type="text" />
@@ -73,6 +77,9 @@
                         <td>
                             <input class="form-control" type="text" id="newAttributePrice" required #Price="ngModel" [(ngModel)]="newLineItem.unitPrice"
                                 name="newAttributePrice" (keyup)="updateSum(newLineItem)" (keypress)="isNumber()"/>
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" id="newAttributeTax" disabled [(ngModel)]="newLineItem.taxAmount" name="newAttributeTax" />
                         </td>
                         <td>
                             <input class="form-control" id="newAttributeTotal" type="text" disabled [(ngModel)]="newLineItem.total" name="newAttributeTotal"
@@ -101,9 +108,8 @@
                             Tax:
                         </td>
                         <td>
-                                <!-- <select class="form-control" id="tax" required [(ngModel)]="invoice.tax" name="tax" #name="ngModel">
-                                        <option *ngFor="let tax of taxes" [value]="tax.id">{{tax.taxName}}</option>
-                                    </select> -->
+                                <input class="form-control" type="text" disabled [(ngModel)]="invoice.tax" disabled name="tax"
+                                /> 
                         </td>
                     </tr>
                     <tr>
@@ -111,7 +117,7 @@
                             Discount:
                         </td>
                         <td>
-                            <input class="form-control" type="text" [(ngModel)]="invoice.discount" name="Discount">
+                            <input class="form-control" type="text" [(ngModel)]="invoice.discount" name="Discount"  (keyup)="updateSum(newLineItem)" (keypress)="isNumber()"/>
                         </td>
                     </tr>
                     <tr>
@@ -119,12 +125,13 @@
                             Total:
                         </td>
                         <td>
-                            <input class="form-control" type="text" [(ngModel)]="invoice.total" name="grandtotal">
+                            <input class="form-control" type="text" [(ngModel)]="invoice.total" disabled name="grandtotal">
                         </td>
                         </tr>
                 </tbody>
-
+               
             </table>
+           
         </form>
 
     </div>

@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { Invoice } from '../entities/invoice';
 import { ErrorInfo } from '../shared/ErrorInfo';
 import { Tax } from '../entities/tax';
+import { TaxGroup } from '../entities/taxGroup';
+import { TaxGroupTax } from '../entities/taxGroupTax';
 
 @Injectable()
 export class PayableService {
@@ -13,9 +15,9 @@ export class PayableService {
     private config: AppConfiguration) {
 }
 invoiceList: Invoice[] = [];
-// invoice: Invoice = null;
 taxList:Tax[]=[];
-// tax:Tax=null;
+taxGroupList:TaxGroup[]=[];
+taxGroupTaxList:TaxGroupTax[]=[];
 error: string = "";
 
 listScrollPos = 0;
@@ -54,6 +56,35 @@ getTaxes(force: boolean = false): Observable<Tax[]> {
                 this.taxList = response.json();
                 
                 return this.taxList;
+            })
+            .catch(new ErrorInfo().parseObservableResponseError);
+ }
+ getTaxGroupTax(force: boolean = false): Observable<TaxGroupTax[]> {
+
+    // use locally cached version
+    if (force !== true && (this.taxGroupTaxList && this.taxGroupTaxList.length > 0))
+        return Observable.of(this.taxGroupTaxList) as Observable<TaxGroupTax[]>;
+
+        return this.httpClient.get(this.config.urls.url("Taxgrouptax"))
+            .map(response => {
+                this.taxGroupTaxList = response.json();
+                
+                return this.taxGroupTaxList;
+            })
+            .catch(new ErrorInfo().parseObservableResponseError);
+ }
+
+ getTaxGroup(force: boolean = false): Observable<TaxGroup[]> {
+
+    // use locally cached version
+    if (force !== true && (this.taxGroupList && this.taxGroupList.length > 0))
+        return Observable.of(this.taxGroupList) as Observable<TaxGroup[]>;
+
+        return this.httpClient.get(this.config.urls.url("TaxGroup"))
+            .map(response => {
+                this.taxGroupList = response.json();
+                
+                return this.taxGroupList;
             })
             .catch(new ErrorInfo().parseObservableResponseError);
  }

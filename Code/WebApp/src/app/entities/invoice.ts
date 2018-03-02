@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Tax } from './tax';
+import { TaxGroupTax } from './taxGroupTax';
 
 @Injectable()
 export class Invoice {
@@ -19,11 +20,13 @@ export class Invoice {
 
 @Injectable()
 export class InvoiceLineItem {
-    id: number = 0;
-    itemId: number = 0;
-    quantity: number = 0;
-    unitPrice: number = 0;
-    total: number = 0;
-    taxAmount: number = 0;
-    taxes: Tax[];
+    id: number  =null;
+    itemId: number = null;
+    taxGroupId:number=null;
+    quantity: number = null;
+    unitPrice: number = null;
+    total: number = null;
+    taxAmount: number = null;
+    taxes: Tax[]=new Array();
+    taxGroupTaxes:TaxGroupTax[]=new Array();
 }

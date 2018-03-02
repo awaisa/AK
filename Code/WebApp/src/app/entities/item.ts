@@ -5,6 +5,6 @@ export class Item {
      id:number = 0;
      description:string = null;
     // purchaseDescription:string = null;
-    // sellDescription:string = null;
+    taxGroupId:number = 0;
     code:string = null;
 }
