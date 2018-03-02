@@ -17,6 +17,7 @@ import { UserInfo } from "./business/userInfo";
 
 // components
 import { AppHeader } from './common/appHeader';
+import { AppSidebarComponent } from './common/app-sidebar.component';
 import {AppFooter} from "./common/appFooter";
 import {LoginComponent} from "./common/login";
 import { HomeComponent } from './home/home.component';
@@ -35,6 +36,7 @@ import { HomeComponent } from './home/home.component';
   declarations: [
     AppComponent,
     AppHeader,
+    AppSidebarComponent,
     AppFooter,
     LoginComponent,
     HomeComponent

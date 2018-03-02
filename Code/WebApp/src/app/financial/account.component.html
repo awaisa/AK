@@ -1,0 +1,81 @@
+<div class="container">
+    <error-display [error]="error"></error-display>
+     <div [ngClass]="{ 'hidden': !loaded}" [@slideIn]="'in'">
+       
+        <h1>My form!</h1>
+        <label>Edit Mode: 
+          <input type="checkbox" [(ngModel)]="isEditMode">
+        </label>
+        <form [formGroup]="heroForm" (ngSubmit)="onSubmit(form)" novalidate>
+          <div style="margin-bottom: 1em">
+            <button type="submit"
+                    [disabled]="heroForm.pristine" class="btn btn-success">Save</button> &nbsp;
+            <button type="reset" (click)="revert()"
+                    [disabled]="heroForm.pristine" class="btn btn-danger">Revert</button>
+          </div>
+          <!-- Hero Detail Controls -->
+          <form-text [readonly]="isEditMode"
+            minlength="4"
+            label="Value 1"
+            placeholder="Enter a name"
+            formControlName="name">
+          </form-text>
+      
+          <div formArrayName="secretLairs" class="well well-lg">
+            <div *ngFor="let address of secretLairs.controls; let i=index" [formGroupName]="i" >
+              <!-- The repeated address template -->
+              <h4>Address #{{i + 1}}</h4>
+              <div style="margin-left: 1em;">
+                <form-text [readonly]="isEditMode"
+                  label="Street:"
+                  placeholder="Enter a street"
+                  formControlName="street">
+                </form-text>
+                <form-text [readonly]="isEditMode"
+                  label="City:"
+                  placeholder="Enter a city"
+                  formControlName="city">
+                </form-text>
+                <form-select [readonly]="isEditMode"
+                  required
+                  label="State:"
+                  placeholder="Select a state"
+                  formControlName="state"
+                  [items]="states"
+                  bindLabel="name"
+                  bindValue="id">
+                </form-select>
+                <form-text [readonly]="isEditMode"
+                  label="Zip Code:"
+                  placeholder="Enter a zip"
+                  formControlName="zip">
+                </form-text>
+              </div>
+              <br>
+              <!-- End of the repeated address template -->
+            </div>
+            <button (click)="addLair()" type="button">Add a Secret Lair</button>
+          </div>
+          <div class="form-group radio">
+            <h4>Super power:</h4>
+            <label class="center-block"><input type="radio" formControlName="power" value="flight">Flight</label>
+            <label class="center-block"><input type="radio" formControlName="power" value="x-ray vision">X-ray vision</label>
+            <label class="center-block"><input type="radio" formControlName="power" value="strength">Strength</label>
+          </div>
+          <div class="checkbox">
+            <label class="center-block">
+              <input type="checkbox" formControlName="sidekick">I have a sidekick.
+            </label>
+          </div>
+        </form>
+        
+        <p>heroForm value: {{ heroForm.value | json}}</p>
+        
+        <h4>Name change log</h4>
+        <div *ngFor="let name of nameChangeLog">{{name}}</div>
+        
+        <p>{{this.heroForm.get('name').invalid | json }}</p>
+   
+     </div>
+   
+   </div>

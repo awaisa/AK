@@ -68,7 +68,7 @@ namespace WebApiCore.Controllers
             {
                 return NotFound();
             }
-            var model = o.ToModel();
+            var model = o.ToModel2();
             return Ok(model);
         }
 

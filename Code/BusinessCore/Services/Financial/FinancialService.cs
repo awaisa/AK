@@ -7,6 +7,7 @@ using BusinessCore.Domain.Sales;
 using BusinessCore.Domain.TaxSystem;
 using BusinessCore.Services.Inventory;
 using BusinessCore.Services.TaxSystem;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -110,7 +111,7 @@ namespace BusinessCore.Services.Financial
 
         public IQueryable<Account> GetAccounts()
         {
-            return _accountRepo.Table;
+            return _accountRepo.Table.Include(p => p.AccountClass);
         }
 
         public Account GetAccount(int id)

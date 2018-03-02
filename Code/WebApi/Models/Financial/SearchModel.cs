@@ -13,6 +13,8 @@ namespace WebApiCore.Models.Financial
 
     public class SearchRowModel : BaseModel
     {
-        public string No { get; set; }
+        public string AccountCode { get; set; }
+        public string AccountName { get; set; }
+        public string AccountClass { get; set; }
     }
 }

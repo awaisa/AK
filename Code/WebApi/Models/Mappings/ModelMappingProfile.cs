@@ -69,9 +69,9 @@ namespace WebApiCore.Models.Mappings
             CreateMap<Party, PartyModel>();
             CreateMap<PartyModel, Party>();
 
-            CreateMap<BusinessCore.Domain.Purchases.Vendor, FinancialAccountModel>();
+            CreateMap<BusinessCore.Domain.Purchases.Vendor, VendorModel>();
             CreateMap<BusinessCore.Domain.Purchases.Vendor, Vendor.SearchRowModel>();
-            CreateMap<FinancialAccountModel, BusinessCore.Domain.Purchases.Vendor>();
+            CreateMap<VendorModel, BusinessCore.Domain.Purchases.Vendor>();
 
             CreateMap<Contact, ContactModel>();
             CreateMap<ContactModel, Contact>();
@@ -100,7 +100,9 @@ namespace WebApiCore.Models.Mappings
             CreateMap<SalesInvoiceLineTax, TaxModel>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(mf => mf.TaxId));
 
-            
+            CreateMap<Account, Financial.SearchRowModel>()
+                .ForPath(x => x.AccountClass, opt => opt.MapFrom(mf=> mf.AccountClass.Name ));
+
         }
     }
 }

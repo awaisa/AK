@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AppConfiguration } from "../business/appConfiguration";
-import { ErrorInfo } from "../shared/ErrorInfo";
+import { AppConfiguration } from '../business/appConfiguration';
+import { ErrorInfo } from '../shared/ErrorInfo';
 import { ErrorDisplayComponent } from '../shared/error-display.component';
-import {UserInfo} from "../business/userInfo";
+import {UserInfo} from '../business/userInfo';
 import { BreadcrumbsService } from 'ng2-breadcrumbs';
 
 @Component({

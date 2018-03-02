@@ -199,10 +199,10 @@ namespace WebApiCore.Models.Mappings
             return entity.MapTo<BusinessCore.Domain.Financials.Account, Financial.SearchRowModel>();
         }
 
-        //public static VendorModel ToModel(this BusinessCore.Domain.Purchases.Vendor entity)
-        //{
-        //    return entity.MapTo<BusinessCore.Domain.Purchases.Vendor, VendorModel>();
-        //}
+        public static FinancialAccountModel ToModel2(this BusinessCore.Domain.Financials.Account entity)
+        {
+            return entity.MapTo<BusinessCore.Domain.Financials.Account, FinancialAccountModel>();
+        }
 
         //public static BusinessCore.Domain.Financials.Account ToEntity(this VendorModel model)
         //{

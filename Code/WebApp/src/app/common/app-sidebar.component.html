@@ -1,47 +1,124 @@
-<nav id="sidebar">
-    <div class="sidebar-header">
-        <h3>Bootstrap Sidebar</h3>
-    </div>
-
-    <ul class="list-unstyled components">
-        <p>Dummy Heading</p>
-        <li class="active">
-            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Home</a>
-            <ul class="collapse list-unstyled" id="homeSubmenu">
-                <li><a href="#">Home 1</a></li>
-                <li><a href="#">Home 2</a></li>
-                <li><a href="#">Home 3</a></li>
-            </ul>
+<div id="sidebar-container" class="sidebar-expanded d-none d-md-block">
+    <ul class="list-group">
+        <!-- Separator with title -->
+        <!-- <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+            <small>MAIN MENU</small>
+        </li> -->
+        <!-- /END Separator -->
+        <!-- Menu with submenu -->
+        <a href="#" class="bg-dark list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-start align-items-center">
+                <span class="fa fa-dashboard fa-fw mr-3"></span>
+                <span class="menu-collapsed">Dashboard</span>
+            </div>
+        </a>
+        <a href="#submenu-sales" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-start align-items-center">
+                <span class="fa fa-shopping-cart fa-fw mr-3"></span> 
+                <span class="menu-collapsed">Sales</span>
+                <span class="submenu-icon ml-auto"></span>
+            </div>
+        </a>
+        <!-- Submenu content -->
+        <div id='submenu-sales' class="collapse sidebar-submenu">
+            <a routerLink="../receivable/invoices" routerLinkActive="active" class="list-group-item list-group-item-action bg-dark text-white">
+                <span class="menu-collapsed">Sales Invoices</span>
+            </a>
+            <a routerLink="../receivable/customers" routerLinkActive="active" class="list-group-item list-group-item-action bg-dark text-white">
+                <span class="menu-collapsed">Customers</span>
+            </a>
+        </div>
+        <a href="#submenu-purchase" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-start align-items-center">
+                <span class="fa fa-reorder fa-fw mr-3"></span>
+                <span class="menu-collapsed">Purchase</span>
+                <span class="submenu-icon ml-auto"></span>
+            </div>
+        </a>
+        <!-- Submenu content -->
+        <div id='submenu-purchase' class="collapse sidebar-submenu">
+            <a routerLink="../payable/purchase-invoices" routerLinkActive="active" class="list-group-item list-group-item-action bg-dark text-white">
+                <span class="menu-collapsed">Purchase Invoices</span>
+            </a>
+            <a routerLink="../payable/vendors" routerLinkActive="active" class="list-group-item list-group-item-action bg-dark text-white">
+                <span class="menu-collapsed">Vendors</span>
+            </a>
+        </div>            
+        <a href="#submenu-inventory" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-start align-items-center">
+                <span class="fa fa-cubes fa-fw mr-3"></span>
+                <span class="menu-collapsed">Inventory</span>
+                <span class="submenu-icon ml-auto"></span>
+            </div>
+        </a>
+        <!-- Submenu content -->
+        <div id='submenu-inventory' class="collapse sidebar-submenu">
+            <a routerLink="inventory" routerLinkActive="active" class="list-group-item list-group-item-action bg-dark text-white">
+                <span class="menu-collapsed">Items</span>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                <span class="menu-collapsed">Inventory Control Journal</span>
+            </a>
+        </div>            
+        <a href="#submenu-financial" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-start align-items-center">
+                <span class="fa fa-gears fa-fw mr-3"></span>
+                <span class="menu-collapsed">Financial</span>
+                <span class="submenu-icon ml-auto"></span>
+            </div>
+        </a>
+        <!-- Submenu content -->
+        <div id='submenu-financial' class="collapse sidebar-submenu">
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                <span class="menu-collapsed">Journal Entries</span>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                <span class="menu-collapsed">General Ledgers</span>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                <span class="menu-collapsed">Taxes</span>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                <span class="menu-collapsed">Accounts</span>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                <span class="menu-collapsed">Banks</span>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                <span class="menu-collapsed">Balance Sheet</span>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                <span class="menu-collapsed">Income Statement</span>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                <span class="menu-collapsed">Trial Balance</span>
+            </a>
+        </div>            
+        <a href="#submenu-org" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-start align-items-center">
+                <span class="fa fa-industry fa-fw mr-3"></span>
+                <span class="menu-collapsed">Organization</span>
+                <span class="submenu-icon ml-auto"></span>
+            </div>
+        </a>
+        <!-- Submenu content -->
+        <div id='submenu-org' class="collapse sidebar-submenu">
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                <span class="menu-collapsed">Company</span>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                <span class="menu-collapsed">Settings</span>
+            </a>
+        </div>            
+        <!-- Separator with title -->
+        <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+            <small>&nbsp;&nbsp;</small>
         </li>
-        <li>
-            <a href="#">About</a>
-            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Pages</a>
-            <ul class="collapse list-unstyled" id="pageSubmenu">
-                <li><a href="#">Page 1</a></li>
-                <li><a href="#">Page 2</a></li>
-                <li><a href="#">Page 3</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="#">Portfolio</a>
-        </li>
-        <li>
-            <a href="#">Contact</a>
-        </li>
+        <a href="#" data-toggle="sidebar-colapse" class="bg-dark list-group-item list-group-item-action d-flex align-items-center">
+            <div class="d-flex w-100 justify-content-start align-items-center">
+                <span id="collapse-icon" class="fa fa-2x mr-3"></span>
+                <span id="collapse-text" class="menu-collapsed">Collapse</span>
+            </div>
+        </a>
     </ul>
-
-    <ul class="list-unstyled CTAs">
-        <li><a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a></li>
-        <li><a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a></li>
-    </ul>
-</nav>
-
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#sidebarCollapse').on('click', function () {
-            $('#sidebar').toggleClass('active');
-            $(this).toggleClass('active');
-        });
-    });
-</script>
+</div>
