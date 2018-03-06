@@ -21,10 +21,10 @@ import { Vendor } from '../entities/vendors';
 import { PayableService } from './payable.service';
 import { Invoice, InvoiceLineItem } from '../entities/invoice';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { InventoryService } from '../inventory/inventory.service';
 import { Item } from '../entities/item';
 import { Tax } from '../entities/tax';
 import { TaxGroupTax } from '../entities/taxGroupTax';
+import { RefService } from '../shared/ref.service';
 
 @Component({
   templateUrl: 'purchase-invoice-edit.html',
@@ -36,7 +36,7 @@ export class InvoiceEditComponent implements OnInit {
   errors: string[];
 
   constructor(private route: ActivatedRoute, private fb: FormBuilder,
-    private payableService: PayableService, private inventoryService: InventoryService,
+    private payableService: PayableService, private refService: RefService,
     private config: AppConfiguration) {
   }
   loaded = false;
@@ -76,7 +76,7 @@ export class InvoiceEditComponent implements OnInit {
       date: ['']
 
     });
-    this.inventoryService.getVendors()
+    this.refService.getVendors()
       .subscribe(result => {
         this.vendors = result;
         this.loaded = true;
@@ -84,7 +84,7 @@ export class InvoiceEditComponent implements OnInit {
       err => {
         this.error.error(err);
       });
-    this.inventoryService.getAllItems()
+    this.refService.getAllItems()
       .subscribe(result => {
         this.items = result;
         this.loaded = true;

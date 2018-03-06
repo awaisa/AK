@@ -8,8 +8,10 @@
     <span>AK</span>
   </a>
   <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
-    <ul class="navbar-nav">
-        <li *ngIf="!user.isAuthenticated"><a href="#/login">Login</a></li>
+    <ul class="navbar-nav" *ngIf="!user.isAuthenticated">
+      <li><a href="#/login">Login</a></li>
+    </ul>
+    <ul class="navbar-nav" *ngIf="user.isAuthenticated">
         <li class="nav-item"><i class="fa fa-user"></i>&nbsp;<span class="text-white">{{user.fullName}}</span></li>
         <li class="nav-item">&nbsp;&nbsp;</li>
         <li class="nav-item text-nowrap"><a href="#">Log out</a></li>

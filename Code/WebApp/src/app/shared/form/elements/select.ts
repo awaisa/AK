@@ -11,14 +11,14 @@ import {ElementBase, animations} from '../';
       'has-danger': shouldShowErrors() == false,
       'has-success': shouldShowErrors() == true
     }">
-      <label *ngIf="label" [attr.for]="identifier" class="col-form-label-sm">{{label}}</label>
+      <label *ngIf="label" [attr.for]="identifier" class="col-form-label-sm">{{label}}:</label>
       <select *ngIf="!isreadonly"
         class="form-control form-control-sm"
         [ngClass]="{'is-invalid': (shouldShowErrors())}"
         [(ngModel)]="value"
         [id]="identifier">
-          <option value="" disabled selected *ngIf="placeholder">{{placeholder}}</option>
-          <option *ngFor="let item of items" [value]="item[bindValue]">{{item[bindLabel]}}</option>
+          <option value="" selected *ngIf="placeholder">{{placeholder}}</option>
+          <option *ngFor="let item of items" [value]="item[bindValue]">{{getLabel(item)}}</option>
       </select>
       <div [@flyInOut]="'in,out'"
         class="invalid-feedback"
@@ -52,6 +52,22 @@ export class FormSelectComponent extends ElementBase<string> {
 
   getText(): string {
     // tslint:disable-next-line:triple-equals
-    return `value: ${this.value} | text: ${this.items.find(i => i.id == this.value)[this.bindLabel]}`;
+    return `${this.getLabel(this.items.find(i => i.id == this.value))}`;
   }
+
+  getLabel(item): string {
+    let label = "";
+    label = this.getDescendantProp(item, this.bindLabel);
+    return label;
+  }
+
+  private getDescendantProp(obj, desc) {
+      var arr = desc.split(".");
+      if(obj != null) {
+        while(arr.length && (obj = obj[arr.shift()]));
+          return obj;
+      }
+      return "";
+  }
+
 }

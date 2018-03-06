@@ -109,17 +109,17 @@ namespace WebApiCore.Models.Mappings
             return entity.MapTo<BusinessCore.Domain.Purchases.Vendor, Vendor.SearchRowModel>();
         }
 
-        public static FinancialAccountModel ToModel(this BusinessCore.Domain.Purchases.Vendor entity)
+        public static Vendor.VendorModel ToModel(this BusinessCore.Domain.Purchases.Vendor entity)
         {
-            return entity.MapTo<BusinessCore.Domain.Purchases.Vendor, FinancialAccountModel>();
+            return entity.MapTo<BusinessCore.Domain.Purchases.Vendor, Vendor.VendorModel>();
         }
 
-        public static BusinessCore.Domain.Purchases.Vendor ToEntity(this FinancialAccountModel model)
+        public static BusinessCore.Domain.Purchases.Vendor ToEntity(this Vendor.VendorModel model)
         {
-            return model.MapTo<FinancialAccountModel, BusinessCore.Domain.Purchases.Vendor>();
+            return model.MapTo<Vendor.VendorModel, BusinessCore.Domain.Purchases.Vendor>();
         }
 
-        public static BusinessCore.Domain.Purchases.Vendor ToEntity(this FinancialAccountModel model, BusinessCore.Domain.Purchases.Vendor destination)
+        public static BusinessCore.Domain.Purchases.Vendor ToEntity(this Vendor.VendorModel model, BusinessCore.Domain.Purchases.Vendor destination)
         {
             return model.MapTo(destination);
         }

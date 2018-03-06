@@ -1,10 +1,10 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { InventoryService } from '../../inventory/inventory.service';
 import { vendor, Party, Contacts} from '../../entities';
 import { ReceivableService } from '../receivable.service';
 import { ErrorInfo } from "../../shared/ErrorInfo";
+import { RefService } from '../../shared/ref.service';
 //declare var $:any ;
 declare var $: any;
 declare var toastr: any;
@@ -19,7 +19,7 @@ export class EditCustomerComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private inventoryService: InventoryService,
+    private refService: RefService,
     private receivableService: ReceivableService
   ) {
   }
@@ -48,7 +48,7 @@ export class EditCustomerComponent implements OnInit {
   }
   // fetch Object starts
   fetchAccounts() {
-    this.inventoryService.getAccounts()
+    this.refService.getAccounts()
       .subscribe(result => {
         this.accounts = result;
         this.loaded = true;

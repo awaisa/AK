@@ -7,11 +7,6 @@ import { AppConfiguration } from "../business/appConfiguration";
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import 'rxjs/Rx';
 
-//declare var $:any ;
-declare var $: any;
-declare var toastr: any;
-declare var window: any;
-
 import { slideInLeft, slideIn } from "../common/animations";
 import { Brand } from '../entities/brand';
 import { resetFakeAsyncZone } from '@angular/core/testing';
@@ -21,21 +16,27 @@ import { TaxGroup } from '../entities/taxGroup';
 import { Measurement } from '../entities/measurement';
 import { Account } from '../entities/account';
 import { Vendor } from '../entities/vendors';
+import { RefService } from '../shared/ref.service';
+import { TitleService } from '../shared/title.service';
+
+declare var $: any;
+declare var toastr: any;
+declare var window: any;
 
 @Component({
   templateUrl: 'item-edit.component.html',
   animations: [slideIn]
 })
 export class ItemEditComponent implements OnInit {
-  itemForm: FormGroup;
-  successfulSave: boolean;
-  errors: string[];
 
-  constructor(private route: ActivatedRoute, private fb: FormBuilder,
-    private inventoryService: InventoryService,
-    private config: AppConfiguration) {
-  }
+  isNew = false;
+  isEditMode = false;
+
+  title: string;
+
+  itemForm: FormGroup;
   item: Item = new Item();
+  errors: string[];
   error: ErrorInfo = new ErrorInfo();
   loaded = false;
   aniFrame = 'in';
@@ -48,112 +49,81 @@ export class ItemEditComponent implements OnInit {
   accounts: Account[] = [];
   vendors: Vendor[] = [];
 
-  ngOnInit() {
+  constructor(private route: ActivatedRoute, private fb: FormBuilder,
+    private inventoryService: InventoryService, private refService: RefService,
+    private config: AppConfiguration,
+    private titleService: TitleService) {
+  }
+
+  ngOnInit() {    
+
+    this.errors = [];
     var id = this.route.snapshot.params["id"];
     this.itemForm = this.fb.group({
-      brandId: [''],
-      code: [''],
-      cost: [''],
-      costOfGoodsSoldAccountId: [''],
-      description: [''],
       id: [id],
-      inventoryAccountId: [''],
-      itemCategoryId: [''],
-      modelId: [''],
-      preferredVendorId: [''],
-      price: [''],
+      code: ['', Validators.required],
+      cost: ['', Validators.required],
+      price: ['', Validators.required],
+      description: ['', Validators.required],
       purchaseDescription: [''],
-      purchaseMeasurementId: [''],
-      salesAccountId: [''],
       sellDescription: [''],
+      itemCategoryId: ['', Validators.required],
+      modelId: ['', Validators.required],
+      brandId: [''],
+      purchaseMeasurementId: [''],
       sellMeasurementId: [''],
       smallestMeasurementId: [''],
-      taxGroupId: ['']
-
+      taxGroupId: [''],
+      preferredVendorId: ['', Validators.required],
+      costOfGoodsSoldAccountId: ['', Validators.required],
+      inventoryAccountId: ['', Validators.required],
+      salesAccountId: [''],
     });
-    this.errors = [];
-    //this.config.isSearchAllowed = false;
-    //this.bandTypeAhead();
-    if (id < 0) {
-      this.loaded = true;
-      return;
-    }
-    this.inventoryService.getBrands()
-      .subscribe(result => {
-        this.brands = result;
-        this.loaded = true;
-      },
-      err => {
-        this.error.error(err);
-      });
-    this.inventoryService.getCatagories()
-      .subscribe(result => {
-        this.catagories = result;
-        this.loaded = true;
-      },
-      err => {
-        this.error.error(err);
-      });
-    this.inventoryService.getModels()
-      .subscribe(result => {
-        this.models = result;
-        this.loaded = true;
-      },
-      err => {
-        this.error.error(err);
-      });
-    this.inventoryService.getMeasurements()
-      .subscribe(result => {
-        this.measurements = result;
-        this.loaded = true;
-      },
-      err => {
-        this.error.error(err);
-      });
-    this.inventoryService.getTaxGroups()
-      .subscribe(result => {
-        this.taxgroups = result;
-        this.loaded = true;
-      },
-      err => {
-        this.error.error(err);
-      });
-    this.inventoryService.getAccounts()
-      .subscribe(result => {
-        this.accounts = result;
-        this.loaded = true;
-      },
-      err => {
-        this.error.error(err);
-      });
-    this.inventoryService.getVendors()
-      .subscribe(result => {
-        this.vendors = result;
-        this.loaded = true;
-      },
-      err => {
-        this.error.error(err);
-      });
-    if (id > 0)
+    
+    this.bindLists();
+
+    if (id > 0) {
       this.inventoryService.getItem(id)
         .subscribe(result => {
           this.item = result;
+          this.reset();
           this.loaded = true;
         },
         err => {
           this.error.error(err);
         });
+    } else {
+      this.isEditMode = true;
+      this.isNew = true;
+    }    
+
+    this.onChanges();
   }
-  saveItem() {
+  
+  onChanges(): void {
+    this.itemForm.valueChanges.subscribe(val => {
+      this.title = `Item ${val.description == null ? '' : '- ' +val.description }`;
+      this.titleService.setTitle(this.title);
+    });
+  }
+
+  editModeChange(event) {
+    this.isEditMode = event;
+    if(!event) {
+      this.reset();
+    }
+  }
+
+  save() {
     this.errors = [];
     if (this.itemForm.valid) {
       let item = {
+        id: this.item.id,
         brandId: this.itemForm.value.brandId,
         code: this.itemForm.value.code,
         cost: this.itemForm.value.cost,
         costOfGoodsSoldAccountId: this.itemForm.value.costOfGoodsSoldAccountId,
         description: this.itemForm.value.description,
-        id: this.itemForm.value.id,
         inventoryAccountId: this.itemForm.value.inventoryAccountId,
         itemCategoryId: this.itemForm.value.itemCategoryId,
         modelId: this.itemForm.value.modelId,
@@ -167,71 +137,110 @@ export class ItemEditComponent implements OnInit {
         smallestMeasurementId: this.itemForm.value.smallestMeasurementId,
         taxGroupId: this.itemForm.value.taxGroupId,
       };
-      return this.inventoryService.saveItem(item)
+      this.inventoryService.saveItem(item)
         .subscribe((item: Item) => {
           var msg = item.description + " has been saved."
           this.error.info(msg);
           toastr.success(msg);
-          window.document.getElementById("MainView").scrollTop = 0;
-
           setTimeout(function () {
             window.location.hash = "inventory/item/" + item.id;
-          }, 1500)
+          }, 500)
         },
         err => {
-          this.successfulSave = false;
           if (err.response.status === 400) {
             // handle validation error
             let validationErrorDictionary = JSON.parse(err.response._body);
             for (var fieldName in validationErrorDictionary) {
               if (this.itemForm.controls[fieldName]) {
+                const msg = validationErrorDictionary[fieldName];
                 // integrate into angular's validat ion if we have field validation
-                this.itemForm.controls[fieldName].setErrors({ invalid: true });
-                this.errors.push(validationErrorDictionary[fieldName]);
+                this.itemForm.controls[fieldName].setErrors({ error: msg });
               } else {
                 // if we have cross field validation then show the validation error at the top of the screen
                 this.errors.push(validationErrorDictionary[fieldName]);
               }
             }
           } else {
-            this.errors.push("something went wrong!");
+            this.error.error(err);
           }
-          //  let msg = `Unable to save item: ${err.message}`;
-          //  this.error.error(msg);
-          //  toastr.error(msg);
-
-          //if (err.response && err.response.status == 401) {
-          //  this.user.isAuthenticated = false;
-          //  window.location.hash = "login";
-          //}
         });
+      this.itemForm.markAsPristine();
+      this.itemForm.markAsUntouched();
+      this.itemForm.updateValueAndValidity();      
     }
-  };
-  bandTypeAhead() {
-    var $input: any = $("#BandName");
-    var config = this.config;
+  }
 
-    // delay slightly to ensure that the
-    // typeahead component is loaded when
-    // doing a full browser refresh
-    setTimeout(function () {
-      $input.typeahead({
-        source: [],
-        autoselect: true,
-        minLength: 0
+  reset(){
+    this.itemForm.reset({
+      code: this.item.code,
+      cost: this.item.cost,
+      price: this.item.price,
+      description: this.item.description,
+      purchaseDescription: this.item.purchaseDescription,
+      sellDescription: this.item.sellDescription,
+      itemCategoryId: this.item.itemCategoryId,
+      modelId: this.item.modelId,
+      brandId: this.item.brandId,
+      sellMeasurementId: this.item.sellMeasurementId,
+      smallestMeasurementId: this.item.smallestMeasurementId,
+      purchaseMeasurementId: this.item.purchaseMeasurementId,
+      taxGroupId: this.item.taxGroupId,
+      preferredVendorId: this.item.preferredVendorId,
+      costOfGoodsSoldAccountId: this.item.costOfGoodsSoldAccountId,
+      inventoryAccountId: this.item.inventoryAccountId,
+      salesAccountId: this.item.salesAccountId,            
+    });
+  }
+
+  bindLists(){
+    this.refService.getBrands()
+    .subscribe(result => {
+      this.brands = result;
+    },
+    err => {
+      this.error.error(err);
+    });
+    this.refService.getCatagories()
+      .subscribe(result => {
+        this.catagories = result;
+      },
+      err => {
+        this.error.error(err);
       });
-
-      $input.keyup(function () {
-        let s = $(this).val();
-        let url = config.urls.url("artistLookup") + s;
-
-        $.getJSON(url,
-          (data) => {
-            $input.data('typeahead').source = data;
-          });
+    this.refService.getModels()
+      .subscribe(result => {
+        this.models = result;
+      },
+      err => {
+        this.error.error(err);
       });
-
-    }, 1000);
-
+    this.refService.getMeasurements()
+      .subscribe(result => {
+        this.measurements = result;
+      },
+      err => {
+        this.error.error(err);
+      });
+    this.refService.getTaxGroups()
+      .subscribe(result => {
+        this.taxgroups = result;
+      },
+      err => {
+        this.error.error(err);
+      });
+    this.refService.getAccounts()
+      .subscribe(result => {
+        this.accounts = result;
+      },
+      err => {
+        this.error.error(err);
+      });
+    this.refService.getVendors()
+      .subscribe(result => {
+        this.vendors = result;
+      },
+      err => {
+        this.error.error(err);
+      });
   }
 }

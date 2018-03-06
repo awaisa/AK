@@ -5,6 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ErrorDisplayComponent } from './error-display.component';
 import { ErrorInfo } from './ErrorInfo';
+import { RefService } from './ref.service';
+import { TitleService } from './title.service';
 
 import * as components from './form/elements';
 const allComponents = Object.keys(components).map(k => components[k]);
@@ -16,7 +18,7 @@ const allComponents = Object.keys(components).map(k => components[k]);
     ],
     declarations: [ErrorDisplayComponent, ...allComponents, ],
     exports: [ErrorDisplayComponent, CommonModule, FormsModule, ...allComponents],
-    providers: [ErrorInfo]
+    providers: [ErrorInfo, RefService, TitleService]
 })
 export class SharedModule {
 }

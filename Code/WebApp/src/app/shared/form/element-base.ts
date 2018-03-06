@@ -54,7 +54,8 @@ export abstract class ElementBase<T> extends ValueAccessorBase<T> {
       case 'string':
         return <string> validator[key];
       default:
-        return `Validation failed: ${key}`;
+        return Object.keys(validator[key]).map(function(k){return validator[key][k]}).join(" ");
+        //return `Validation failed: ${key}`;
     }
   }
 }
