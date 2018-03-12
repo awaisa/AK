@@ -8,14 +8,8 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import 'rxjs/Rx';
 
 import { slideInLeft, slideIn } from "../common/animations";
-import { Brand } from '../entities/brand';
 import { resetFakeAsyncZone } from '@angular/core/testing';
-import { Catagory } from '../entities/catagory';
-import { Model } from '../entities/model';
-import { TaxGroup } from '../entities/taxGroup';
-import { Measurement } from '../entities/measurement';
-import { Account } from '../entities/account';
-import { Vendor } from '../entities/vendors';
+import { Brand, Catagory, Model, TaxGroup, Measurement, Account, Vendor } from '../entities';
 import { RefService } from '../shared/ref.service';
 import { TitleService } from '../shared/title.service';
 

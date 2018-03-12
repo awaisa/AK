@@ -10,7 +10,7 @@ import {Component, Optional, Inject, Input, ViewChild, ContentChild, AfterConten
         <hr *ngIf="!isTop" />
         <button (click)="modeChanged()" *ngIf="!isEditMode" type="button" class="btn btn-primary btn-sm">Edit</button>
         <button (click)="modeChanged()" *ngIf="isEditMode && !hideCancel" type="button" class="btn btn-light btn-sm">Cancel</button>
-        <button (click)="onSave()" *ngIf="isEditMode" type="button" class="btn btn-primary btn-sm">Save</button>
+        <button (click)="onSave(isTop)" *ngIf="isEditMode" type="button" class="btn btn-primary btn-sm">Save</button>
         <a href={{backUrl}} class="btn btn-secondary btn-sm">Back</a>
         <hr *ngIf="isTop" />
     `,
@@ -42,7 +42,7 @@ import {Component, Optional, Inject, Input, ViewChild, ContentChild, AfterConten
         this.isEditMode = !this.isEditMode;
         this.change.emit(this.isEditMode);
     }
-    onSave(){
+    onSave(top){
         this.save.emit();
     }
   }

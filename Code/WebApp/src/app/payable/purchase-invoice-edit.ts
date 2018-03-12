@@ -17,7 +17,7 @@ import { Model } from '../entities/model';
 import { TaxGroup } from '../entities/taxGroup';
 import { Measurement } from '../entities/measurement';
 import { Account } from '../entities/account';
-import { Vendor } from '../entities/vendors';
+import { Vendor } from '../entities/vendor';
 import { PayableService } from './payable.service';
 import { Invoice, InvoiceLineItem } from '../entities/invoice';
 import { FormGroup, FormBuilder } from '@angular/forms';

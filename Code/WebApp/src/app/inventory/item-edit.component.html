@@ -1,183 +1,183 @@
-<panel-container [title]="title">
+<panel-container>
   <error-display [error]="error"></error-display>
-  <form  [formGroup]="itemForm" (ngSubmit)="saveItem()" novalidate>
-      <button-toolbar backUrl="#/inventory/items" [isTop]="true" [hideCancel]="isNew" (change)="editModeChange($event)" (save)="save()" [isEditMode]="isEditMode" ></button-toolbar>
-      <div class="form-row">
+  <form [formGroup]="itemForm" novalidate>
+    <button-toolbar backUrl="#/inventory/items" [isTop]="true" [hideCancel]="isNew" (change)="editModeChange($event)" (save)="save()" [isEditMode]="isEditMode" ></button-toolbar>
+    <div class="form-row">
+      <div class="col-md-4">
+        <form-text [readonly]="!isEditMode"
+          label="Code"
+          placeholder="Enter Code"
+          formControlName="code">
+        </form-text>
+      </div>
+      <div class="col-md-4">
+        <form-text [readonly]="!isEditMode"
+          label="Cost"
+          placeholder="Enter Cost"
+          formControlName="cost">
+        </form-text>
+      </div>
+      <div class="col-md-4">
+        <form-text [readonly]="!isEditMode"
+          label="Price"
+          placeholder="Enter Price"
+          formControlName="price">
+        </form-text>            
+      </div>
+    </div>
+
+    <div class="form-row">
         <div class="col-md-4">
           <form-text [readonly]="!isEditMode"
-            label="Code"
-            placeholder="Enter Code"
-            formControlName="code">
+            label="Description"
+            placeholder="Enter Item description"
+            formControlName="description">
           </form-text>
         </div>
         <div class="col-md-4">
           <form-text [readonly]="!isEditMode"
-            label="Cost"
-            placeholder="Enter Cost"
-            formControlName="cost">
+            label="Purchase Description"
+            placeholder="Enter Purchase Description"
+            formControlName="purchaseDescription">
           </form-text>
         </div>
         <div class="col-md-4">
           <form-text [readonly]="!isEditMode"
-            label="Price"
-            placeholder="Enter Price"
-            formControlName="price">
-          </form-text>            
+            label="Sell Description"
+            placeholder="Enter Sell Description"
+            formControlName="sellDescription">
+          </form-text>
         </div>
       </div>
-
       <div class="form-row">
-          <div class="col-md-4">
-            <form-text [readonly]="!isEditMode"
-              label="Description"
-              placeholder="Enter Item description"
-              formControlName="description">
-            </form-text>
-          </div>
-          <div class="col-md-4">
-            <form-text [readonly]="!isEditMode"
-              label="Purchase Description"
-              placeholder="Enter Purchase Description"
-              formControlName="purchaseDescription">
-            </form-text>
-          </div>
-          <div class="col-md-4">
-            <form-text [readonly]="!isEditMode"
-              label="Sell Description"
-              placeholder="Enter Sell Description"
-              formControlName="sellDescription">
-            </form-text>
-          </div>
+        <div class="col-md-4">
+          <form-select [readonly]="!isEditMode"
+            required
+            label="Catagory"
+            placeholder="Select Catagory"
+            formControlName="itemCategoryId"
+            [items]="catagories"
+            bindLabel="name"
+            bindValue="id">
+          </form-select>
         </div>
-        <div class="form-row">
-          <div class="col-md-4">
-            <form-select [readonly]="!isEditMode"
-              required
-              label="Catagory"
-              placeholder="Select Catagory"
-              formControlName="itemCategoryId"
-              [items]="catagories"
-              bindLabel="name"
-              bindValue="id">
-            </form-select>
-          </div>
-          <div class="col-md-4">
-            <form-select [readonly]="!isEditMode"
-              required
-              label="Model"
-              placeholder="Select Model"
-              formControlName="modelId"
-              [items]="models"
-              bindLabel="name"
-              bindValue="id">
-            </form-select>
-          </div>
-          <div class="col-md-4">
-            <form-select [readonly]="!isEditMode"
-              required
-              label="Brand"
-              placeholder="Select Brand"
-              formControlName="brandId"
-              [items]="brands"
-              bindLabel="name"
-              bindValue="id">
-            </form-select>
-          </div>
+        <div class="col-md-4">
+          <form-select [readonly]="!isEditMode"
+            required
+            label="Model"
+            placeholder="Select Model"
+            formControlName="modelId"
+            [items]="models"
+            bindLabel="name"
+            bindValue="id">
+          </form-select>
         </div>
-        <div class="form-row">
-          <div class="col-md-4">
-            <form-select [readonly]="!isEditMode"
-              required
-              label="Sell Measurement"
-              placeholder="Select Sell Measurement"
-              formControlName="sellMeasurementId"
-              [items]="measurements"
-              bindLabel="description"
-              bindValue="id">
-            </form-select>
-          </div>
-          <div class="col-md-4">
-            <form-select [readonly]="!isEditMode"
-              required
-              label="Smallest Measurement"
-              placeholder="Select Smallest Measurement"
-              formControlName="smallestMeasurementId"
-              [items]="measurements"
-              bindLabel="description"
-              bindValue="id">
-            </form-select>
-          </div>
-          <div class="col-md-4">
-            <form-select [readonly]="!isEditMode"
-              required
-              label="Purchase Measurement"
-              placeholder="Select Purchase Measurement"
-              formControlName="purchaseMeasurementId"
-              [items]="measurements"
-              bindLabel="description"
-              bindValue="id">
-            </form-select>
-          </div>
+        <div class="col-md-4">
+          <form-select [readonly]="!isEditMode"
+            required
+            label="Brand"
+            placeholder="Select Brand"
+            formControlName="brandId"
+            [items]="brands"
+            bindLabel="name"
+            bindValue="id">
+          </form-select>
         </div>
-        <div class="form-row">
-          <div class="col-md-6">
-            <form-select [readonly]="!isEditMode"
-              required
-              label="Tax Group"
-              placeholder="Select Tax Group"
-              formControlName="taxGroupId"
-              [items]="taxgroups"
-              bindLabel="description"
-              bindValue="id">
-            </form-select>
-          </div>
-          <div class="col-md-6">
-            <form-select [readonly]="!isEditMode"
-              required
-              label="Vendor"
-              placeholder="Select Vendor"
-              formControlName="preferredVendorId"
-              [items]="vendors"
-              bindLabel="party.name"
-              bindValue="id">
-            </form-select>
-          </div>
-        </div> 
-        <div class="form-row">
-          <div class="col-md-4">
-            <form-select [readonly]="!isEditMode"
-              required
-              label="Cost of goods sold account"
-              placeholder="Select cost of goods sold account"
-              formControlName="costOfGoodsSoldAccountId"
-              [items]="accounts"
-              bindLabel="name"
-              bindValue="id">
-            </form-select>
-          </div>
-          <div class="col-md-4">
-            <form-select [readonly]="!isEditMode"
-              required
-              label="Inventory Account"
-              placeholder="Select Inventory Account"
-              formControlName="inventoryAccountId"
-              [items]="accounts"
-              bindLabel="name"
-              bindValue="id">
-            </form-select>
-          </div>
-          <div class="col-md-4">
-            <form-select [readonly]="!isEditMode"
-              required
-              label="Sales Account"
-              placeholder="Select Sales Account"
-              formControlName="salesAccountId"
-              [items]="accounts"
-              bindLabel="name"
-              bindValue="id">
-            </form-select>
-          </div>
+      </div>
+      <div class="form-row">
+        <div class="col-md-4">
+          <form-select [readonly]="!isEditMode"
+            required
+            label="Sell Measurement"
+            placeholder="Select Sell Measurement"
+            formControlName="sellMeasurementId"
+            [items]="measurements"
+            bindLabel="description"
+            bindValue="id">
+          </form-select>
         </div>
-    <button-toolbar backUrl="#/inventory/items" [isTop]="false" [hideCancel]="isNew" (change)="editModeChange($event)" [isEditMode]="isEditMode" ></button-toolbar>
+        <div class="col-md-4">
+          <form-select [readonly]="!isEditMode"
+            required
+            label="Smallest Measurement"
+            placeholder="Select Smallest Measurement"
+            formControlName="smallestMeasurementId"
+            [items]="measurements"
+            bindLabel="description"
+            bindValue="id">
+          </form-select>
+        </div>
+        <div class="col-md-4">
+          <form-select [readonly]="!isEditMode"
+            required
+            label="Purchase Measurement"
+            placeholder="Select Purchase Measurement"
+            formControlName="purchaseMeasurementId"
+            [items]="measurements"
+            bindLabel="description"
+            bindValue="id">
+          </form-select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-md-6">
+          <form-select [readonly]="!isEditMode"
+            required
+            label="Tax Group"
+            placeholder="Select Tax Group"
+            formControlName="taxGroupId"
+            [items]="taxgroups"
+            bindLabel="description"
+            bindValue="id">
+          </form-select>
+        </div>
+        <div class="col-md-6">
+          <form-select [readonly]="!isEditMode"
+            required
+            label="Vendor"
+            placeholder="Select Vendor"
+            formControlName="preferredVendorId"
+            [items]="vendors"
+            bindLabel="party.name"
+            bindValue="id">
+          </form-select>
+        </div>
+      </div> 
+      <div class="form-row">
+        <div class="col-md-4">
+          <form-select [readonly]="!isEditMode"
+            required
+            label="Cost of goods sold account"
+            placeholder="Select cost of goods sold account"
+            formControlName="costOfGoodsSoldAccountId"
+            [items]="accounts"
+            bindLabel="name"
+            bindValue="id">
+          </form-select>
+        </div>
+        <div class="col-md-4">
+          <form-select [readonly]="!isEditMode"
+            required
+            label="Inventory Account"
+            placeholder="Select Inventory Account"
+            formControlName="inventoryAccountId"
+            [items]="accounts"
+            bindLabel="name"
+            bindValue="id">
+          </form-select>
+        </div>
+        <div class="col-md-4">
+          <form-select [readonly]="!isEditMode"
+            required
+            label="Sales Account"
+            placeholder="Select Sales Account"
+            formControlName="salesAccountId"
+            [items]="accounts"
+            bindLabel="name"
+            bindValue="id">
+          </form-select>
+        </div>
+      </div>
+    <button-toolbar backUrl="#/inventory/items" [isTop]="false" [hideCancel]="isNew" (change)="editModeChange($event)" (save)="save()" [isEditMode]="isEditMode" ></button-toolbar>
   </form>
 </panel-container>

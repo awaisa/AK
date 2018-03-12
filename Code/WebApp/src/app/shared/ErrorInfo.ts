@@ -1,6 +1,8 @@
 ﻿import { Observable } from "rxjs";
 import { Injectable } from '@angular/core';
 
+declare var toastr: any;
+
 @Injectable()
 export class ErrorInfo {
     constructor() {
@@ -40,12 +42,12 @@ export class ErrorInfo {
         this.fixupIcons();
 
 
-        // if(this.icon == "warning")
-        //   toastr.warning(this.message);
-        // if(this.icon == "info")
-        //   toastr.info(this.message);
-        // if (this.icon == "success")
-        //   toastr.success(this.message);
+        if(this.icon == "warning")
+          toastr.warning(this.message);
+        if(this.icon == "info")
+          toastr.info(this.message);
+        if (this.icon == "success")
+          toastr.success(this.message);
     }
 
     /**

@@ -1,158 +1,198 @@
-<div class="container">
-    <error-display [error]="_error"></error-display>
-  <div class="row">
-    <div class="col-md-12" style="border: 0.5px solid;">
-      <div class="col-md-12">
-        <h3>Vendor Detail</h3>
-        <div class="separator"></div>
+<panel-container>
+  <error-display [error]="error"></error-display>
+  <form [formGroup]="formGroup" novalidate>
+    <button-toolbar backUrl="#/receivable/customers" [isTop]="true" [hideCancel]="isNew" (change)="editModeChange($event)" (save)="save()" [isEditMode]="isEditMode" ></button-toolbar>
+    <div class="form-row">
+      <div class="col-md-4">
+        <form-text [readonly]="!isEditMode"
+          label="No"
+          placeholder="Enter No"
+          formControlName="no">
+        </form-text>
       </div>
-
-      <div class="col-md-12">
-          <form name="form1" action="javascript:{}" #form1="ngForm" novalidate>
-        <div class="form-group" style="margin-top: 10px;">
-          <label>Vendor No:</label>
-          <span class="label label-info">123</span>
-        </div>
-        <div class="form-group col-md-6" [formGroup]="vendorPartyForm">
-          <label for="name">Name:</label>
-          <input id="name" type="text" class="form-control input-sm"
-            placeholder="Name" formControlName="name" name="name" />
-
-        </div>
-        <div class="form-group col-md-6" [formGroup]="vendorPartyForm">
-          <label for="BandName">Address:</label>
-          <input type="text" class="form-control input-sm typeahead" id="address" required autocomplete="off" data-provide="typeahead"
-            placeholder="Address" formControlName="address" name="address" />
-        </div>
-        <div class="form-group col-md-6" [formGroup]="vendorPartyForm">
-          <label for="Description">Email:</label>
-          <input class="form-control input-sm" id="email" placeholder="Email" required formControlName="email" name="email">
-
-        </div>
-        <div class="form-group col-md-6" [formGroup]="vendorPartyForm">
-          <label for="Description">Phone:</label>
-          <input class="form-control input-sm" id="email" placeholder="Phone" required formControlName="phone" name="phone">
-
-        </div>
-
-        <div class="form-group col-md-6" [formGroup]="vendorPartyForm">
-          <label for="Description">Website:</label>
-          <div class="input-group">
-            <span class="input-group-addon" title="Url where to buy">
-              <i class="fa fa-link fa-fw"></i>
-            </span>
-            <input type="text" class="form-control input-sm" id="AmazonUrl" placeholder="website URL" formControlName="website" name="website"
-            />
-          </div>
-        </div>
-        <div class="form-group col-md-6" [formGroup]="contactVendorPartyForm">
-            <label for="Description">Temporary ID:</label>
-            <div class="input-group">
-              <span class="input-group-addon" title="Url where to buy">
-                <i class="fa fa-link fa-fw"></i>
-              </span>
-              <input type="text" class="form-control input-sm" id="AmazonUrl" placeholder="website URL" formControlName="id" name="id"
-              />
-            </div>
-          </div>
-
-        <div class="form-group col-md-6" [formGroup]="vendorPartyForm">
-          <label for="YearReleased">Fax:</label>
-          <input type="number" class="form-control input-sm" id="YearReleased" required formControlName="fax" name="fax" placeholder="Fax Number"
-          />
-        </div>
-        <div class="col-md-12">
-          <hr/>
-        </div>
-        
-        <div class="col-md-12">
-          <h4>Contacts:
-            <span style="cursor:pointer;" class="label label-primary" (click)="addContact()">Add</span>
-          </h4>
-          <div class="separator"></div>
-        </div>
-        <div class="col-md-12" style="margin-top: 20px;">
-          <!--TODO: class="table-responsive" missing for responsive-->
-
-          <table class="table table-condensed">
-            <thead>
-              <th>First Name</th>
-              <th>Middle Name</th>
-              <th>Surname</th>
-              <th></th>
-            </thead>
-            <tbody>
-              <tr *ngFor="let contact of partyContacts;let counter=index">
-                <td>{{contact.firstName}}</td>
-                <td>{{contact.middleName}}</td>
-                <td>{{contact.lastName}}</td>
-                <td>
-                  <span style="cursor:pointer;" (click)="deleteContact(counter)" class="label label-danger">Delete</span>
-                </td>
-              </tr>
-              <tr *ngIf="addContactFlag">
-                <td colspan="4">
-
-                  <table class="table tablewrapper">
-                    <tr>
-                      <td width="25%" class="innerTable" [formGroup]="contactVendorPartyForm">
-                        <input class="form-control" type="text"  placeholder="First name" id="example-url-input" formControlName="firstName" name="firstname">
-                      </td>
-                      <td width="25%" class="innerTable" [formGroup]="contactVendorPartyForm">
-                        <input class="form-control" type="text" placeholder="Middle Name" id="example-url-input" formControlName="middleName" name="middleName">
-                      </td>
-                      <td width="25%" class="innerTable" [formGroup]="contactVendorPartyForm">
-                        <input class="form-control" type="text" placeholder="Last Name" id="example-url-input" formControlName="lastName" name="lastName">
-                      </td>
-                      <td class="innerTable">
-                        <span style="cursor:pointer;" (click)="cancle()" class="label label-default">Cancel</span>
-                        <span style="cursor:pointer;" class="label label-primary" (click)="submitContact()">Add</span>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="col-md-12">
-          <h4>Accounts</h4>
-          <div class="separator"></div>
-        </div>
-        <div class="form-group col-md-6" [formGroup]="vendorForm">
-          <label for="payabale">Payable a/c:</label>
-          <select class="form-control" required formControlName="payment" name="payment">
-            <option *ngFor="let model of accounts" [value]="model.id">{{model.name}}</option>
-          </select>
-        </div>
-        <div class="form-group col-md-6" [formGroup]="vendorForm">
-            <label for="payabale">Purchase a/c:</label>
-            <select class="form-control"  required formControlName="purchase" name="puchase">
-              <option *ngFor="let model of accounts" [value]="model.id">{{model.name}}</option>
-            </select>
-        </div>
-        <div class="form-group col-md-6" [formGroup]="vendorForm">
-            <label for="payabale">Discount a/c:</label>
-            <select class="form-control" required formControlName="discount" name="discount">
-              <option *ngFor="let model of accounts" [value]="model.id">{{model.name}}</option>
-            </select>
-        </div>
-      </form>
+      <div class="col-md-4">
+        <form-text [readonly]="!isEditMode"
+          label="Name"
+          placeholder="Enter Name"
+          formControlName="name">
+        </form-text>
       </div>
-      <div class="col-md-12">
-        <div class="well well-sm">
-          <button type="submit" (click)="addVendor()" class="btn btn-success" accesskey="S">
-            <i class="fa fa-check"></i> Add
-          </button>
-          <a (click)="cancel()" class="btn btn-default">
-            <i class="fa fa-remove"></i> Cancel
-          </a>
-        </div>
-
-        <!-- <div class="separator"></div> -->
+      <div class="col-md-4">
+        <form-text [readonly]="!isEditMode"
+          label="Address"
+          placeholder="Enter Address"
+          formControlName="address">
+        </form-text>
+      </div>
+    </div> 
+    <div class="form-row">
+      <div class="col-md-4">
+        <form-text [readonly]="!isEditMode"
+          label="Email"
+          placeholder="Enter Email"
+          formControlName="email">
+        </form-text>
+      </div>
+      <div class="col-md-4">
+        <form-text [readonly]="!isEditMode"
+          label="Phone"
+          placeholder="Enter Phone"
+          formControlName="phone">
+        </form-text>            
+      </div>
+      <div class="col-md-4">
+        <form-text [readonly]="!isEditMode"
+          label="Website"
+          placeholder="Enter Website"
+          formControlName="website">
+        </form-text>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-4">
+        <form-text [readonly]="!isEditMode"
+          label="Fax"
+          placeholder="Enter Fax"
+          formControlName="fax">
+        </form-text>
+      </div>
+      <div class="col-md-4">
+        <form-select [readonly]="!isEditMode"
+          required
+          label="Payment term"
+          placeholder="Select payment term"
+          formControlName="paymentTermId"
+          [items]="paymentTerms"
+          bindLabel="description"
+          bindValue="id">
+        </form-select>
+      </div>
+      <div class="col-md-4">
+        <form-select [readonly]="!isEditMode"
+          required
+          label="Tax Group"
+          placeholder="Select Tax Group"
+          formControlName="taxGroupId"
+          [items]="taxgroups"
+          bindLabel="description"
+          bindValue="id">
+        </form-select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-4">
+        <form-select [readonly]="!isEditMode"
+          required
+          label="Receivable a/c"
+          placeholder="Select Receivable a/c"
+          formControlName="accountsReceivableAccountId"
+          [items]="accounts"
+          bindLabel="name"
+          bindValue="id">
+        </form-select>
+      </div>
+      <div class="col-md-4">
+        <form-select [readonly]="!isEditMode"
+          required
+          label="Sales Account"
+          placeholder="Select sales account"
+          formControlName="salesAccountId"
+          [items]="accounts"
+          bindLabel="name"
+          bindValue="id">
+        </form-select>
+      </div>
+      <div class="col-md-4">
+        <form-select [readonly]="!isEditMode"
+          required
+          label="Discount a/c"
+          placeholder="Select discount a/c"
+          formControlName="salesDiscountAccountId"
+          [items]="accounts"
+          bindLabel="name"
+          bindValue="id">
+        </form-select>
       </div>
     </div>
 
-  </div>
-</div>
+    <div class="form-row">
+      <div class="col-md-4">
+        <form-select [readonly]="!isEditMode"
+          required
+          label="Payment discount a/c"
+          placeholder="Select Payment discount a/c"
+          formControlName="promptPaymentDiscountAccountId"
+          [items]="accounts"
+          bindLabel="name"
+          bindValue="id">
+        </form-select>
+      </div>
+      <div class="col-md-4">
+        <form-select [readonly]="!isEditMode"
+          required
+          label="Sales advance a/c"
+          placeholder="Select advance a/c"
+          formControlName="customerAdvancesAccountId"
+          [items]="accounts"
+          bindLabel="name"
+          bindValue="id">
+        </form-select>
+      </div>
+      <div class="col-md-4">
+      </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+          <div class="col-md-12">
+            <h4>
+              Contacts:
+              <button class="btn btn-primary btn-sm" (click)="addContact()" *ngIf="isEditMode">Add</button>
+            </h4>
+            <div class="separator"></div>
+          </div>
+          <div class="col-md-12" style="margin-top: 20px;" formArrayName="contacts">
+            <table class="table table-condensed table-hover table-sm">
+              <thead>
+                <th>First Name</th>
+                <th>Middle Name</th>
+                <th>Surname</th>
+                <th>Is Primary</th>
+                 <th></th>
+             </thead>
+              <tbody>
+                <tr *ngFor="let contact of partyContacts.controls;let counter=index" [formGroupName]="counter">
+                  <td>
+                    <form-text [readonly]="!isEditMode"
+                      placeholder="First name"
+                      formControlName="firstName">
+                    </form-text>
+                  </td>
+                  <td>
+                    <form-text [readonly]="!isEditMode"
+                      placeholder="Middle Name"
+                      formControlName="middleName">
+                    </form-text>
+                  </td>
+                  <td>
+                    <form-text [readonly]="!isEditMode"
+                      placeholder="Last Name"
+                      formControlName="lastName">
+                    </form-text>
+                  </td>
+                  <td>
+                    <form-radio [readonly]="!isEditMode" (radioChange)="contactIsPrimaryChange($event)"
+                      formControlName="isPrimary">
+                    </form-radio>
+                  </td>
+                  <td>
+                    <button (click)="deleteContact(counter)" class="btn btn-primary btn-sm" *ngIf="isEditMode">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+    <button-toolbar backUrl="#/receivable/customers" [isTop]="false" [hideCancel]="isNew" (change)="editModeChange($event)" (save)="save()" [isEditMode]="isEditMode"></button-toolbar>
+  </form>
+</panel-container>

@@ -44,10 +44,10 @@ export class FormSelectComponent extends ElementBase<string> {
   @ViewChild(NgModel) model: NgModel;
 
   constructor(
-    private _elementRef: ElementRef,
+    _elementRef: ElementRef,
     controlContainer: ControlContainer,
   ) {
-    super('select', controlContainer);
+    super('select', controlContainer, _elementRef);
   }
 
   getText(): string {

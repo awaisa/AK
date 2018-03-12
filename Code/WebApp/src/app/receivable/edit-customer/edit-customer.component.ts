@@ -1,305 +1,325 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { vendor, Party, Contacts} from '../../entities';
+import { FormBuilder, FormControl, FormGroup, Validators, FormArray, FormControlDirective, FormControlName } from '@angular/forms';
 import { ReceivableService } from '../receivable.service';
 import { ErrorInfo } from "../../shared/ErrorInfo";
 import { RefService } from '../../shared/ref.service';
-//declare var $:any ;
+import { PaymentTerm, TaxGroup, 
+  Customer, 
+  Party, 
+  Contact, 
+  Account } from '../../entities';
+
+import { AppConfiguration } from '../../business/appConfiguration';
+import { TitleService } from '../../shared/title.service';
+
 declare var $: any;
-declare var toastr: any;
 declare var window: any;
 
+//https://stackoverflow.com/a/44963270/2123712
+const originFormControlNgOnChanges = FormControlDirective.prototype.ngOnChanges;
+FormControlDirective.prototype.ngOnChanges = function () {
+  this.form.nativeElement = this.valueAccessor._elementRef.nativeElement;
+  return originFormControlNgOnChanges.apply(this, arguments);
+};
+const originFormControlNameNgOnChanges = FormControlName.prototype.ngOnChanges;
+FormControlName.prototype.ngOnChanges = function () {
+  const result = originFormControlNameNgOnChanges.apply(this, arguments);
+  this.control.nativeElement = this.valueAccessor._elementRef.nativeElement;
+  return result;
+};
+
 @Component({
-  selector: 'app-edit-customer',
-  templateUrl: './edit-customer.component.html',
-  styleUrls: ['./edit-customer.component.css']
+  templateUrl: './edit-customer.component.html'
 })
 export class EditCustomerComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute,
-    private router: Router,
-    private refService: RefService,
-    private receivableService: ReceivableService
-  ) {
-  }
+  isNew = false;
+  isEditMode = false;
+  
+  title: string;
 
   loaded = false;
   aniFrame = 'in';
-  error;
-  _error: ErrorInfo = new ErrorInfo();
-  vendorPartyForm: FormGroup;
-  contactVendorPartyForm: FormGroup;
-  vendorForm: FormGroup;
+  errors: string[];
+  error: ErrorInfo = new ErrorInfo();
+  formGroup: FormGroup;
+  
+  accounts: Account[] = [];
+  taxgroups: TaxGroup[] = [];
+  paymentTerms: PaymentTerm[] = [];
 
-  accounts: any = [];
-  vendorParty: Party;
-  vendor: vendor;
-  contactVendorParty: Contacts;
-  partyContacts: Array<Contacts> = [];
+  customer: Customer = new Customer(); 
 
   addContactFlag = false;
 
+  constructor(private route: ActivatedRoute, private fb: FormBuilder,
+    private router: Router,
+    private receivableService: ReceivableService,
+    private refService: RefService,
+    private config: AppConfiguration,
+    private titleService: TitleService
+  ) {}
+
   ngOnInit() {
-    this.initForm();
-    this.initObject();
-    this.fetchAccounts();
-    this.initContactForm()
+    var id = this.route.snapshot.params["id"];
+    this.formGroup = this.fb.group({
+      id: [id],
+      no: [''],
+      name: ['', Validators.required],
+      address: ['', Validators.required],
+      email: ['', Validators.required],
+      phone: [''],
+      website: [''],
+      fax: [''],
+      contacts: this.fb.array([]),
+      paymentTermId: ['', Validators.required],
+      taxGroupId: ['', Validators.required],
+
+      accountsReceivableAccountId: ['', Validators.required],
+      salesAccountId: ['', Validators.required],
+      salesDiscountAccountId: ['', Validators.required],
+      promptPaymentDiscountAccountId: ['', Validators.required],
+      customerAdvancesAccountId: ['', Validators.required],
+    });
+    
+    this.bindLists();
+
+    if (id > 0) {
+      this.receivableService.getCustomer(id)
+        .subscribe(result => {
+          this.customer = result;
+          this.reset();
+          this.loaded = true;
+        },
+        err => {
+          this.error.error(err);
+        });
+    } else {
+      this.isEditMode = true;
+      this.isNew = true;
+    }    
+
+    this.onChanges();
   }
-  // fetch Object starts
-  fetchAccounts() {
+
+  onChanges(): void {
+    this.formGroup.valueChanges.subscribe(val => {
+      this.title = `Customer ${(val.name == null || val.name == '') ? '' : '- ' +val.name }`;
+      this.titleService.setTitle(this.title);
+    });
+  }
+
+  editModeChange(event) {
+    this.isEditMode = event;
+    if(!event) {
+      this.reset();
+    }else {
+      setTimeout(()=>{
+        this.focusControl(this.formGroup);
+      }, 100);
+    }
+    this.error.reset();
+  }
+
+  save() {
+    this.errors = [];
+    this.error.reset();
+    
+    if (this.formGroup.valid) {
+
+      // deep copy of form model lairs
+      const deepCopyContacts: Contact[] = this.formGroup.value.contacts.map((contact: Contact) => Object.assign({}, contact));
+
+      let customer = {
+        id: this.customer.id,
+        no: this.formGroup.value.no,
+        paymentTermId: this.formGroup.value.paymentTermId,
+        taxGroupId: this.formGroup.value.taxGroupId,
+        
+        accountsReceivableAccountId: this.formGroup.value.accountsReceivableAccountId,
+        salesAccountId: this.formGroup.value.salesAccountId,
+        salesDiscountAccountId: this.formGroup.value.salesDiscountAccountId,
+        promptPaymentDiscountAccountId: this.formGroup.value.promptPaymentDiscountAccountId,
+        customerAdvancesAccountId: this.formGroup.value.customerAdvancesAccountId,
+        party: {
+          name: this.formGroup.value.name,
+          address: this.formGroup.value.address,
+          email: this.formGroup.value.email,
+          phone: this.formGroup.value.phone,
+          website: this.formGroup.value.website,
+          fax: this.formGroup.value.fax,
+          contacts: deepCopyContacts
+       }
+      };
+      this.receivableService.saveCustomer(customer)
+        .subscribe((customer: Customer) => {
+          this.customer = customer;
+          var msg = customer.party.name + " has been saved."
+          this.error.info(msg);
+          setTimeout(function () {
+            window.location.hash = "receivable/customers/" + customer.id;
+          }, 500)
+        },
+        err => {
+          if (err.response.status === 400) {
+            // handle validation error
+            let validationErrorDictionary = JSON.parse(err.response._body);
+            for (var fieldName in validationErrorDictionary) {
+              if (this.formGroup.controls[fieldName]) {
+                const msg = validationErrorDictionary[fieldName];
+                // integrate into angular's validat ion if we have field validation
+                this.formGroup.controls[fieldName].setErrors({ error: msg });
+              } else {
+                if(fieldName.indexOf('.') >= 0) {
+                  
+                }
+                // if we have cross field validation then show the validation error at the top of the screen
+                this.errors.push(validationErrorDictionary[fieldName]);
+              }
+            }
+            this.error.error(this.errors.join('\n'));
+            this.focusInvalidControl(this.formGroup);
+          } else {
+            this.error.error(err);
+          }
+        });
+      this.formGroup.markAsPristine();
+      this.formGroup.markAsUntouched();
+      this.formGroup.updateValueAndValidity();      
+    } else {
+      this.focusInvalidControl(this.formGroup);
+    }
+  }
+
+  reset(){
+    this.formGroup.reset({
+      no: this.customer.no,
+      paymentTermId: this.customer.paymentTermId,
+      taxGroupId: this.customer.taxGroupId,
+
+      accountsReceivableAccountId: this.customer.accountsReceivableAccountId,
+      salesAccountId: this.customer.salesAccountId,
+      salesDiscountAccountId: this.customer.salesDiscountAccountId,
+      promptPaymentDiscountAccountId: this.customer.promptPaymentDiscountAccountId,
+      customerAdvancesAccountId: this.customer.customerAdvancesAccountId,
+
+      name: this.customer.party.name,
+      address: this.customer.party.address,
+      email: this.customer.party.email,
+      phone: this.customer.party.phone,
+      website: this.customer.party.website,
+      fax: this.customer.party.fax,
+    });
+    this.setPartyContacts(this.customer.party.contacts);
+  }
+
+  focusInvalidControl(fg: FormGroup) {
+    let invalid = <any[]>Object.keys(fg.controls).map(key => fg.controls[key]).filter(ctl => ctl.invalid);
+    if (invalid.length > 0) {
+      if('controls' in invalid[0]) {
+        for(var i=0; i<invalid[0].controls.length; i++) {
+          if(!invalid[0].controls[i].valid) {
+            this.focusInvalidControl(invalid[0].controls[i] as FormGroup);
+          }
+        }
+      } else {
+        $((<any>invalid[0]).nativeElement).find('input,select').focus();
+      }
+    }
+  }
+
+  focusControl(fg: FormGroup) {
+    let ctrls = <any[]>Object.keys(fg.controls).map(key => fg.controls[key]);
+    if (ctrls.length > 0) {
+      if('controls' in ctrls[0]) {
+        this.focusInvalidControl(ctrls[0].controls[0] as FormGroup);
+      } else {
+        for(var i=0; i<ctrls.length; i++) {
+          const element = (<any>ctrls[i]).nativeElement;
+          if(element != null) {
+            $(element).find('input,select').focus();
+            return;
+          }
+        }
+      }
+    }
+  }
+
+  setPartyContacts(contacts: Contact[]) {
+    const contactFGs = contacts.map(c => {
+      const fg = this.fb.group(c);
+      this.setContactValidator(fg);
+      return fg;
+    });
+    const contactFormArray = this.fb.array(contactFGs);
+    this.formGroup.setControl('contacts', contactFormArray);
+  }
+
+  addContact() {
+    
+    for(var i=0; i<this.partyContacts.length; i++) {
+      if(!this.partyContacts.controls[i].valid) {
+        this.focusInvalidControl(this.partyContacts.controls[i] as FormGroup);
+        return;
+      }
+    }
+
+    let contact = new Contact();
+    if(this.partyContacts.length == 0) contact.isPrimary = true;
+    const g = this.fb.group(contact);
+    this.setContactValidator(g);
+    this.partyContacts.push(g);
+    
+    setTimeout(()=>{
+      this.focusControl(g);
+    }, 100);
+  }
+
+  setContactValidator(fg: FormGroup) {
+    fg.get("firstName").setValidators([Validators.required]);
+    fg.get("lastName").setValidators([Validators.required]);
+    fg.get("middleName").setValidators([Validators.required]);
+  }
+
+  deleteContact(i) {
+    var c = this.partyContacts[i];
+    this.partyContacts.removeAt(i);
+  }
+
+  get partyContacts(): FormArray {
+    return this.formGroup.get('contacts') as FormArray;
+  };
+
+  contactIsPrimaryChange(event){
+    for(var i=0; i<this.partyContacts.length; i++){
+      var c = this.partyContacts.controls[i];
+      var dd = c.get("isPrimary");
+      dd.setValue(false);
+    }
+  }
+
+  bindLists(){
+    this.refService.getTaxGroups()
+      .subscribe(result => {
+        this.taxgroups = result;
+      },
+      err => {
+        this.error.error(err);
+      });
     this.refService.getAccounts()
       .subscribe(result => {
         this.accounts = result;
-        this.loaded = true;
+      },
+      err => {
+        this.error.error(err);
+      });
+    this.refService.getPaymentTerms()
+      .subscribe(result => {
+        this.paymentTerms = result;
       },
       err => {
         this.error.error(err);
       });
   }
-// fetch object ends
-
-  addContact() {
-    this.addContactFlag = true;
-    this.initContactForm();
-  }
-  cancle() {
-    this.addContactFlag = false;
-  }
-  // submit starts
-  addVendor() {
-    if (!this.addContactFlag) {
-      if(this.validatePartyForm()) {
-        this.receivableService.saveVendor(this.vendor)
-        .subscribe(data => {
-          const _vendor = data;
-          debugger
-        }, error => {
-          let _error = error
-          _error = _error.response.json();
-          this._error = error;
-          this.checkErrors(_error);
-          console.log(this.vendor);
-          debugger
-        })
-      }
-    } else {
-      toastr.warning('Form is invalid, Save all changes!', 'Oops');
-    }
-  }
-  checkErrors(_err) {
-    let keys = Object.keys(_err);
-    keys.forEach((item, index) => {
-      debugger
-      let s = item.split('.');
-      if(s.length > 2 && s[1].indexOf('contacts') !== -1) {
-        let _index = Number(s[1].charAt(9));
-        this.vendor.party.contacts[_index][s[2]] = '';
-        this.contactVendorPartyForm.get(s[2]).markAsDirty();
-        this.contactVendorPartyForm.get(s[2]).markAsTouched();
-      } else if (s.length > 1 && s[1].indexOf('contacts') === -1) {
-        this.vendor.party[s[1]] = '';
-        this.vendorPartyForm.get(s[1]).markAsDirty();
-        this.vendorPartyForm.get(s[1]).markAsTouched();
-      } else {
-        this.vendor[s[0]] = '';
-        this.vendorPartyForm.get(s[0]).markAsDirty();
-        this.vendorPartyForm.get(s[0]).markAsTouched();
-      }
-      })
-  }
-  submitContact() {
-    if(this.validateContactForm()) {
-      this.partyContacts.push(Object.assign({}, this.contactVendorParty));
-      this.cancle();
-    }
-  }
-  // submit ends
-  // validation starts
-  validateContactForm() {
-    if(this.contactVendorPartyForm.get('firstName').status === 'VALID') {
-      this.contactVendorParty.firstName = this.contactVendorPartyForm.get('firstName').value;
-    } else {
-      this.contactVendorPartyForm.get('firstName').markAsTouched();
-      this.contactVendorPartyForm.get('firstName').markAsDirty();
-      toastr.warning('First name is required');
-      return;
-    }
-    if(this.contactVendorPartyForm.get('middleName').status === 'VALID') {
-      this.contactVendorParty.middleName = this.contactVendorPartyForm.get('middleName').value;
-    } else {
-      this.contactVendorPartyForm.get('middleName').markAsTouched();
-      this.contactVendorPartyForm.get('middleName').markAsDirty();
-      toastr.warning('Middle name is required');
-      return;
-    }
-    if(this.contactVendorPartyForm.get('lastName').status === 'VALID') {
-      this.contactVendorParty.lastName = this.contactVendorPartyForm.get('lastName').value;
-    } else {
-      this.contactVendorPartyForm.get('lastName').markAsTouched();
-      this.contactVendorPartyForm.get('lastName').markAsDirty();
-      toastr.warning('Surname is required');
-      return;
-    }
-    return true;
-  }
-  validatePartyForm() {
-    if(this.vendorPartyForm.get('name').status === 'VALID') {
-      this.vendorParty.name = this.vendorPartyForm.get('name').value;
-    } else {
-      this.vendorPartyForm.get('name').markAsTouched();
-      this.vendorPartyForm.get('name').markAsDirty();
-      toastr.warning('Name is required');
-      return;
-    }
-    if(this.vendorPartyForm.get('address').status === 'VALID') {
-      this.vendorParty.address = this.vendorPartyForm.get('address').value;
-    } else {
-      this.vendorPartyForm.get('address').markAsTouched();
-      this.vendorPartyForm.get('address').markAsDirty();
-      toastr.warning('Address is required');
-      return;
-    }
-    if(this.vendorPartyForm.get('email').status === 'VALID') {
-      this.vendorParty.email = this.vendorPartyForm.get('email').value;
-    } else {
-      this.vendorPartyForm.get('email').markAsTouched();
-      this.vendorPartyForm.get('email').markAsDirty();
-      toastr.warning('Email is required, Enter valid email.');
-      return;
-    }
-    if(this.vendorPartyForm.get('phone').status === 'VALID') {
-      this.vendorParty.phone = this.vendorPartyForm.get('phone').value;
-    } else {
-      this.vendorPartyForm.get('phone').markAsTouched();
-      this.vendorPartyForm.get('phone').markAsDirty();
-      toastr.warning('Phone number is required.');
-      return;
-    }
-    if(this.vendorPartyForm.get('website').status === 'VALID') {
-      this.vendorParty.website = this.vendorPartyForm.get('website').value;
-    } else {
-      this.vendorPartyForm.get('website').markAsTouched();
-      this.vendorPartyForm.get('website').markAsDirty();
-      toastr.warning('website URL is required.');
-      return;
-    }
-    if(this.vendorPartyForm.get('fax').status === 'VALID') {
-      this.vendorParty.fax = this.vendorPartyForm.get('fax').value;
-    } else {
-      this.vendorPartyForm.get('fax').markAsTouched();
-      this.vendorPartyForm.get('fax').markAsDirty();
-      toastr.warning('Fax Number is required.');
-      return;
-    }
-    if(this.vendorForm.get('payment').status === 'VALID') {
-      this.vendor.paymentTermId = this.vendorForm.get('payment').value;
-    } else {
-      this.vendorForm.get('payment').markAsTouched();
-      this.vendorForm.get('payment').markAsDirty();
-      toastr.warning('Payment a/c is required.');
-      return;
-    }
-    if(this.vendorForm.get('purchase').status === 'VALID') {
-      this.vendor.purchaseAccountId = this.vendorForm.get('purchase').value;
-    } else {
-      this.vendorForm.get('purchase').markAsTouched();
-      this.vendorForm.get('purchase').markAsDirty();
-      toastr.warning('Purchase a/c is required.');
-      return;
-    }
-    if(this.vendorForm.get('discount').status === 'VALID') {
-      this.vendor.purchaseDiscountAccountId = this.vendorForm.get('discount').value;
-    } else {
-      this.vendorForm.get('discount').markAsTouched();
-      this.vendorForm.get('discount').markAsDirty();
-      toastr.warning('Discount a/c is required.');
-      return;
-    } if(this.partyContacts.length > 0) {
-      this.vendorParty.contacts = this.partyContacts;
-      this.vendor.party = this.vendorParty;
-    } else {
-      toastr.warning('Contacts are required, Add atleast 1 contact.');
-      return;
-    }
-    return true;
-  }
-  // validation ends
-  // initialization of Objects starts
-  initObject() {
-    this.vendor = {
-      no: '',
-      paymentTermId: 0,
-      taxGroupId: 0,
-      accountsPayableAccountId: 0,
-      purchaseAccountId: 0,
-      purchaseDiscountAccountId: 0,
-      party:{
-        name: '',
-        address: '',
-        email: '',
-        phone: '',
-        website: '',
-        fax: '',
-        contacts:[{
-          firstName: '',
-          lastName: '',
-          middleName: '',
-          isPrimary: '',
-          id: ''
-        }]
-      }
-    }
-    this.vendorParty = {
-      name: '',
-      address: '',
-      email: '',
-      phone: '',
-      website: '',
-      fax: '',
-      contacts:[{
-        firstName: '',
-        lastName: '',
-        middleName: '',
-        isPrimary: '',
-        id: ''
-      }]
-    }
-  }
-  initForm() {
-    this.vendorForm = new FormGroup({
-      payment: new FormControl(null, Validators.required),
-      purchase: new FormControl(null, Validators.required),
-      discount: new FormControl(null, Validators.required)
-    })
-    this.vendorPartyForm = new FormGroup({
-      name: new FormControl(null, Validators.required),
-      address: new FormControl('', Validators.required),
-      email: new FormControl(null,
-        Validators.pattern('^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$')
-      ),
-      phone: new FormControl('', Validators.required),
-      website: new FormControl('', Validators.required),
-      fax: new FormControl('', Validators.required),
-    });
-    this.contactVendorParty = {
-      firstName: '',
-      lastName: '',
-      middleName: '',
-      isPrimary: '',
-      id: ''
-    }
-  }
-  initContactForm() {
-    this.contactVendorPartyForm = new FormGroup({
-      firstName: new FormControl(null, Validators.required),
-      lastName: new FormControl(null, Validators.required),
-      middleName: new FormControl(null, Validators.required),
-      isPrimary: new FormControl(null, Validators.required),
-      id: new FormControl(null, Validators.required)
-    })
-  }
-  // initialization ends
 }
-
-

@@ -27,6 +27,7 @@ export class AppConfiguration {
         Taxes: 'api/Reference/GetTaxes',
         Taxgrouptax:"api/Reference/GetTaxGroupTax",
         TaxGroup:"api/Reference/GetTaxGroup",
+        paymentTerm:"api/Reference/GetPaymentTerms",
 
         customers: 'api/Customer',
         invoices: 'api/Sale',

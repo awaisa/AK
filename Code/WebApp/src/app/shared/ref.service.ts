@@ -4,13 +4,7 @@ import {AppConfiguration} from "../business/appConfiguration";
 import { HttpClientService } from "../business/http-client.service";
 import { ErrorInfo } from "../shared/ErrorInfo";
 import { Observable } from "rxjs";
-import { Brand } from '../entities/brand';
-import { Catagory } from '../entities/catagory';
-import {  Account } from '../entities/account';
-import { TaxGroup } from '../entities/taxGroup';
-import { Measurement } from '../entities/measurement';
-import { Model } from '../entities/model';
-import { Vendor } from '../entities/vendors';
+import { Brand, Catagory, Model, TaxGroup, Measurement, Account, Vendor, PaymentTerm } from '../entities';
 
 @Injectable()
 export class RefService {
@@ -23,6 +17,7 @@ export class RefService {
     measurementList:Measurement[]=[];
     accountList:Account[]=[];
     vendorList:Vendor[]=[];
+    paymentTermList:PaymentTerm[]=[];
 
     constructor(private httpClient: HttpClientService,
         private config: AppConfiguration) {
@@ -147,6 +142,21 @@ export class RefService {
                 this.vendorList = response.json();
 
                 return this.vendorList;
+            })
+            .catch(new ErrorInfo().parseObservableResponseError);
+
+    }
+    getPaymentTerms(force: boolean = false): Observable<PaymentTerm[]> {
+
+        // use locally cached version
+        if (force !== true && (this.paymentTermList && this.paymentTermList.length > 0))
+            return Observable.of(this.paymentTermList) as Observable<PaymentTerm[]>;
+
+        return this.httpClient.get(this.config.urls.url("paymentTerm"))
+            .map(response => {
+                this.paymentTermList = response.json();
+
+                return this.paymentTermList;
             })
             .catch(new ErrorInfo().parseObservableResponseError);
 

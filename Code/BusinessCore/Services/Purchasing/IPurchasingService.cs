@@ -1,3 +1,4 @@
+using BusinessCore.Domain;
 using BusinessCore.Domain.Items;
 using BusinessCore.Domain.Purchases;
 using BusinessCore.Domain.TaxSystem;
@@ -19,6 +20,7 @@ namespace BusinessCore.Services.Purchasing
         IQueryable<TaxGroupTax> GetTaxGroupTax();
         IQueryable<TaxGroup> GetTaxGroup();
         IQueryable<Tax> GetTaxes();
+        IQueryable<PaymentTerm> GetPaymentTerms();
         Vendor GetVendorById(int id);
         void DeleteVendor(int id);
         void UpdateVendor(Vendor vendor);

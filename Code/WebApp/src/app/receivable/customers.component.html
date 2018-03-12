@@ -1,5 +1,7 @@
-<error-display [error]="error"></error-display>
-  
-<table datatable [dtOptions]="dtOptions" class="table table-striped table-hover table-condensed">
-
-</table>
+<panel-container>
+    <error-display [error]="error"></error-display>
+    <a href="#/receivable/customers/0" class="btn btn-primary btn-sm">Add New Customer</a>
+    <div class="table-responsive">
+        <table datatable [dtOptions]="dtOptions" class="table table-hover table-sm"></table>
+    </div>
+</panel-container>

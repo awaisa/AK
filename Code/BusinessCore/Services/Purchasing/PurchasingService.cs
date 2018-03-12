@@ -273,6 +273,11 @@ namespace BusinessCore.Services.Purchasing
         {
             return _taxGroupTaxRepo.Table;
         }
+        public IQueryable<PaymentTerm> GetPaymentTerms()
+        {
+            var query = _paymentTermRepo.Table;
+            return query;
+        }
         public IQueryable<Vendor> GetVendors()
         {
             var query = _vendorRepo.Table

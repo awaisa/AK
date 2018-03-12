@@ -50,10 +50,7 @@ export class CustomersComponent implements OnInit {
               className: "text-center",
               orderable: false,
               render: function(val, type, row){
-                  // var a = '<a href="#' + apiUrl + val.id + '">Edit</a>'
-                  var a = '<a [routerLink]="#/receiveable/customers/' + val.id + '">Edit</a>'
-                  return a;
-                  //return '<a href="#/inventory/item?id='+val.Code+'" class="btn btn-link">Edit</a> / <a href="" class="editor_remove">Delete</a>';
+                return '<a href="#/receivable/customers/' + val.id + '">View</a>'
               }
           }]
         };

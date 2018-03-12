@@ -1,16 +1,9 @@
 ﻿import { Injectable } from '@angular/core';
-import { Item } from "../entities/item";
 import {AppConfiguration} from "../business/appConfiguration";
 import { HttpClientService } from "../business/http-client.service";
 import { ErrorInfo } from "../shared/ErrorInfo";
 import { Observable } from "rxjs";
-import { Brand } from '../entities/brand';
-import { Catagory } from '../entities/catagory';
-import {  Account } from '../entities/account';
-import { TaxGroup } from '../entities/taxGroup';
-import { Measurement } from '../entities/measurement';
-import { Model } from '../entities/model';
-import { Vendor } from '../entities/vendors';
+import { Item, Catagory, Account, Brand, TaxGroup, Vendor, Model, Measurement } from '../entities';
 
 @Injectable()
 export class InventoryService {

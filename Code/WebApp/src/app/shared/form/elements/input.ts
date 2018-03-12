@@ -1,4 +1,4 @@
-import { Component, Optional, Inject, Input, ViewChild, Host, SkipSelf, } from '@angular/core';
+import { Component, Optional, Inject, Input, ViewChild, Host, SkipSelf, ElementRef } from '@angular/core';
 import { NgModel, NG_VALUE_ACCESSOR, ControlContainer, } from '@angular/forms';
 import {ElementBase, animations} from '../';
 
@@ -41,7 +41,8 @@ export class FormTextComponent extends ElementBase<string> {
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
+    _elementRef: ElementRef
   ) {
-    super('text', controlContainer);
+    super('text', controlContainer, _elementRef);
   }
 }

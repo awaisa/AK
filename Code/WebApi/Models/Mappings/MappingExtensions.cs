@@ -215,5 +215,12 @@ namespace WebApiCore.Models.Mappings
         //}
 
         #endregion
+
+        #region References
+        public static PaymentTermModel ToModel(this PaymentTerm entity)
+        {
+            return entity.MapTo<PaymentTerm, PaymentTermModel>();
+        }
+        #endregion
     }
 }

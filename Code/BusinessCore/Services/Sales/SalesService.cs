@@ -89,6 +89,7 @@ namespace BusinessCore.Services.Sales
         {
             var customer = _customerRepo.Table
                 .Include(p => p.Party)
+                .Include(p => p.Party.Contacts)
                 .Include(p => p.AccountsReceivableAccount)
                 .Include(p => p.PaymentTerm)
                 .Include(p => p.TaxGroup)

@@ -113,5 +113,12 @@ namespace WebApiCore.Controllers
             var taxgrouptax = _purchasingService.GetTaxGroupTax();
             return Ok(taxgrouptax);
         }
+        [HttpGet("GetPaymentTerms")]
+        [Produces(typeof(PaymentTermModel))]
+        public IActionResult GetPaymentTerms()
+        {
+            var items = _purchasingService.GetPaymentTerms().Select(c => c.ToModel());
+            return Ok(items);
+        }
     }
 }

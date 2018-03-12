@@ -1,4 +1,4 @@
-import { OnInit, Input } from '@angular/core';
+import { OnInit, Input, ElementRef } from '@angular/core';
 import {NgModel, ValidationErrors, AbstractControl, ControlContainer} from '@angular/forms';
 import {Observable} from 'rxjs';
 
@@ -17,6 +17,7 @@ export abstract class ElementBase<T> extends ValueAccessorBase<T> {
   constructor(
     protected elementType: string,
     protected controlContainer: ControlContainer,
+    private _elementRef: ElementRef
   ) {
     super();
   }

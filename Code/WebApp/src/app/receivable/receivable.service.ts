@@ -1,17 +1,9 @@
-
 import { Injectable } from '@angular/core';
-import { Item } from "../entities/item";
 import {AppConfiguration} from "../business/appConfiguration";
 import { HttpClientService } from "../business/http-client.service";
 import { ErrorInfo } from "../shared/ErrorInfo";
 import { Observable } from "rxjs";
-import { Brand } from '../entities/brand';
-import { Catagory } from '../entities/catagory';
-import {  Account } from '../entities/account';
-import { TaxGroup } from '../entities/taxGroup';
-import { Measurement } from '../entities/measurement';
-import { Model } from '../entities/model';
-import { vendor } from '../entities';
+import { Customer, TaxGroup, Account } from '../entities';
 
 @Injectable()
 export class ReceivableService {
@@ -20,19 +12,21 @@ export class ReceivableService {
         // console.log("InventoryService ctor");
     }
 
-    itemList: Item[] = [];
-    vendor: vendor;
-
-    saveVendor(vendor): Observable<any> {
-        return this.httpClient.post(this.config.urls.url('vendors'), vendor, null)
+    getCustomer(id): Observable<Customer> {
+        return this.httpClient.get(this.config.urls.url("customers", id))
             .map(response => {
-                this.vendor = response.json();
-
-                // explicitly update the list with the updated data
-                // this.updateItem(this.item);
-                return this.vendor;
+                var result = <Customer>response.json();
+                return result;
             })
             .catch(new ErrorInfo().parseObservableResponseError);
+    }
+
+    saveCustomer(customer): Observable<any> {
+        return this.httpClient.post(this.config.urls.url("customers"), customer, null)
+        .map(response => {
+            return response.json();
+        })
+        .catch(new ErrorInfo().parseObservableResponseError);
     }
 }
 
