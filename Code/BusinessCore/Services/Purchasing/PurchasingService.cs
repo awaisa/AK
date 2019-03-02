@@ -113,7 +113,7 @@ namespace BusinessCore.Services.Purchasing
                         invoice.PurchaseInvoiceLines.Add(line);
                     }
                 }
-                // end update
+                // end updatesdaw
                 var glHeader = GenerateGLHeader(invoice.PurchaseInvoiceLines, invoice);
                 if (_financialService.ValidateGeneralLedgerEntry(glHeader))
                 {
