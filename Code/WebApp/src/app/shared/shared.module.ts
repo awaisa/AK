@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ErrorDisplayComponent } from './error-display.component';
-import { ErrorInfo } from './ErrorInfo';
+import { ValidationErrorService } from './validation-error.service';
 import { RefService } from './ref.service';
 import { TitleService } from './title.service';
 
@@ -18,7 +18,7 @@ const allComponents = Object.keys(components).map(k => components[k]);
     ],
     declarations: [ErrorDisplayComponent, ...allComponents, ],
     exports: [ErrorDisplayComponent, CommonModule, FormsModule, ...allComponents],
-    providers: [ErrorInfo, RefService, TitleService]
+    providers: [ValidationErrorService, RefService, TitleService]
 })
 export class SharedModule {
 }

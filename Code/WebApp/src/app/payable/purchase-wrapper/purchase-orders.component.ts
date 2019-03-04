@@ -3,7 +3,7 @@
 import { Item } from '../../entities/item';
 import { AppConfiguration } from '../../business/appConfiguration';
 import { UserInfo } from '../../business/userInfo';
-import { ErrorInfo } from '../../shared/ErrorInfo';
+import { ValidationErrorService } from '../../shared/validation-error.service';
 
 declare var $: any;
 
@@ -12,7 +12,7 @@ declare var $: any;
 })
 export class PurchaseOrdersComponent implements OnInit  {
 
-  error: ErrorInfo = new ErrorInfo();
+  error: ValidationErrorService = new ValidationErrorService();
   itemList: Item[] = [];
   dtOptions: DataTables.Settings = {};
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppConfiguration } from '../business/appConfiguration';
-import { ErrorInfo } from '../shared/ErrorInfo';
+import { ValidationErrorService } from '../shared/validation-error.service';
 import { ErrorDisplayComponent } from '../shared/error-display.component';
 import {UserInfo} from '../business/userInfo';
 import { BreadcrumbsService } from 'ng2-breadcrumbs';
@@ -15,7 +15,7 @@ export class ItemsComponent implements OnInit {
         private breadcrumbs:BreadcrumbsService,
         private titleService: TitleService) {}
     
-    error: ErrorInfo = new ErrorInfo();
+    error: ValidationErrorService = new ValidationErrorService();
     dtOptions: DataTables.Settings = {};
 
     ngOnInit(): void {

@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { AppConfiguration } from "../business/appConfiguration";
-import { ErrorInfo } from "../shared/ErrorInfo";
+import { ValidationErrorService } from "../shared/validation-error.service";
 import { ErrorDisplayComponent } from '../shared/error-display.component';
 import {UserInfo} from "../business/userInfo";
 
@@ -11,7 +11,7 @@ export class InvoicesComponent implements OnInit{
   
   constructor(private config: AppConfiguration, private user:UserInfo) {}
 
-  error: ErrorInfo = new ErrorInfo();
+  error: ValidationErrorService = new ValidationErrorService();
   dtOptions: DataTables.Settings = {};
   
   ngOnInit(): void {

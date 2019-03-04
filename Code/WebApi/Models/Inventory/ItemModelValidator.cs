@@ -13,9 +13,9 @@ namespace WebApiCore.Models.Inventory
         public ItemModelValidator()
         {
             RuleFor(m => m.Code).NotEmpty().NotNull();
-            RuleFor(m => m.Description).NotEmpty().NotNull().Length(2);
-            RuleFor(m => m.SellDescription).NotEmpty().NotNull().Length(2);
-            RuleFor(m => m.PurchaseDescription).NotEmpty().NotNull().Length(2);
+            RuleFor(m => m.Description).NotEmpty().NotNull();
+            RuleFor(m => m.SellDescription).NotEmpty().NotNull();
+            RuleFor(m => m.PurchaseDescription).NotEmpty().NotNull();
             RuleFor(m => m.Price).NotEmpty().NotNull();
             RuleFor(m => m.Cost).NotEmpty().NotNull();
         }

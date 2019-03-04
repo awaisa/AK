@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray, FormControlDirective, FormControlName } from '@angular/forms';
 import { ReceivableService } from '../receivable.service';
-import { ErrorInfo } from "../../shared/ErrorInfo";
+import { ValidationErrorService } from "../../shared/validation-error.service";
 import { RefService } from '../../shared/ref.service';
 import { PaymentTerm, TaxGroup, 
   Customer, 
@@ -13,21 +13,21 @@ import { PaymentTerm, TaxGroup,
 import { AppConfiguration } from '../../business/appConfiguration';
 import { TitleService } from '../../shared/title.service';
 
-declare var $: any;
-declare var window: any;
+//declare var $: any;
+//declare var window: any;
 
-//https://stackoverflow.com/a/44963270/2123712
-const originFormControlNgOnChanges = FormControlDirective.prototype.ngOnChanges;
-FormControlDirective.prototype.ngOnChanges = function () {
-  this.form.nativeElement = this.valueAccessor._elementRef.nativeElement;
-  return originFormControlNgOnChanges.apply(this, arguments);
-};
-const originFormControlNameNgOnChanges = FormControlName.prototype.ngOnChanges;
-FormControlName.prototype.ngOnChanges = function () {
-  const result = originFormControlNameNgOnChanges.apply(this, arguments);
-  this.control.nativeElement = this.valueAccessor._elementRef.nativeElement;
-  return result;
-};
+// //https://stackoverflow.com/a/44963270/2123712
+// const originFormControlNgOnChanges = FormControlDirective.prototype.ngOnChanges;
+// FormControlDirective.prototype.ngOnChanges = function () {
+//   this.form.nativeElement = this.valueAccessor._elementRef.nativeElement;
+//   return originFormControlNgOnChanges.apply(this, arguments);
+// };
+// const originFormControlNameNgOnChanges = FormControlName.prototype.ngOnChanges;
+// FormControlName.prototype.ngOnChanges = function () {
+//   const result = originFormControlNameNgOnChanges.apply(this, arguments);
+//   this.control.nativeElement = this.valueAccessor._elementRef.nativeElement;
+//   return result;
+// };
 
 @Component({
   templateUrl: './edit-customer.component.html'
@@ -41,8 +41,8 @@ export class EditCustomerComponent implements OnInit {
 
   loaded = false;
   aniFrame = 'in';
-  errors: string[];
-  error: ErrorInfo = new ErrorInfo();
+  errorMessages: string[];
+  error: ValidationErrorService = new ValidationErrorService();
   formGroup: FormGroup;
   
   accounts: Account[] = [];
@@ -115,15 +115,13 @@ export class EditCustomerComponent implements OnInit {
     if(!event) {
       this.reset();
     }else {
-      setTimeout(()=>{
-        this.focusControl(this.formGroup);
-      }, 100);
+      this.error.focusControl(this.formGroup);
     }
     this.error.reset();
   }
 
   save() {
-    this.errors = [];
+    this.errorMessages = [];
     this.error.reset();
     
     if (this.formGroup.valid) {
@@ -157,9 +155,7 @@ export class EditCustomerComponent implements OnInit {
           this.customer = customer;
           var msg = customer.party.name + " has been saved."
           this.error.info(msg);
-          setTimeout(function () {
-            window.location.hash = "receivable/customers/" + customer.id;
-          }, 500)
+          window.location.hash = "receivable/customers/" + customer.id;
         },
         err => {
           if (err.response.status === 400) {
@@ -175,11 +171,11 @@ export class EditCustomerComponent implements OnInit {
                   
                 }
                 // if we have cross field validation then show the validation error at the top of the screen
-                this.errors.push(validationErrorDictionary[fieldName]);
+                this.errorMessages.push(validationErrorDictionary[fieldName]);
               }
             }
-            this.error.error(this.errors.join('\n'));
-            this.focusInvalidControl(this.formGroup);
+            this.error.error(this.errorMessages.join('\n'));
+            this.error.focusInvalidControl(this.formGroup);
           } else {
             this.error.error(err);
           }
@@ -188,7 +184,7 @@ export class EditCustomerComponent implements OnInit {
       this.formGroup.markAsUntouched();
       this.formGroup.updateValueAndValidity();      
     } else {
-      this.focusInvalidControl(this.formGroup);
+      this.error.focusInvalidControl(this.formGroup);
     }
   }
 
@@ -214,38 +210,6 @@ export class EditCustomerComponent implements OnInit {
     this.setPartyContacts(this.customer.party.contacts);
   }
 
-  focusInvalidControl(fg: FormGroup) {
-    let invalid = <any[]>Object.keys(fg.controls).map(key => fg.controls[key]).filter(ctl => ctl.invalid);
-    if (invalid.length > 0) {
-      if('controls' in invalid[0]) {
-        for(var i=0; i<invalid[0].controls.length; i++) {
-          if(!invalid[0].controls[i].valid) {
-            this.focusInvalidControl(invalid[0].controls[i] as FormGroup);
-          }
-        }
-      } else {
-        $((<any>invalid[0]).nativeElement).find('input,select').focus();
-      }
-    }
-  }
-
-  focusControl(fg: FormGroup) {
-    let ctrls = <any[]>Object.keys(fg.controls).map(key => fg.controls[key]);
-    if (ctrls.length > 0) {
-      if('controls' in ctrls[0]) {
-        this.focusInvalidControl(ctrls[0].controls[0] as FormGroup);
-      } else {
-        for(var i=0; i<ctrls.length; i++) {
-          const element = (<any>ctrls[i]).nativeElement;
-          if(element != null) {
-            $(element).find('input,select').focus();
-            return;
-          }
-        }
-      }
-    }
-  }
-
   setPartyContacts(contacts: Contact[]) {
     const contactFGs = contacts.map(c => {
       const fg = this.fb.group(c);
@@ -260,7 +224,7 @@ export class EditCustomerComponent implements OnInit {
     
     for(var i=0; i<this.partyContacts.length; i++) {
       if(!this.partyContacts.controls[i].valid) {
-        this.focusInvalidControl(this.partyContacts.controls[i] as FormGroup);
+        this.error.focusInvalidControl(this.partyContacts.controls[i] as FormGroup);
         return;
       }
     }
@@ -271,14 +235,12 @@ export class EditCustomerComponent implements OnInit {
     this.setContactValidator(g);
     this.partyContacts.push(g);
     
-    setTimeout(()=>{
-      this.focusControl(g);
-    }, 100);
+    this.error.focusControl(g);
   }
 
   setContactValidator(fg: FormGroup) {
     fg.get("firstName").setValidators([Validators.required]);
-    fg.get("lastName").setValidators([Validators.required]);
+    //fg.get("lastName").setValidators([Validators.required]);
     fg.get("middleName").setValidators([Validators.required]);
   }
 

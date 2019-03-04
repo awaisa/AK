@@ -14,8 +14,11 @@ namespace BusinessCore.Services.Financial
         GeneralLedgerLine CreateGeneralLedgerLine(DrOrCrSide DrCr, int accountId, decimal amount);
         GeneralLedgerHeader CreateGeneralLedgerHeader(DocumentTypes documentType, DateTime Date, string description);
         IQueryable<Account> GetAccounts();
-        IEnumerable<JournalEntryHeader> GetJournalEntries();
-        void AddJournalEntry(JournalEntryHeader journalEntry);
+        IQueryable<JournalEntryHeader> GetJournalEntries();
+        JournalEntryHeader SaveJournalEntry(JournalEntryHeader journalEntry);
+
+        //void AddJournalEntry(JournalEntryHeader journalEntry);
+        //void UpdateJournalEntry(JournalEntryHeader journalEntry, bool posted = false);
         ICollection<TrialBalance> TrialBalance(DateTime? from = null, DateTime? to = null);
         ICollection<BalanceSheet> BalanceSheet(DateTime? from = null, DateTime? to = null);
         ICollection<IncomeStatement> IncomeStatement(DateTime? from = null, DateTime? to = null);
@@ -33,7 +36,6 @@ namespace BusinessCore.Services.Financial
         void AddMainContraAccountSetting(int masterAccountId, int contraAccountId);
         void UpdateAccount(Account account);
         JournalEntryHeader GetJournalEntry(int id, bool fromGL = false);
-        void UpdateJournalEntry(JournalEntryHeader journalEntry, bool posted = false);
         GeneralLedgerHeader GetGeneralLedgerHeader(int id);
         Account GetAccountByAccountCode(string accountcode);
         Account GetAccount(int id);

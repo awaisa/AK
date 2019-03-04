@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { Item } from '../entities/item';
 import { InventoryService } from './inventory.service';
 import { ActivatedRoute } from "@angular/router";
-import { ErrorInfo } from "../shared/ErrorInfo";
+import { ValidationErrorService } from "../shared/validation-error.service";
 import { AppConfiguration } from "../business/appConfiguration";
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import 'rxjs/Rx';
@@ -31,7 +31,7 @@ export class ItemEditComponent implements OnInit {
   itemForm: FormGroup;
   item: Item = new Item();
   errors: string[];
-  error: ErrorInfo = new ErrorInfo();
+  error: ValidationErrorService = new ValidationErrorService();
   loaded = false;
   aniFrame = 'in';
 

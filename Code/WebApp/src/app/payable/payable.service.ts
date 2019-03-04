@@ -3,7 +3,7 @@ import { HttpClientService } from '../business/http-client.service';
 import { AppConfiguration } from '../business/appConfiguration';
 import { Observable } from 'rxjs';
 import { Invoice } from '../entities/invoice';
-import { ErrorInfo } from '../shared/ErrorInfo';
+import { ValidationErrorService } from '../shared/validation-error.service';
 import { Tax } from '../entities/tax';
 import { TaxGroup } from '../entities/taxGroup';
 import { TaxGroupTax } from '../entities/taxGroupTax';
@@ -34,7 +34,7 @@ getInvoices(force: boolean = false): Observable<Invoice[]> {
                 
                 return this.invoiceList;
             })
-            .catch(new ErrorInfo().parseObservableResponseError); 
+            .catch(new ValidationErrorService().parseObservableResponseError); 
  }
 
  getInvoice(id) {
@@ -43,7 +43,7 @@ getInvoices(force: boolean = false): Observable<Invoice[]> {
           var result = response.json();
           return this.invoiceList;
       })
-      .catch(new ErrorInfo().parseObservableResponseError);
+      .catch(new ValidationErrorService().parseObservableResponseError);
 }
 getTaxes(force: boolean = false): Observable<Tax[]> {
 
@@ -57,7 +57,7 @@ getTaxes(force: boolean = false): Observable<Tax[]> {
                 
                 return this.taxList;
             })
-            .catch(new ErrorInfo().parseObservableResponseError);
+            .catch(new ValidationErrorService().parseObservableResponseError);
  }
  getTaxGroupTax(force: boolean = false): Observable<TaxGroupTax[]> {
 
@@ -71,7 +71,7 @@ getTaxes(force: boolean = false): Observable<Tax[]> {
                 
                 return this.taxGroupTaxList;
             })
-            .catch(new ErrorInfo().parseObservableResponseError);
+            .catch(new ValidationErrorService().parseObservableResponseError);
  }
 
  getTaxGroup(force: boolean = false): Observable<TaxGroup[]> {
@@ -86,7 +86,7 @@ getTaxes(force: boolean = false): Observable<Tax[]> {
                 
                 return this.taxGroupList;
             })
-            .catch(new ErrorInfo().parseObservableResponseError);
+            .catch(new ValidationErrorService().parseObservableResponseError);
  }
 }
 

@@ -3,7 +3,7 @@ import {Router, ActivatedRoute} from "@angular/router";
 import 'rxjs/Rx';
 
 import {UserInfo} from "../business/userInfo";
-import {ErrorInfo} from "../shared/ErrorInfo";
+import {ValidationErrorService} from "../shared/validation-error.service";
 import { AppConfiguration } from "../business/appConfiguration";
 
 declare var toastr:any;
@@ -18,7 +18,7 @@ declare var toastr:any;
 export class LoginComponent implements OnInit {
     username:string = "";
     password:string = "";
-    error: ErrorInfo = new ErrorInfo();
+    error: ValidationErrorService = new ValidationErrorService();
     returnUrl: string;
 
     constructor(private user: UserInfo, private route: ActivatedRoute, private router: Router, private config: AppConfiguration) {

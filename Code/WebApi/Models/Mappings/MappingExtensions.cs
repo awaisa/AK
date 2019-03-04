@@ -1,4 +1,5 @@
 ﻿using BusinessCore.Domain;
+using BusinessCore.Domain.Financials;
 using BusinessCore.Domain.Items;
 using BusinessCore.Domain.Purchases;
 using WebApiCore.Models.Common;
@@ -213,6 +214,14 @@ namespace WebApiCore.Models.Mappings
         //{
         //    return model.MapTo(destination);
         //}
+
+        #endregion
+
+        #region Financial Journal
+        public static FinancialJournal.SearchRowModel ToRowModel(this JournalEntryHeader entity)
+        {
+            return entity.MapTo<JournalEntryHeader, FinancialJournal.SearchRowModel>();
+        }
 
         #endregion
 

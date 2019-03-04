@@ -2,7 +2,7 @@
 import {ResponseOptionsArgs, Response} from "@angular/http";
 import {Observable} from "rxjs";
 
-import { ErrorInfo } from '../shared/ErrorInfo';
+import { ValidationErrorService } from '../shared/validation-error.service';
 
 
 /**
@@ -39,9 +39,9 @@ export class ErrorDisplayComponent implements OnInit {
 
   /**
    * Error object that is bound to the component.
-   * @type {ErrorInfo}
+   * @type {ValidationErrorService}
    */
-  @Input() error: ErrorInfo = new ErrorInfo();
+  @Input() error: ValidationErrorService = new ValidationErrorService();
 
   ngOnInit() { }
 }

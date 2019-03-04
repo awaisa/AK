@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
-import { ErrorInfo } from "../shared/ErrorInfo";
+import { ValidationErrorService } from "../shared/validation-error.service";
 import { AppConfiguration } from "../business/appConfiguration";
 import 'rxjs/Rx';
 
@@ -40,7 +40,7 @@ export class InvoiceEditComponent implements OnInit {
     private config: AppConfiguration) {
   }
   loaded = false;
-  error: ErrorInfo = new ErrorInfo();
+  error: ValidationErrorService = new ValidationErrorService();
   invoice: Invoice = new Invoice();
   taxes: Tax[];
   taxGroups: TaxGroup[];

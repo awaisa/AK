@@ -2,7 +2,7 @@
 import { Item } from "../entities/item";
 import {AppConfiguration} from "../business/appConfiguration";
 import { HttpClientService } from "../business/http-client.service";
-import { ErrorInfo } from "../shared/ErrorInfo";
+import { ValidationErrorService } from "../shared/validation-error.service";
 import { Observable } from "rxjs";
 import { Brand, Catagory, Model, TaxGroup, Measurement, Account, Vendor, PaymentTerm } from '../entities';
 
@@ -35,7 +35,7 @@ export class RefService {
 
                 return this.itemList;
             })
-            .catch(new ErrorInfo().parseObservableResponseError);
+            .catch(new ValidationErrorService().parseObservableResponseError);
     }
     
     getBrands(force: boolean = false): Observable<Brand[]> {
@@ -50,7 +50,7 @@ export class RefService {
 
                 return this.brandList;
             })
-            .catch(new ErrorInfo().parseObservableResponseError);
+            .catch(new ValidationErrorService().parseObservableResponseError);
     }
    
     getCatagories(force: boolean = false): Observable<Catagory[]> {
@@ -65,7 +65,7 @@ export class RefService {
 
                 return this.catagoryList;
             })
-            .catch(new ErrorInfo().parseObservableResponseError);
+            .catch(new ValidationErrorService().parseObservableResponseError);
 
     }
 
@@ -81,7 +81,7 @@ export class RefService {
 
                 return this.modelList;
             })
-            .catch(new ErrorInfo().parseObservableResponseError);
+            .catch(new ValidationErrorService().parseObservableResponseError);
 
     }
 
@@ -97,7 +97,7 @@ export class RefService {
 
                 return this.taxGroupList;
             })
-            .catch(new ErrorInfo().parseObservableResponseError);
+            .catch(new ValidationErrorService().parseObservableResponseError);
 
     }
     getMeasurements(force: boolean = false): Observable<Measurement[]> {
@@ -112,7 +112,7 @@ export class RefService {
 
                 return this.measurementList;
             })
-            .catch(new ErrorInfo().parseObservableResponseError);
+            .catch(new ValidationErrorService().parseObservableResponseError);
 
     }
     getAccounts(force: boolean = false): Observable<Account[]> {
@@ -127,7 +127,7 @@ export class RefService {
 
                 return this.accountList;
             })
-            .catch(new ErrorInfo().parseObservableResponseError);
+            .catch(new ValidationErrorService().parseObservableResponseError);
 
     }
 
@@ -143,7 +143,7 @@ export class RefService {
 
                 return this.vendorList;
             })
-            .catch(new ErrorInfo().parseObservableResponseError);
+            .catch(new ValidationErrorService().parseObservableResponseError);
 
     }
     getPaymentTerms(force: boolean = false): Observable<PaymentTerm[]> {
@@ -158,7 +158,7 @@ export class RefService {
 
                 return this.paymentTermList;
             })
-            .catch(new ErrorInfo().parseObservableResponseError);
+            .catch(new ValidationErrorService().parseObservableResponseError);
 
     }
 }

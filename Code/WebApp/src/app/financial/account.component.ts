@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ErrorInfo } from '../shared/ErrorInfo';
+import { ValidationErrorService } from '../shared/validation-error.service';
 import { AppConfiguration } from '../business/appConfiguration';
 import {UserInfo} from '../business/userInfo';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
@@ -11,7 +11,7 @@ import { slideInLeft, slideIn } from "../common/animations";
 })
 export class AccountComponent implements OnInit {
 
-  error: ErrorInfo = new ErrorInfo();
+  error: ValidationErrorService = new ValidationErrorService();
   loaded = false;
   aniFrame = 'in';
   @Input() hero: Hero;

@@ -22,6 +22,10 @@ namespace WebApiCore.Models.Customer
             RuleFor(m => m.Party.Contacts).NotEmpty();
 
             RuleFor(m => m.Party.Contacts).Must(HavePrimary).WithMessage("One (and only one) contact must be primary");
+
+            RuleFor(m => m.Party.Contacts).NotEmpty();
+
+            RuleForEach(m => m.Party.Contacts).SetValidator(new ContactModelValidator());
         }
 
         private bool HavePrimary(IEnumerable<ContactModel> contacts)

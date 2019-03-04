@@ -1,10 +1,11 @@
 ﻿import { Observable } from "rxjs";
 import { Injectable } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 declare var toastr: any;
 
 @Injectable()
-export class ErrorInfo {
+export class ValidationErrorService {
     constructor() {
         this.reset();
     }
@@ -107,7 +108,7 @@ export class ErrorInfo {
             return Promise.reject(response);
         }
 
-        let err = new ErrorInfo();
+        let err = new ValidationErrorService();
         err.response = response;
         err.message = response.statusText;
 
@@ -131,7 +132,7 @@ export class ErrorInfo {
             return Observable.throw(response);
         }
 
-        let err = new ErrorInfo();
+        let err = new ValidationErrorService();
         err.response = response;
         err.message = response.statusText;
 
@@ -147,4 +148,37 @@ export class ErrorInfo {
 
         return Observable.throw(err);
     }
+
+    
+  focusInvalidControl(fg: FormGroup) {
+    let invalid = <any[]>Object.keys(fg.controls).map(key => fg.controls[key]).filter(ctl => ctl.invalid);
+    if (invalid.length > 0) {
+      if('controls' in invalid[0]) {
+        for(var i=0; i<invalid[0].controls.length; i++) {
+          if(!invalid[0].controls[i].valid) {
+            this.focusInvalidControl(invalid[0].controls[i] as FormGroup);
+          }
+        }
+      } else {
+        $((<any>invalid[0]).nativeElement).find('input,select').focus();
+      }
+    }
+  }
+
+  focusControl(fg: FormGroup) {
+    let ctrls = <any[]>Object.keys(fg.controls).map(key => fg.controls[key]);
+    if (ctrls.length > 0) {
+      if('controls' in ctrls[0]) {
+        this.focusInvalidControl(ctrls[0].controls[0] as FormGroup);
+      } else {
+        for(var i=0; i<ctrls.length; i++) {
+          const element = (<any>ctrls[i]).nativeElement;
+          if(element != null) {
+            $(element).find('input,select').focus();
+            return;
+          }
+        }
+      }
+    }
+  }
 }

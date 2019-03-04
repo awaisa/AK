@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {AppConfiguration} from "../business/appConfiguration";
 import { HttpClientService } from "../business/http-client.service";
-import { ErrorInfo } from "../shared/ErrorInfo";
+import { ValidationErrorService } from "../shared/validation-error.service";
 import { Observable } from "rxjs";
 import { Customer, TaxGroup, Account } from '../entities';
 
@@ -18,7 +18,7 @@ export class ReceivableService {
                 var result = <Customer>response.json();
                 return result;
             })
-            .catch(new ErrorInfo().parseObservableResponseError);
+            .catch(new ValidationErrorService().parseObservableResponseError);
     }
 
     saveCustomer(customer): Observable<any> {
@@ -26,7 +26,7 @@ export class ReceivableService {
         .map(response => {
             return response.json();
         })
-        .catch(new ErrorInfo().parseObservableResponseError);
+        .catch(new ValidationErrorService().parseObservableResponseError);
     }
 }
 

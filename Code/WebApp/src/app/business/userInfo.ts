@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {Http, Headers, Response, RequestOptions} from "@angular/http";
 import {AppConfiguration} from "./appConfiguration";
 import {Observable} from "rxjs";
-import {ErrorInfo} from "../shared/ErrorInfo";
+import { ValidationErrorService } from "../shared/validation-error.service";
 
 @Injectable()
 export class UserInfo {
@@ -62,7 +62,7 @@ export class UserInfo {
          if(response.status === 401)
           this.isAuthenticated = false;
 
-        return  new ErrorInfo().parseObservableResponseError(response);
+        return  new ValidationErrorService().parseObservableResponseError(response);
       });
   }
 

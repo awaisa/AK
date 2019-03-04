@@ -14,7 +14,6 @@ import { ReceivableRoutingModule } from './receivable-routing.module';
 import { DataTablesModule } from 'angular-datatables';
 import { EditCustomerComponent } from './edit-customer/edit-customer.component'
 import { ReactiveFormsModule } from '@angular/forms';
-import { AddCustomerComponent } from './add-customer/add-customer.component'; 
 
 import { InventoryService } from '../inventory/inventory.service';
 import { ReceivableService } from './receivable.service';
@@ -25,7 +24,9 @@ import { ReceivableService } from './receivable.service';
       ReceivableRoutingModule, DataTablesModule,
       ReactiveFormsModule
   ],
-  declarations: [QuotationsComponent, OrdersComponent, ReceiptsComponent, InvoicesComponent, CustomersComponent,EditCustomerComponent, AddCustomerComponent],
+  declarations: [QuotationsComponent, OrdersComponent, 
+                  ReceiptsComponent, InvoicesComponent, 
+                  CustomersComponent,EditCustomerComponent],
   providers:[InventoryService, ReceivableService]
 })
 export class ReceivableModule { }

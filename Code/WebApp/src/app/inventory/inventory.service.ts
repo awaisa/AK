@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import {AppConfiguration} from "../business/appConfiguration";
 import { HttpClientService } from "../business/http-client.service";
-import { ErrorInfo } from "../shared/ErrorInfo";
+import { ValidationErrorService } from "../shared/validation-error.service";
 import { Observable } from "rxjs";
 import { Item, Catagory, Account, Brand, TaxGroup, Vendor, Model, Measurement } from '../entities';
 
@@ -19,7 +19,7 @@ export class InventoryService {
                 var result = <Item>response.json();
                 return result;
             })
-            .catch(new ErrorInfo().parseObservableResponseError);
+            .catch(new ValidationErrorService().parseObservableResponseError);
     }
 
     saveItem(item): Observable<any> {
@@ -30,6 +30,6 @@ export class InventoryService {
                 // explicitly update the list with the updated data
                 return this.item;
             })
-            .catch(new ErrorInfo().parseObservableResponseError);
+            .catch(new ValidationErrorService().parseObservableResponseError);
     }
 }
