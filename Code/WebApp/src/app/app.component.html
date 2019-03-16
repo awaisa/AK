@@ -2,11 +2,9 @@
 <!-- Bootstrap row -->
 <div class="row" id="body-row">
     <app-sidebar></app-sidebar>
-    <div class="col">
-        <div class="container container-fluid">
-            <breadcrumb [allowBootstrap]="true"></breadcrumb>
-            <router-outlet autoscroll="true"></router-outlet>
-        </div>
-        <app-footer></app-footer>
+    <div class="container container-fluid">
+        <breadcrumb [allowBootstrap]="true"></breadcrumb>
+        <router-outlet autoscroll="true"></router-outlet>
     </div>
+    <app-footer></app-footer>
 </div>

@@ -8,6 +8,7 @@ using BusinessCore.Services.Purchasing;
 using WebApiCore.Models.Vendor;
 using BusinessCore.Domain.Purchases;
 using WebApiCore.Models.Mappings;
+using WebApiCore.Models.Common.Search.Request;
 
 namespace WebApiCore.Controllers
 {
@@ -24,18 +25,16 @@ namespace WebApiCore.Controllers
             _log = log;
         }
 
-        [HttpGet]
-        public IActionResult Vendor()
+        [HttpPost]
+        [Produces(typeof(SearchModel))]
+        public IActionResult Vendor([FromBody]SearchRequest request)
         {
             SearchModel model = new SearchModel
             {
-                Start = Getstart()
+                Start = request.Start
             };
-
-            var pagesize = GetPageSize();
-            var sortcolumn = GetSortColumn();
-            var sortcolumnDir = GetSortOrder();
-            var searchText = GetSearchedText();
+            var pagesize = request.Length == 0 ? 10 : request.Length;
+            var searchText = request.Search?.Value;
 
             var records = _service.GetVendors();
 
@@ -55,12 +54,19 @@ namespace WebApiCore.Controllers
             }
             //filtered records count
             model.RecordsFiltered = records.Count();
-            records = OrderBy(records, sortcolumn, sortcolumnDir == "desc");
+
+            if (request.Order != null)
+            {
+                var columnIndex = request.Order[0].Column;
+                var sortDirection = request.Order[0].Dir;
+                var columnName = request.Columns[columnIndex].Data;
+                records = OrderBy(records, columnName, sortDirection == "desc");
+            }
             model.Data = records
                 .Skip(model.Start)
                 .Take(pagesize)
                 .Select(t => t.ToRowModel()).ToList();
-            return Json(model);
+            return Ok(model);
         }
 
        
@@ -77,7 +83,7 @@ namespace WebApiCore.Controllers
             return Ok(model);
         }
 
-        [HttpPost]
+        [HttpPost("Save")]
         [ValidateModel]
         public IActionResult Save([FromBody] VendorModel model)
         {

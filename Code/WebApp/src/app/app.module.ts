@@ -2,8 +2,9 @@
 import { BrowserModule} from "@angular/platform-browser";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule} from "@angular/forms";
-import { HttpModule, Http, ConnectionBackend, Request, RequestOptionsArgs, Response, RequestOptions, XHRBackend, ResponseOptions, BrowserXhr, XSRFStrategy } from "@angular/http";
+import { HttpModule } from "@angular/http";
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import {BreadcrumbsModule} from 'ng2-breadcrumbs';
 
@@ -21,6 +22,8 @@ import { AppSidebarComponent } from './common/app-sidebar.component';
 import {AppFooter} from "./common/appFooter";
 import {LoginComponent} from "./common/login";
 import { HomeComponent } from './home/home.component';
+import { JwtInterceptor } from './_helpers/jwt-interceptor';
+import { ErrorInterceptor } from './_helpers/error.interceptor';
 
 @NgModule({
   imports: [
@@ -28,6 +31,7 @@ import { HomeComponent } from './home/home.component';
     SharedModule, BrowserModule,
     FormsModule,
     HttpModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule
   ],
@@ -49,6 +53,8 @@ import { HomeComponent } from './home/home.component';
 
       // make sure you use this for Hash Urls rather than HTML 5 routing
       { provide: LocationStrategy, useClass: HashLocationStrategy },
+      { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+      { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 
       // {
       //   provide: XHRBackend,

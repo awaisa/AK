@@ -22,7 +22,7 @@ export class ReceivableService {
     }
 
     saveCustomer(customer): Observable<any> {
-        return this.httpClient.post(this.config.urls.url("customers"), customer, null)
+        return this.httpClient.post(this.config.urls.url("customersave"), customer, null)
         .map(response => {
             return response.json();
         })

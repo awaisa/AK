@@ -9,6 +9,7 @@ using WebApiCore.Infrastructure;
 using WebApiCore.Models.Purchase;
 using BusinessCore.Domain.Purchases;
 using WebApiCore.Models.Mappings;
+using WebApiCore.Models.Common.Search.Request;
 
 namespace WebApiCore.Controllers
 {
@@ -25,18 +26,16 @@ namespace WebApiCore.Controllers
             _log = log;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Produces(typeof(SearchModel))]
-        public IActionResult Invoice()
+        public IActionResult Invoice([FromBody]SearchRequest request)
         {
-            SearchModel model = new SearchModel();
-
-            model.Start = Getstart();
-
-            var pagesize = GetPageSize();
-            var sortcolumn = GetSortColumn();
-            var sortcolumnDir = GetSortOrder();
-            var searchText = GetSearchedText();
+            SearchModel model = new SearchModel
+            {
+                Start = request.Start
+            };
+            var pagesize = request.Length == 0 ? 10 : request.Length;
+            var searchText = request.Search?.Value;
 
             var records = _service.GetPurchaseInvoices();
 
@@ -51,21 +50,28 @@ namespace WebApiCore.Controllers
             }
             //filtered records count
             model.RecordsFiltered = records.Count();
-            records = OrderBy(records, sortcolumn, sortcolumnDir == "desc");
+
+            if (request.Order != null)
+            {
+                var columnIndex = request.Order[0].Column;
+                var sortDirection = request.Order[0].Dir;
+                var columnName = request.Columns[columnIndex].Data;
+                records = OrderBy(records, columnName, sortDirection == "desc");
+            }
             model.Data = records
                 .Skip(model.Start)
                 .Take(pagesize)
                 .Select(t => new InvoiceRowModel()
-            {
+                {
                     Id = t.Id,
                     No = t.No,
                     Date = t.Date,
                     VendorId = t.VendorId,
                     VendorName = t.Vendor.Party.Name,
-                    Total = t.PurchaseInvoiceLines.Sum(i=> i.Amount)
-            }).ToList();
+                    Total = t.PurchaseInvoiceLines.Sum(i => i.Amount)
+                }).ToList();
 
-            return Json(model);
+            return Ok(model);
         }
 
         [HttpGet("{id:int}")]
@@ -96,5 +102,5 @@ namespace WebApiCore.Controllers
             }
             return BadRequest(ModelState);
         }
-    }    
+    }
 }

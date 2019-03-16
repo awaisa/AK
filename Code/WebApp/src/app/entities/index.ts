@@ -11,4 +11,5 @@ export * from './taxGroupTax';
 export * from './vendor';
 export * from './customer';
 export * from './payment.term';
+export * from './data-table-response';
 

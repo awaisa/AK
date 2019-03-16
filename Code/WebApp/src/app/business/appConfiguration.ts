@@ -30,9 +30,11 @@ export class AppConfiguration {
         paymentTerm:"api/Reference/GetPaymentTerms",
 
         customers: 'api/Customer',
-        invoices: 'api/Sale',
+        customersave: 'api/Customer/save',
+        invoices: 'api/Sale/Invoice',
         purchaseInvoices: 'api/Purchase',
         vendors: 'api/Vendor',
+        vendorsave: 'api/Vendor/save',
         login: 'api/login',
         logout: 'api/logout',
         isAuthenticated: 'api/isAuthenticated',

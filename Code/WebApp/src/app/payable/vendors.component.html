@@ -1,5 +1,5 @@
-<error-display [error]="error"></error-display>
-  
-<table datatable [dtOptions]="dtOptions" class="table table-striped table-hover table-condensed">
-
-</table>
+<panel-container>
+    <error-display [error]="error"></error-display>
+    <a href="#/payable/vendors/0" class="btn btn-primary btn-sm">Add New Vendor</a>
+    <table datatable [dtOptions]="dtOptions" class="table table-hover table-sm"></table>
+</panel-container>

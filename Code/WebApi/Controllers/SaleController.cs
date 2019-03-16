@@ -5,6 +5,7 @@ using WebApiCore.Infrastructure;
 using WebApiCore.Models.Sale;
 using WebApiCore.Models.Mappings;
 using BusinessCore.Services.Sales;
+using WebApiCore.Models.Common.Search.Request;
 
 namespace WebApiCore.Controllers
 {
@@ -21,18 +22,16 @@ namespace WebApiCore.Controllers
             _log = log;
         }
 
-        [HttpGet("Invoice")]
+        [HttpPost("Invoice")]
         [Produces(typeof(SearchModel))]
-        public IActionResult Invoice()
+        public IActionResult Invoice([FromBody]SearchRequest request)
         {
-            SearchModel model = new SearchModel();
-
-            model.Start = Getstart();
-
-            var pagesize = GetPageSize();
-            var sortcolumn = GetSortColumn();
-            var sortcolumnDir = GetSortOrder();
-            var searchText = GetSearchedText();
+            SearchModel model = new SearchModel
+            {
+                Start = request.Start
+            };
+            var pagesize = request.Length == 0 ? 10 : request.Length;
+            var searchText = request.Search?.Value;
 
             var records = _service.GetSalesInvoices();
 
@@ -53,7 +52,14 @@ namespace WebApiCore.Controllers
             }
             //filtered records count
             model.RecordsFiltered = records.Count();
-            records = OrderBy(records, sortcolumn, sortcolumnDir == "desc");
+
+            if (request.Order != null)
+            {
+                var columnIndex = request.Order[0].Column;
+                var sortDirection = request.Order[0].Dir;
+                var columnName = request.Columns[columnIndex].Data;
+                records = OrderBy(records, columnName, sortDirection == "desc");
+            }
             var data = records
                 .Skip(model.Start)
                 .Take(pagesize).ToList();
@@ -70,7 +76,7 @@ namespace WebApiCore.Controllers
 
             
                         }).ToList();
-            return Json(model);
+            return Ok(model);
         }
 
         [HttpGet("Invoice/{id:int}")]
@@ -86,7 +92,7 @@ namespace WebApiCore.Controllers
             return NotFound(id);
         }
 
-        [HttpPost("Invoice")]
+        [HttpPost("Invoice/Save")]
         [ValidateModel]
         [Produces(typeof(InvoiceModel))]
         public IActionResult SaveInvoice([FromBody] InvoiceModel model)

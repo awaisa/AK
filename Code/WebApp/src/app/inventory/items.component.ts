@@ -5,6 +5,8 @@ import { ErrorDisplayComponent } from '../shared/error-display.component';
 import {UserInfo} from '../business/userInfo';
 import { BreadcrumbsService } from 'ng2-breadcrumbs';
 import { TitleService } from '../shared/title.service';
+import { Item, DataTablesResponse } from '../entities';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     templateUrl: './items.component.html'
@@ -13,54 +15,45 @@ export class ItemsComponent implements OnInit {
     constructor(private config: AppConfiguration, 
         private user:UserInfo, 
         private breadcrumbs:BreadcrumbsService,
-        private titleService: TitleService) {}
+        private titleService: TitleService,
+        private http: HttpClient) {}
     
     error: ValidationErrorService = new ValidationErrorService();
     dtOptions: DataTables.Settings = {};
 
     ngOnInit(): void {
-
-        //this.breadcrumbs.store([{label: 'Home' , url: '/', params: []},{label: 'Careers' , url: '/careers', params: []}, {label:  'MyCustomRouteLabel' , url: '', params: []} ])
-
-        //this.config.searchText = "";
+        const that = this;
         this.config.isSearchAllowed = true;
         this.config.activeTab = "inventory";
 
-        var t = this.user.token;
-        //var apiUrl = this.config.urls.url("item");
+        var apiUrl = this.config.urls.url("items");
         var gridPageSize = this.config.gridPageSize();
         this.dtOptions = {
-        ajax: {
-            url: this.config.urls.url("items"),
-            beforeSend: function(xhr, settings) { 
-                xhr.setRequestHeader('Authorization','Bearer ' + t); 
-            } 
-        }, 
-        serverSide: true,
-        ordering: true,
-        paging: true,
-        pageLength:gridPageSize,
-        lengthChange: false,
-        columns: [{
-            title: 'Code',
-            data: 'code'
-        }, {
-            title: 'Description',
-            data: 'description'
-        }, {
-            title: 'Price',
-            data: 'price'
-        },
-        {
-            data: null,
-            className: "text-center",
-            orderable: false,
-            render: function(val, type, row){
-                var a = '<a href="#/inventory/item/'+val.id+'">View</a>'
-                return a;
-                //return '<a href="#/inventory/item?id='+val.Code+'" class="btn btn-link">Edit</a> / <a href="" class="editor_remove">Delete</a>';
-            }
-        }]
+            processing: true,
+            serverSide: true,
+            ordering: true,
+            paging: true,
+            pageLength:gridPageSize,
+            ajax: (dataTablesParameters: any, callback) => {
+            that.http
+                .post<DataTablesResponse>(
+                    apiUrl,
+                    dataTablesParameters, {}
+                    ).subscribe(resp => {
+                    callback({
+                        recordsTotal: resp.recordsTotal,
+                        recordsFiltered: resp.recordsFiltered,
+                        draw: resp.draw,
+                        data: resp.data
+                    });
+                });
+            },
+            columns: [{ data: 'code', title: 'Code' }, { data: 'description', title: 'Description' }, { data: 'price', title: 'Price' }, { data: null, orderable: false, render: 
+                (data: any, type: any, row: any, meta: any) => {
+                    var a = `<a href="#/inventory/item/${data.id}">View</a>`;
+                    return a;
+                } 
+            }]
         };
         
         setTimeout(()=>{this.titleService.setTitle("Items");},0);

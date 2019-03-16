@@ -5,6 +5,7 @@ using WebApiCore.Infrastructure;
 using WebApiCore.Models.Mappings;
 using WebApiCore.Models.Customer;
 using BusinessCore.Services.Sales;
+using WebApiCore.Models.Common.Search.Request;
 
 namespace WebApiCore.Controllers
 {
@@ -21,19 +22,16 @@ namespace WebApiCore.Controllers
             _log = log;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Produces(typeof(SearchModel))]
-        public IActionResult Customer()
+        public IActionResult Customer([FromBody]SearchRequest request)
         {
             SearchModel model = new SearchModel
             {
-                Start = Getstart()
+                Start = request.Start
             };
-
-            var pagesize = GetPageSize();
-            var sortcolumn = GetSortColumn();
-            var sortcolumnDir = GetSortOrder();
-            var searchText = GetSearchedText();
+            var pagesize = request.Length == 0 ? 10 : request.Length;
+            var searchText = request.Search?.Value;
 
             var records = _service.GetCustomers();
 
@@ -53,12 +51,21 @@ namespace WebApiCore.Controllers
             }
             //filtered records count
             model.RecordsFiltered = records.Count();
-            records = OrderBy(records, sortcolumn, sortcolumnDir == "desc");
+
+            if (request.Order != null)
+            {
+                var columnIndex = request.Order[0].Column;
+                var sortDirection = request.Order[0].Dir;
+                var columnName = request.Columns[columnIndex].Data;
+                records = OrderBy(records, columnName, sortDirection == "desc");
+            }
             model.Data = records
                 .Skip(model.Start)
                 .Take(pagesize)
-                .Select(t => t.ToRowModel()).ToList();
-            return Json(model);
+                .Select(t => t.ToRowModel())
+                .ToList();
+
+            return Ok(model);
         }
 
         [HttpGet("{id:int}")]
@@ -74,7 +81,7 @@ namespace WebApiCore.Controllers
             return Ok(model);
         }
 
-        [HttpPost]
+        [HttpPost("Save")]
         [ValidateModel]
         [Produces(typeof(CustomerModel))]
         public IActionResult SaveCustomer([FromBody] CustomerModel model)
@@ -101,18 +108,18 @@ namespace WebApiCore.Controllers
             _service.DeleteCustomer(id);
             return Ok();
         }
-        [HttpPut]
-        [Produces(typeof(CustomerModel))]
-        public IActionResult UpdateCustomer([FromBody]CustomerModel model)
-        {
-            var o = _service.GetCustomerById(model.Id);
-            if (o == null)
-            {
-                return NotFound();
-            }
-            var obj = model.ToEntity();
-            _service.UpdateCustomer(obj);
-            return Ok();
-        }
+        //[HttpPut]
+        //[Produces(typeof(CustomerModel))]
+        //public IActionResult UpdateCustomer([FromBody]CustomerModel model)
+        //{
+        //    var o = _service.GetCustomerById(model.Id);
+        //    if (o == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var obj = model.ToEntity();
+        //    _service.UpdateCustomer(obj);
+        //    return Ok();
+        //}
     }    
 }

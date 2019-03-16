@@ -5,6 +5,7 @@ using BusinessCore.Services.Inventory;
 using WebApiCore.Infrastructure;
 using WebApiCore.Models.Inventory;
 using WebApiCore.Models.Mappings;
+using WebApiCore.Models.Common.Search.Request;
 
 namespace WebApiCore.Controllers
 {
@@ -21,18 +22,16 @@ namespace WebApiCore.Controllers
             _log = log;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Produces(typeof(SearchModel))]
-        public IActionResult Item()
+        public IActionResult Item([FromBody]SearchRequest request)
         {
             SearchModel model = new SearchModel
             {
-                Start = Getstart()
+                Start = request.Start
             };
-            var pagesize = GetPageSize();
-            var sortcolumn = GetSortColumn();
-            var sortcolumnDir = GetSortOrder();
-            var searchText = GetSearchedText();
+            var pagesize = request.Length == 0 ? 10 : request.Length;
+            var searchText = request.Search?.Value;
 
             var records = _service.GetAllItems();
 
@@ -49,7 +48,14 @@ namespace WebApiCore.Controllers
             }
             //filtered records count
             model.RecordsFiltered = records.Count();
-            records = OrderBy(records, sortcolumn, sortcolumnDir == "desc");
+
+            if (request.Order != null)
+            {
+                var columnIndex = request.Order[0].Column;
+                var sortDirection = request.Order[0].Dir;
+                var columnName = request.Columns[columnIndex].Data;
+                records = OrderBy(records, columnName, sortDirection == "desc");
+            }
             model.Data = records
                 .Skip(model.Start)
                 .Take(pagesize)
@@ -72,7 +78,7 @@ namespace WebApiCore.Controllers
             return NotFound(id);
         }
 
-        [HttpPost]
+        [HttpPost("Save")]
         [ValidateModel]
         [Produces(typeof(ItemModel))]
         public IActionResult SaveItem([FromBody] ItemModel model)

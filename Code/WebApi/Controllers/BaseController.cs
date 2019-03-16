@@ -13,98 +13,98 @@ namespace WebApiCore.Controllers
     [Route("api/[controller]")]
     public abstract class BaseController : Controller
     {
-        string FromQueryOrForm(string key)
-        {
-            if (Request.Method == "POST")
-                return FromForm(key);
-            else
-                return FromQuery(key);
-        }
+        //string FromQueryOrForm(string key)
+        //{
+        //    if (Request.Method == "POST")
+        //        return FromForm(key);
+        //    else
+        //        return FromQuery(key);
+        //}
 
-        string FromQuery(string key)
-        {
-            if (Request.Query.Any())
-            {
-                var dict = Request.Query.ToDictionary(x => x.Key, x => x.Value);
-                var start = dict[key].FirstOrDefault();
-                return start;
-            }
-            return null;
-        }
+        //string FromQuery(string key)
+        //{
+        //    if (Request.Query.Any())
+        //    {
+        //        var dict = Request.Query.ToDictionary(x => x.Key, x => x.Value);
+        //        var start = dict[key].FirstOrDefault();
+        //        return start;
+        //    }
+        //    return null;
+        //}
 
-        string FromForm(string key)
-        {
-            if (Request.Form.Any())
-            {
-                var dict = Request.Form.ToDictionary(x => x.Key, x => x.Value);
-                var start = dict[key].FirstOrDefault();
-                return start;
-            }
-            return null;
-        }
+        //string FromForm(string key)
+        //{
+        //    if (Request.Form.Any())
+        //    {
+        //        var dict = Request.Form.ToDictionary(x => x.Key, x => x.Value);
+        //        var start = dict[key].FirstOrDefault();
+        //        return start;
+        //    }
+        //    return null;
+        //}
 
-        public int Getstart()
-        {
-            string val = null;
-                val = FromQueryOrForm("start");
+        //public int Getstart()
+        //{
+        //    string val = null;
+        //        val = FromQueryOrForm("start");
 
-            if (val != null)
-                return Convert.ToInt32(val);
+        //    if (val != null)
+        //        return Convert.ToInt32(val);
 
-            return 0;
-        }
-        public int GetPageSize()
-        {
-            string val = null;
-            val = FromQueryOrForm("length");
+        //    return 0;
+        //}
+        //public int GetPageSize()
+        //{
+        //    string val = null;
+        //    val = FromQueryOrForm("length");
 
-            if (val != null)
-                return Convert.ToInt32(val);
-            return 10;
-        }
-        public int GetPageNumber()
-        {
-            string val = null;
-            val = FromQueryOrForm("draw");
+        //    if (val != null)
+        //        return Convert.ToInt32(val);
+        //    return 10;
+        //}
+        //public int GetPageNumber()
+        //{
+        //    string val = null;
+        //    val = FromQueryOrForm("draw");
 
-            if (val != null)
-                return Convert.ToInt32(val);
+        //    if (val != null)
+        //        return Convert.ToInt32(val);
 
-            return 1;
-        }
+        //    return 1;
+        //}
 
-        public string GetSearchedText()
-        {
-            string val = null;
-            val = FromQueryOrForm("search[value]");
+        //public string GetSearchedText()
+        //{
+        //    string val = null;
+        //    val = FromQueryOrForm("search[value]");
 
-            if (val != null)
-                return Convert.ToString(val);
+        //    if (val != null)
+        //        return Convert.ToString(val);
 
-            return "";
-        }
-        public string GetSortColumn()
-        {
-            var sortcolumn = string.Empty;
-            var val1 = FromQueryOrForm("order[0][column]");
-            var val2 = FromQueryOrForm("columns[" + val1 + "][data]");
+        //    return "";
+        //}
+        //public string GetSortColumn()
+        //{
+        //    var sortcolumn = string.Empty;
+        //    var val1 = FromQueryOrForm("order[0][column]");
+        //    var val2 = FromQueryOrForm("columns[" + val1 + "][data]");
 
-            if (val2 != null)
-                sortcolumn =  Convert.ToString(val2);
+        //    if (val2 != null)
+        //        sortcolumn =  Convert.ToString(val2);
 
-            return sortcolumn;
-        }
+        //    return sortcolumn;
+        //}
 
-        public string GetSortOrder()
-        {
-            var sortorder = string.Empty;
-            var val = FromQueryOrForm("order[0][dir]");
+        //public string GetSortOrder()
+        //{
+        //    var sortorder = string.Empty;
+        //    var val = FromQueryOrForm("order[0][dir]");
 
-            if (val != null)
-                sortorder = Convert.ToString(val);
+        //    if (val != null)
+        //        sortorder = Convert.ToString(val);
             
-            return sortorder;
-        }
+        //    return sortorder;
+        //}
 
         public IQueryable<TEntity> OrderBy<TEntity>(IQueryable<TEntity> source, string orderByProperty,
                           bool desc)

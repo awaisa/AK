@@ -1,7 +1,5 @@
-<error-display [error]="error"></error-display>
-
-<a href="#/payable/purchase-invoice-edit/0" class="btn btn-primary">Add New Item</a>
-
-<table datatable [dtOptions]="dtOptions" class="table table-striped table-hover table-condensed">
-
-</table>
+<panel-container>
+    <error-display [error]="error"></error-display>
+    <a href="#/payable/purchase-invoice-edit/0" class="btn btn-primary">New Purchase Invoice</a>
+    <table datatable [dtOptions]="dtOptions" class="table table-hover table-sm"></table>
+</panel-container>
