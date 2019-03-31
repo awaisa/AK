@@ -1,0 +1,79 @@
+<panel-container>
+  <error-display [error]="error"></error-display>
+  <form [formGroup]="formGroup" novalidate>
+    <button-toolbar backUrl="#/financial/journal-enteries" [isTop]="true" [hideCancel]="isNew" (change)="editModeChange($event)" (save)="save()" [isEditMode]="isEditMode" ></button-toolbar>
+    <div class="form-row">
+      <div class="col-md-4">
+        <form-text [readonly]="!isEditMode"
+          label="Date"
+          placeholder="Enter Date"
+          formControlName="date">
+        </form-text>
+      </div>
+      <div class="col-md-4">
+        <form-text [readonly]="!isEditMode"
+          label="Ref No"
+          placeholder="Enter Ref No"
+          formControlName="refno">
+        </form-text>
+      </div>
+      <div class="col-md-4">
+        <form-text [readonly]="!isEditMode"
+          label="Memo"
+          placeholder="Enter Memo"
+          formControlName="memo">
+        </form-text>
+      </div>
+    </div> 
+    <div class="card">
+        <div class="card-body">
+          <div class="col-md-12">
+            <h4>
+              <button class="btn btn-primary btn-sm" (click)="addContact()" *ngIf="isEditMode">Add</button>
+            </h4>
+            <div class="separator"></div>
+          </div>
+          <div class="col-md-12" style="margin-top: 20px;" formArrayName="contacts">
+            <table class="table table-condensed table-hover table-sm">
+              <thead>
+                <th>a/c</th>
+                <th>Dr / Cr</th>
+                <th>Memo</th>
+                <th>Amount</th>
+                 <th></th>
+             </thead>
+              <tbody>
+                <tr *ngFor="let item of lineItems.controls;let counter=index" [formGroupName]="counter">
+                  <td>
+                    <form-text [readonly]="!isEditMode"
+                      placeholder="Account"
+                      formControlName="accountId">
+                    </form-text>
+                  </td>
+                  <td>
+                    <form-text [readonly]="!isEditMode"
+                      placeholder="Dr / Cr"
+                      formControlName="DrCr">
+                    </form-text>
+                  </td>
+                  <td>
+                    <form-text [readonly]="!isEditMode"
+                      placeholder="Memo"
+                      formControlName="memo">
+                    </form-text>
+                  </td>
+                  <td>
+                    <form-text [readonly]="!isEditMode" placeholder="Amount" formControlName="amount"]></form-text>
+                  </td>
+                  <td>
+                    <button (click)="deleteItem(counter)" class="btn btn-primary btn-sm" *ngIf="isEditMode">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+    <button-toolbar backUrl="#/financial/journal-enteries" [isTop]="false" [hideCancel]="isNew" (change)="editModeChange($event)" (save)="save()" [isEditMode]="isEditMode"></button-toolbar>
+  </form>
+</panel-container>

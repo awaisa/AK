@@ -45,5 +45,4 @@ namespace WebApiCore.Models.FinancialJournal
         public decimal? Amount { get; set; }
         public string Memo { get; set; }
     }
-
 }

@@ -40,6 +40,8 @@ export class AppConfiguration {
         isAuthenticated: 'api/isAuthenticated',
         reloadData: 'api/reloadData',
         financialAccount: 'api/FinancialAccount',
+        journalEntries: 'api/FinancialJournal',
+        journalEntrySave: 'api/FinancialJournal/save',
         url: (name,parm1?,parm2?,parm3?) => {
           let url = this.urls.baseUrl + this.urls[name];
           if (parm1)

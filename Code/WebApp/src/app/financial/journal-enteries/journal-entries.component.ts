@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ValidationErrorService } from '../shared/validation-error.service';
-import { AppConfiguration } from '../business/appConfiguration';
-import { UserInfo } from '../business/userInfo';
-import { TitleService } from '../shared/title.service';
+import { ValidationErrorService } from '../../shared/validation-error.service';
+import { AppConfiguration } from '../../business/appConfiguration';
+import { UserInfo } from '../../business/userInfo';
+import { TitleService } from '../../shared/title.service';
 import { BreadcrumbsService } from 'ng2-breadcrumbs';
 import { HttpClient } from '@angular/common/http';
-import { Item, DataTablesResponse } from '../entities';
+import { Item, DataTablesResponse } from '../../entities';
 
 @Component({
   templateUrl: './journal-entries.component.html'

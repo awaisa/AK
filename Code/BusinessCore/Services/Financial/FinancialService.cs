@@ -191,95 +191,66 @@ namespace BusinessCore.Services.Financial
                         select je;
             return query;
         }
+        public JournalEntryHeader GetJournalEntryById(int id)
+        {
+            var journalEntryRepo = _journalEntryRepo.Table
+                .Include(p => p.Party)
+                .Include(p => p.Party.Contacts)
+                .Include(p => p.JournalEntryLines)
+                .Where(c => c.Id == id).FirstOrDefault();
 
+            return journalEntryRepo;
+        }
         public JournalEntryHeader SaveJournalEntry(JournalEntryHeader journalEntry)
         {
             var dbObject = GetJournalEntry(journalEntry.Id);
-            //#region UPDATE
-            //if (dbObject != null)
-            //{
-            //    dbObject.No = customer.No;
-            //    dbObject.TaxGroupId = customer.TaxGroupId;
-            //    dbObject.PaymentTermId = customer.PaymentTermId;
-            //    dbObject.TaxGroupId = customer.TaxGroupId;
+            #region UPDATE
+            if (dbObject != null)
+            {
+                dbObject.Date = journalEntry.Date;
+                dbObject.Memo = journalEntry.Memo;
+                dbObject.ReferenceNo = journalEntry.ReferenceNo;
+                dbObject.IsActive = journalEntry.IsActive;
+                
+                var toUpdateIds = dbObject.JournalEntryLines.Select(c => c.Id).ToList();
+                foreach (var lineItem in journalEntry.JournalEntryLines)
+                {
+                    var existingLineItem = dbObject.JournalEntryLines.FirstOrDefault(c => c.Id == lineItem.Id);
+                    if (existingLineItem != null)
+                    {
+                        existingLineItem.AccountId = lineItem.AccountId;
+                        existingLineItem.DrCr = lineItem.DrCr;
+                        existingLineItem.Memo = lineItem.Memo;
+                        existingLineItem.Amount = lineItem.Amount;
+                        existingLineItem.IsActive = lineItem.IsActive;
+                        toUpdateIds.Remove(existingLineItem.Id);
+                    }
+                    else
+                    {
+                        dbObject.JournalEntryLines.Add(new JournalEntryLine()
+                        {
+                            AccountId = lineItem.AccountId,
+                            DrCr = lineItem.DrCr,
+                            Memo = lineItem.Memo,
+                            Amount = lineItem.Amount,
+                        });
+                    }
+                }
+                foreach (var contact in dbObject.Party.Contacts.Where(c => toUpdateIds.Contains(c.Id)))
+                {
+                    contact.Deleted = true;
+                }
 
-            //    dbObject.AccountsReceivableAccountId = customer.AccountsReceivableAccountId;
-            //    dbObject.SalesAccountId = customer.SalesAccountId;
-            //    dbObject.SalesDiscountAccountId = customer.SalesDiscountAccountId;
-            //    dbObject.PromptPaymentDiscountAccountId = customer.PromptPaymentDiscountAccountId;
-            //    dbObject.CustomerAdvancesAccountId = customer.CustomerAdvancesAccountId;
-
-            //    dbObject.IsActive = customer.IsActive;
-
-            //    dbObject.Party.Address = customer.Party.Address;
-            //    dbObject.Party.Email = customer.Party.Email;
-            //    dbObject.Party.Name = customer.Party.Name;
-            //    dbObject.Party.Phone = customer.Party.Phone;
-            //    dbObject.Party.Fax = customer.Party.Fax;
-            //    dbObject.Party.IsActive = customer.Party.IsActive;
-
-            //    var contactsToUpdateIds = dbObject.Party.Contacts.Select(c => c.Id).ToList();
-            //    foreach (var contact in customer.Party.Contacts)
-            //    {
-            //        var existingContact = dbObject.Party.Contacts.FirstOrDefault(c => c.Id == contact.Id);
-            //        if (existingContact != null)
-            //        {
-            //            existingContact.FirstName = contact.FirstName;
-            //            existingContact.LastName = contact.LastName;
-            //            existingContact.MiddleName = contact.MiddleName;
-            //            existingContact.IsPrimary = contact.IsPrimary;
-            //            existingContact.IsActive = contact.IsActive;
-
-            //            contactsToUpdateIds.Remove(existingContact.Id);
-            //        }
-            //        else
-            //        {
-            //            dbObject.Party.Contacts.Add(new Contact()
-            //            {
-            //                ContactType = ContactTypes.Customer,
-            //                Party = dbObject.Party,
-            //                FirstName = contact.FirstName,
-            //                LastName = contact.LastName,
-            //                MiddleName = contact.MiddleName,
-            //                IsPrimary = contact.IsPrimary
-            //            });
-            //        }
-            //    }
-            //    foreach (var contact in dbObject.Party.Contacts.Where(c => contactsToUpdateIds.Contains(c.Id)))
-            //    {
-            //        contact.Deleted = true;
-            //    }
-
-            //    _customerRepo.Update(dbObject);
-            //    customer = dbObject;
-            //}
-            //#endregion
-            //#region INSERT
-            //else
-            //{
-            //    customer.No = GetNextNumber(SequenceNumberTypes.Customer).ToString();
-
-            //    var accountAR = _accountRepo.Table.Where(e => e.AccountCode == AccountCodes.AccountsReceivable_10120).FirstOrDefault();
-            //    var accountSales = _accountRepo.Table.Where(e => e.AccountCode == AccountCodes.Sales_40100).FirstOrDefault();
-            //    var accountAdvances = _accountRepo.Table.Where(e => e.AccountCode == AccountCodes.CutomerAdvances_20120).FirstOrDefault();
-            //    var accountSalesDiscount = _accountRepo.Table.Where(e => e.AccountCode == AccountCodes.SalesDiscount_40400).FirstOrDefault();
-
-            //    customer.AccountsReceivableAccountId = accountAR != null ? (int?)accountAR.Id : null;
-            //    customer.SalesAccountId = accountSales != null ? (int?)accountSales.Id : null;
-            //    customer.CustomerAdvancesAccountId = accountAdvances != null ? (int?)accountAdvances.Id : null;
-            //    customer.SalesDiscountAccountId = accountSalesDiscount != null ? (int?)accountSalesDiscount.Id : null;
-            //    customer.TaxGroupId = _taxGroupRepo.Table.Where(tg => tg.Description == "VAT").FirstOrDefault().Id;
-
-            //    customer.Party.PartyType = PartyTypes.Customer;
-            //    foreach (var contact in customer.Party.Contacts)
-            //    {
-            //        contact.Party = customer.Party;
-            //        contact.ContactType = ContactTypes.Customer;
-            //    }
-
-            //    _customerRepo.Insert(customer);
-            //}
-            //#endregion
+                _journalEntryRepo.Update(dbObject);
+                journalEntry = dbObject;
+            }
+            #endregion
+            #region INSERT
+            else
+            {
+                _journalEntryRepo.Insert(journalEntry);
+            }
+            #endregion
             return journalEntry;
         }
 

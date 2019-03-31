@@ -23,7 +23,7 @@ namespace WebApiCore.Controllers
             _log = log;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Produces(typeof(SearchModel))]
         public IActionResult Journal([FromBody]SearchRequest request)
         {
@@ -66,8 +66,21 @@ namespace WebApiCore.Controllers
             return Ok(model);
         }
 
+        [HttpGet("{id:int}")]
+        [Produces(typeof(JournalModel))]
+        public IActionResult Journal(int? id)
+        {
+            var o = _service.GetJournalEntryById(id ?? 0);
+            if (o == null)
+            {
+                return NotFound();
+            }
+            var model = o.ToModel();
+            return Ok(model);
+        }
 
-        [HttpPost]
+
+        [HttpPost("Save")]
         [ValidateModel]
         [Produces(typeof(JournalModel))]
         public IActionResult SaveJournal([FromBody] JournalModel model)
@@ -75,9 +88,9 @@ namespace WebApiCore.Controllers
             //server side validations add in ModelState .AddModelError([field], [message])
             if (ModelState.IsValid)
             {
-                ///var obj = model.ToEntity();
-                //_service.SaveCustomer(obj);
-                //model = obj.ToModel();
+                var obj = model.ToEntity();
+                _service.SaveJournalEntry(obj);
+                model = obj.ToModel();
                 return Ok(model);
             }
             return new BadRequestObjectResult(ModelState);

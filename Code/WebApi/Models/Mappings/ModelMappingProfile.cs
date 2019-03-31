@@ -103,6 +103,11 @@ namespace WebApiCore.Models.Mappings
             CreateMap<Account, Financial.SearchRowModel>()
                 .ForPath(x => x.AccountClass, opt => opt.MapFrom(mf=> mf.AccountClass.Name ));
 
+            CreateMap<JournalEntryHeader, FinancialJournal.JournalModel>();
+            CreateMap<FinancialJournal.JournalModel, JournalEntryHeader>();
+
+            CreateMap<FinancialJournal.JournalLineModel, JournalEntryLine>();
+            CreateMap<JournalEntryLine, FinancialJournal.JournalLineModel>();
         }
     }
 }

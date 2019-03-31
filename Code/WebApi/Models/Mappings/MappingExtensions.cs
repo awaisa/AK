@@ -222,7 +222,14 @@ namespace WebApiCore.Models.Mappings
         {
             return entity.MapTo<JournalEntryHeader, FinancialJournal.SearchRowModel>();
         }
-
+        public static FinancialJournal.JournalModel ToModel(this JournalEntryHeader entity)
+        {
+            return entity.MapTo<JournalEntryHeader, FinancialJournal.JournalModel>();
+        }
+        public static JournalEntryHeader ToEntity(this FinancialJournal.JournalModel model)
+        {
+            return model.MapTo<FinancialJournal.JournalModel, JournalEntryHeader>();
+        }
         #endregion
 
         #region References

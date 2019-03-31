@@ -15,6 +15,7 @@ namespace BusinessCore.Services.Financial
         GeneralLedgerHeader CreateGeneralLedgerHeader(DocumentTypes documentType, DateTime Date, string description);
         IQueryable<Account> GetAccounts();
         IQueryable<JournalEntryHeader> GetJournalEntries();
+        JournalEntryHeader GetJournalEntryById(int id);
         JournalEntryHeader SaveJournalEntry(JournalEntryHeader journalEntry);
 
         //void AddJournalEntry(JournalEntryHeader journalEntry);
