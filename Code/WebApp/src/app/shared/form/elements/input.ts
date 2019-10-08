@@ -10,7 +10,7 @@ import {ElementBase, animations} from '../';
       'has-danger': shouldShowErrors() == false,
       'has-success': shouldShowErrors() == true
     }">
-      <label *ngIf="label" [attr.for]="identifier" class="col-form-label-sm">{{label}}:</label>
+      <label *ngIf="label" [attr.for]="identifier" class="col-form-label-sm font-weight-bold" style="margin-bottom:0px;">{{label}}:</label>
       <input *ngIf="!isreadonly"
         class="form-control form-control-sm"
         [ngClass]="{'is-invalid': (shouldShowErrors()) }"

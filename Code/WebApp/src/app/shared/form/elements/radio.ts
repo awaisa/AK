@@ -7,7 +7,7 @@ import {ElementBase, animations} from '../';
   selector: 'form-radio',
   template: `
 
-      <label *ngIf="label" [attr.for]="identifier" class="col-form-label-sm">{{label}}:</label>
+      <label *ngIf="label" [attr.for]="identifier" class="col-form-label-sm font-weight-bold" style="margin-bottom:0px;">{{label}}:</label>
       <div *ngIf="!isreadonly" class="custom-control custom-radio">
         <input
           type="radio" 
