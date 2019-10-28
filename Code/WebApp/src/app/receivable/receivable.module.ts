@@ -17,6 +17,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { InventoryService } from '../inventory/inventory.service';
 import { ReceivableService } from './receivable.service';
+import { SaleInvoiceComponent } from './sale-invoice.component';
 
 @NgModule({
   imports: [
@@ -26,7 +27,7 @@ import { ReceivableService } from './receivable.service';
   ],
   declarations: [QuotationsComponent, OrdersComponent, 
                   ReceiptsComponent, InvoicesComponent, 
-                  CustomersComponent,EditCustomerComponent],
+                  CustomersComponent,EditCustomerComponent,SaleInvoiceComponent],
   providers:[InventoryService, ReceivableService]
 })
 export class ReceivableModule { }

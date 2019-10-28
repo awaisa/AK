@@ -7,6 +7,7 @@ import { ReceiptsComponent } from './receipts.component';
 import { InvoicesComponent } from './invoices.component';
 import { CustomersComponent } from './customers.component';
 import { EditCustomerComponent } from './edit-customer/edit-customer.component';
+import { SaleInvoiceComponent } from './sale-invoice.component';
 
 //const routes: Routes = ;
 
@@ -17,6 +18,7 @@ import { EditCustomerComponent } from './edit-customer/edit-customer.component';
         { path: 'orders', component: OrdersComponent },
         { path: 'receipts', component: ReceiptsComponent },
         { path: 'invoices', component: InvoicesComponent },
+        { path: 'sale-invoice', component: SaleInvoiceComponent },
         { path: 'customers', component: CustomersComponent },
         { path: 'customers/:id', component: EditCustomerComponent }
     ])],

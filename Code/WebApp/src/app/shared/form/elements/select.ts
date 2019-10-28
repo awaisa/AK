@@ -1,7 +1,8 @@
 import {Component, Optional, Inject, Input, ViewChild, ContentChild, AfterContentInit,
-  ElementRef, ContentChildren, QueryList } from '@angular/core';
+  ElementRef, ContentChildren, QueryList,Output,EventEmitter } from '@angular/core';
 import {NgModel, NG_VALUE_ACCESSOR, ControlContainer, } from '@angular/forms';
 import {ElementBase, animations} from '../';
+
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -40,6 +41,7 @@ export class FormSelectComponent extends ElementBase<string> {
   @Input() items: any[] = [];
   @Input() bindLabel: string;
   @Input() bindValue: string;
+  @Input() bindOnChange: string;
 
   @ViewChild(NgModel) model: NgModel;
 
