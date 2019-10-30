@@ -1,117 +1,97 @@
-
- <form [formGroup]="saleForm" novalidate>
+<form [formGroup]="saleForm" novalidate>
     <panel-container>
         <error-display [error]="error"></error-display>
-   
-        <!-- <button-toolbar backUrl="#/inventory/items" [isTop]="true" [hideCancel]="isNew" (change)="editModeChange($event)" (save)="save()" [isEditMode]="isEditMode" ></button-toolbar> -->
+
+        <button-toolbar backUrl="#/receivable/invoices" [isTop]="true" [hideCancel]="isNew"
+            (change)="editModeChange($event)" (save)="save()" [isEditMode]="isEditMode"></button-toolbar>
 
         <div class="form-row">
             <div class="col-md-6">
-                <form-text [readonly]="!isEditMode"
-                label="No"
-                formControlName="no"></form-text>
+                <form-text [readonly]="!isEditMode" label="No" formControlName="no"></form-text>
             </div>
             <div class="col-md-6">
-                <form-text [readonly]="!isEditMode"
-                label="Date"
-                formControlName="date"></form-text>
+                <form-text [readonly]="!isEditMode" label="Date" formControlName="date"></form-text>
             </div>
         </div>
         <div class="form-row">
-           <div class="col-md-6">
-               <form-text [readonly]="!isEditMode"
-               label="Description"
-               placeholder="Enter the desciption"
-               formControlName="description"></form-text>
-           </div>
+            <div class="col-md-6">
+                <form-text [readonly]="!isEditMode" label="Description" placeholder="Enter the desciption"
+                    formControlName="description"></form-text>
+            </div>
 
-           <div class="col-md-6">
-                <form-select [readonly]="!isEditMode"
-                    label = "Customer"
-                    placeholder = "Select Customer"
-                    formControlName = "customerId"
-                    [items] = "customers"
-                    bindLabel = "party.name"
-                    bindValue = "id"
-                    >
+            <div class="col-md-6">
+                <form-select [readonly]="!isEditMode" label="Customer" placeholder="Select Customer"
+                    formControlName="customerId" [items]="customers" bindLabel="party.name" bindValue="id">
                 </form-select>
             </div>
 
         </div>
-    
-    </panel-container>
-    <panel-container>
-        <div class="row">
-            <div class="col-md-7">
-                <div class="row">
-                    <div class="col-md-5">
-                        <form-select [readonly]="!isEditMode"
-                            label = "Item"
-                            placeholder = "Select item"
-                            formControlName = "itemId"
-                            [items] = "items"
-                            bindLabel = "description"
-                            bindValue = "id"
-                            (change)="itemOnChange($event)">
-                        </form-select>
-                    </div>
-                    <div class="col-md-3">
-                
-                        <form-text [readonly]="true"
-                        label="Price"
-                        placeholder=""
-                        formControlName="unitPrice"></form-text>
-        
-                    </div>
-                    <div class="col-md-3">
-                
-                        <form-text [readonly]="true"
-                        label="Tax Amount"
-                        placeholder=""
-                        formControlName="itemTaxAmount"></form-text>
 
-                    </div>
-          
-                </div>
+
+
+        <div class="card">
+            <div class="card-body">
                 <div class="row">
+                    <div class="col-md-7">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <form-select [readonly]="!isEditMode" label="Item" placeholder="Select item"
+                                    formControlName="itemId" [items]="items" bindLabel="description" bindValue="id"
+                                    (change)="itemOnChange($event)">
+                                </form-select>
+                            </div>
+                            <div class="col-md-3">
+
+                                <form-text [readonly]="true" label="Price" placeholder="" formControlName="unitPrice">
+                                </form-text>
+
+                            </div>
+                            <div class="col-md-3">
+
+                                <form-text [readonly]="true" label="Tax Amount" placeholder=""
+                                    formControlName="itemTaxAmount"></form-text>
+
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <form-text [readonly]="!isEditMode" label="Quantity" placeholder=""
+                                    formControlName="quantity" (keyup)="updateSum();" (keypress)="isNumber()">
+                                </form-text>
+                            </div>
+                            <!-- <div class="col-md-3">
+                            <form-text [readonly]="!isEditMode"
+                            label="Discount %"
+                            placeholder=""
+                            formControlName="itemDiscount"></form-text>
+                        
+                        </div> -->
+                            <div class="col-md-3">
+                                <form-text [readonly]="true" label="Total Amount" placeholder=""
+                                    formControlName="itemTotal"></form-text>
+
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-sm btn-primary" type="button" (click)="addLineItem()"
+                                    [disabled]="isAddItem">
+                                    <i class="fa fa-plus"></i>
+                                    Add
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-5">
-                        <form-text [readonly]="!isEditMode"
-                        label="Quantity"
-                        placeholder=""
-                        formControlName="quantity" (keyup)="updateSum();" (keypress)="isNumber()"></form-text>
-                    </div>
-                    <!-- <div class="col-md-3">
-                        <form-text [readonly]="!isEditMode"
-                        label="Discount %"
-                        placeholder=""
-                        formControlName="itemDiscount"></form-text>
-                    
-                    </div> -->
-                    <div class="col-md-3">
-                        <form-text [readonly]="true"
-                        label="Total Amount"
-                        placeholder=""
-                        formControlName="itemTotal"></form-text>
-                    
-                    </div>
-                    <div class="col-md-3">
-                       <button class="btn btn-sm btn-primary" type="button" (click)="addLineItem()">
-                           <i class="fa fa-plus"></i>
-                           Add
-                       </button>
-                   
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                    <table class="table-striped table-bordered" align="right">
+                        <table class="table-striped table-bordered" align="right">
                             <tbody>
                                 <tr>
                                     <td>
                                         Sub-Total:
                                     </td>
                                     <td>
-                                        <input class="form-control" type="text" formControlName="subTotal" disabled name="SubTotal">
+                                        <input class="form-control" type="text" formControlName="subTotal" disabled
+                                            name="SubTotal">
                                     </td>
                                 </tr>
                                 <tr>
@@ -119,8 +99,8 @@
                                         Tax:
                                     </td>
                                     <td>
-                                            <input class="form-control" type="text" disabled formControlName="taxAmount" disabled name="tax"
-                                            /> 
+                                        <input class="form-control" type="text" disabled formControlName="taxAmount"
+                                            disabled name="tax" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -128,7 +108,8 @@
                                         Discount:
                                     </td>
                                     <td>
-                                        <input class="form-control" type="text" formControlName="discountAmount" name="Discount"  (keyup)="updateSubTotal()" (keypress)="isNumber()"/>
+                                        <input class="form-control" type="text" formControlName="discountAmount"
+                                            name="Discount" (keyup)="updateSubTotal()" (keypress)="isNumber()" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -136,57 +117,61 @@
                                         Total:
                                     </td>
                                     <td>
-                                        <input class="form-control" type="text" formControlName="total" disabled name="grandtotal">
+                                        <input class="form-control" type="text" formControlName="total" disabled
+                                            name="grandtotal">
                                     </td>
-                                    </tr>
+                                </tr>
                             </tbody>
-                           
+
                         </table>
+                    </div>
+                </div>
+
             </div>
         </div>
-       
 
-       
-
-    </panel-container>
-    <panel-container>
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table table-hour">
-                    <thead>
-                        <tr>
-                            <th>Sr #</th>
-                            <th>Item</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Discount%</th>
-                            <th>Sale Tax</th>
-                            <th>Total</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let lineItem of saleInvoice.lineItems; let i = index">
-                            <td>{{i}}</td>
-                            <td>{{lineItem.description}}</td>
-                            <td>{{lineItem.quantity}}</td>
-                            <td>{{lineItem.unitPrice}}</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>{{lineItem.total}}</td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-info" (click)="editLineItem(lineItem.itemId)">
-                                    <i class="fa fa-pencil"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-danger m-l-2" (click)="deleteLineItem(lineItem.itemId)">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-hour">
+                            <thead>
+                                <tr>
+                                    <th>Sr #</th>
+                                    <th>Item</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Discount%</th>
+                                    <th>Sale Tax</th>
+                                    <th>Total</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let lineItem of saleInvoice.invoiceItems; let i = index">
+                                    <td>{{i}}</td>
+                                    <td>{{lineItem.description}}</td>
+                                    <td>{{lineItem.quantity}}</td>
+                                    <td>{{lineItem.unitPrice}}</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>{{lineItem.total}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-info"
+                                            (click)="editLineItem(lineItem.itemId)">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger"
+                                            (click)="deleteLineItem(lineItem.itemId)">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </panel-container>
-
 </form>

@@ -32,6 +32,8 @@ export class AppConfiguration {
 
         customers: 'api/Customer',
         customersave: 'api/Customer/save',
+
+        saleInvoice: 'api/Sale/Invoice/Save',
         invoices: 'api/Sale/Invoice',
         purchaseInvoices: 'api/Purchase',
         vendors: 'api/Vendor',

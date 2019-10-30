@@ -15,5 +15,5 @@ export class SaleInvoice{
     total: number = 0;
     shippingHandlingCharge: number = 0;
     status: number = 0;
-    lineItems: InvoiceLineItem[] = new Array();
+    invoiceItems: InvoiceLineItem[] = new Array();
 }

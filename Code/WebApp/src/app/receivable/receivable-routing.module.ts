@@ -18,7 +18,7 @@ import { SaleInvoiceComponent } from './sale-invoice.component';
         { path: 'orders', component: OrdersComponent },
         { path: 'receipts', component: ReceiptsComponent },
         { path: 'invoices', component: InvoicesComponent },
-        { path: 'sale-invoice', component: SaleInvoiceComponent },
+        { path: 'sale-invoice/:id', component: SaleInvoiceComponent },
         { path: 'customers', component: CustomersComponent },
         { path: 'customers/:id', component: EditCustomerComponent }
     ])],
