@@ -5,7 +5,8 @@ import {AppConfiguration} from "../business/appConfiguration";
 import { HttpClient } from "@angular/common/http";
 import { ValidationErrorService } from "../shared/validation-error.service";
 import { Observable } from "rxjs";
-import { Brand, Catagory, Model, TaxGroup, Measurement, Account, Vendor, PaymentTerm } from '../entities';
+import { Brand, Catagory, Model, TaxGroup, Measurement, Account, Vendor, PaymentTerm, Customer } from '../entities';
+
 
 @Injectable()
 export class RefService {
@@ -19,6 +20,7 @@ export class RefService {
     accountList:Account[]=[];
     vendorList:Vendor[]=[];
     paymentTermList:PaymentTerm[]=[];
+    customerList:Customer[]=[];
 
     constructor(private httpClient: HttpClient,
         private config: AppConfiguration) {
@@ -161,5 +163,18 @@ export class RefService {
             })
             .catch(new ValidationErrorService().parseObservableResponseError);
 
+    }
+    getCustomers(force: boolean = false): Observable<Customer[]>{
+         // use locally cached version
+         if (force !== true && (this.customerList && this.customerList.length > 0))
+         return Observable.of(this.customerList) as Observable<Customer[]>;
+
+     return this.httpClient.get(this.config.urls.url("getCustomers"))
+         .map(response => {
+             this.customerList = response.json();
+
+             return this.customerList;
+         })
+         .catch(new ValidationErrorService().parseObservableResponseError);
     }
 }

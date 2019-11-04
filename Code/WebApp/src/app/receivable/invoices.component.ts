@@ -55,13 +55,13 @@ export class InvoicesComponent implements OnInit{
           data: 'customerName'
         }, {
           title:'Date',
-          data:'Date'
+          data:'date'
         },{
           title:'Total',
           data:'total'
         }, { data: null, orderable: false, render: 
             (data: any, type: any, row: any, meta: any) => {
-                var a = `<a href="#/receivable/invoice/${data.id}">View</a>`;
+                var a = `<a href="#/receivable/sale-invoice/${data.id}">View</a>`;
                 return a;
             } 
         }]

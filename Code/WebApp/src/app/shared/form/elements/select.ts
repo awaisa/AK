@@ -3,6 +3,7 @@ import {Component, Optional, Inject, Input, ViewChild, ContentChild, AfterConten
 import {NgModel, NG_VALUE_ACCESSOR, ControlContainer, } from '@angular/forms';
 import {ElementBase, animations} from '../';
 
+
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'form-select',
@@ -11,7 +12,7 @@ import {ElementBase, animations} from '../';
       'has-danger': shouldShowErrors() == false,
       'has-success': shouldShowErrors() == true
     }">
-      <label *ngIf="label" [attr.for]="identifier" class="col-form-label-sm">{{label}}:</label>
+      <label *ngIf="label" [attr.for]="identifier" class="col-form-label-sm font-weight-bold" style="margin-bottom:0px;">{{label}}:</label>
       <ng-select *ngIf="!isreadonly" [items]="items"
         bindLabel="name"
         [placeholder]="placeholder"
@@ -44,6 +45,7 @@ export class FormSelectComponent extends ElementBase<string> {
   @Input() items: any[] = [];
   @Input() bindLabel: string;
   @Input() bindValue: string;
+  @Input() bindOnChange: string;
   
   @ViewChild(NgModel, {static: false}) model: NgModel;
 

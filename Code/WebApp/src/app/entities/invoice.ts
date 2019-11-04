@@ -20,13 +20,17 @@ export class Invoice {
 
 @Injectable()
 export class InvoiceLineItem {
-    id: number  =null;
-    itemId: number = null;
-    taxGroupId:number=null;
-    quantity: number = null;
-    unitPrice: number = null;
-    total: number = null;
-    taxAmount: number = null;
+    id: number  = 0;
+    itemId: number = 0;
+    description: string = "";
+    measurementId?: number = null;  
+    taxGroupId:number = 0;
+    quantity: number = 0;
+    amount: number = 0;
+    unitPrice: number = 0;
+    total: number = 0;
+    taxAmount: number = 0;
     taxes: Tax[]=new Array();
     taxGroupTaxes:TaxGroupTax[]=new Array();
+    
 }

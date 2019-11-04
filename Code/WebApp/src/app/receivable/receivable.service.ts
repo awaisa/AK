@@ -4,6 +4,7 @@ import { HttpClientService } from "../business/http-client.service";
 import { ValidationErrorService } from "../shared/validation-error.service";
 import { Observable } from "rxjs";
 import { Customer, TaxGroup, Account } from '../entities';
+import { SaleInvoice } from '../entities/saleInvoice';
 
 @Injectable()
 export class ReceivableService {
@@ -25,6 +26,23 @@ export class ReceivableService {
         return this.httpClient.post(this.config.urls.url("customersave"), customer, null)
         .map(response => {
             return response;
+        })
+        .catch(new ValidationErrorService().parseObservableResponseError);
+    }
+
+    getInvoice(id): Observable<SaleInvoice> {
+        return this.httpClient.get(this.config.urls.url("invoices", id))
+            .map(response => {
+                var result = <SaleInvoice>response.json();
+                return result;
+            })
+            .catch(new ValidationErrorService().parseObservableResponseError);
+    }
+
+    saveSaleInvoice(saleInvoice): Observable<any> {
+        return this.httpClient.post(this.config.urls.url("saleInvoice"), saleInvoice, null)
+        .map(response => {
+            return response.json();
         })
         .catch(new ValidationErrorService().parseObservableResponseError);
     }

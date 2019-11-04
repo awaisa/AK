@@ -8,10 +8,10 @@ import {Component, Optional, Inject, Input, ViewChild, ContentChild, AfterConten
     selector: 'button-toolbar',
     template: `
         <hr *ngIf="!isTop" />
-        <button (click)="modeChanged()" *ngIf="!isEditMode" type="button" class="btn btn-primary btn-sm">Edit</button>
-        <button (click)="modeChanged()" *ngIf="isEditMode && !hideCancel" type="button" class="btn btn-light btn-sm">Cancel</button>
-        <button (click)="onSave(isTop)" *ngIf="isEditMode" type="button" class="btn btn-primary btn-sm">Save</button>
-        <a href={{backUrl}} class="btn btn-secondary btn-sm">Back</a>
+        <button (click)="modeChanged()" *ngIf="!isEditMode" type="button" class="btn btn-primary btn-sm" style="margin-left:5px;margin-right:5px;">Edit</button>
+        <button (click)="modeChanged()" *ngIf="isEditMode && !hideCancel" type="button" class="btn btn-light btn-sm" style="margin-left:5px;margin-right:5px;">Cancel</button>
+        <button (click)="onSave(isTop)" *ngIf="isEditMode" type="button" class="btn btn-primary btn-sm" style="margin-left:5px;margin-right:5px;">Save</button>
+        <a href={{backUrl}} class="btn btn-secondary btn-sm" style="margin-left:5px;margin-right:5px;">Back</a>
         <hr *ngIf="isTop" />
     `,
     animations,
@@ -46,4 +46,3 @@ import {Component, Optional, Inject, Input, ViewChild, ContentChild, AfterConten
         this.save.emit();
     }
   }
-  

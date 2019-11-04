@@ -8,6 +8,8 @@ using BusinessCore.Services.Financial;
 using WebApiCore.Models.Common;
 using BusinessCore.Services.Purchasing;
 using WebApiCore.Models.Vendor;
+using WebApiCore.Models.Customer;
+using BusinessCore.Services.Sales;
 
 namespace WebApiCore.Controllers
 {
@@ -18,15 +20,17 @@ namespace WebApiCore.Controllers
         private IInventoryService _service;
         private IFinancialService _financialService;
         private IPurchasingService _purchasingService;
+        private ISalesService _saleService;
 
         public ReferenceController(
-            IInventoryService service, IFinancialService financialService,IPurchasingService purchasingService,
+            IInventoryService service, IFinancialService financialService,IPurchasingService purchasingService,ISalesService salesService,
             ILogger<ReferenceController> log)
         {
             _service = service;
             _financialService = financialService;
             _purchasingService = purchasingService;
             _log = log;
+            _saleService = salesService;
         }
 
         [HttpGet("GetCatagory")]
@@ -113,12 +117,21 @@ namespace WebApiCore.Controllers
             var taxgrouptax = _purchasingService.GetTaxGroupTax();
             return Ok(taxgrouptax);
         }
+
         [HttpGet("GetPaymentTerms")]
         [Produces(typeof(PaymentTermModel))]
         public IActionResult GetPaymentTerms()
         {
             var items = _purchasingService.GetPaymentTerms().Select(c => c.ToModel());
             return Ok(items);
+        }
+
+        [HttpGet("GetCustomers")]
+        [Produces(typeof(CustomerModel))]
+        public IActionResult GetCustomers()
+        {
+            var customers = _saleService.GetCustomers().Select(c => c.ToModel()).ToList();
+            return Ok(customers);
         }
     }
 }
