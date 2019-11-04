@@ -8,10 +8,10 @@ const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
     { path: 'login', component: LoginComponent },
-    { path: 'payable', loadChildren: 'app/payable/payable.module#PayableModule' },
-    { path: 'inventory', loadChildren: 'app/inventory/inventory.module#InventoryModule' },
-    { path: 'receivable', loadChildren: 'app/receivable/receivable.module#ReceivableModule' },
-    { path: 'financial', loadChildren: 'app/financial/financial.module#FinancialModule' },
+    { path: 'payable', loadChildren: () => import('app/payable/payable.module').then(m => m.PayableModule) },
+    { path: 'inventory', loadChildren: () => import('app/inventory/inventory.module').then(m => m.InventoryModule) },
+    { path: 'receivable', loadChildren: () => import('app/receivable/receivable.module').then(m => m.ReceivableModule) },
+    { path: 'financial', loadChildren: () => import('app/financial/financial.module').then(m => m.FinancialModule) },
 ];
 
 @NgModule({

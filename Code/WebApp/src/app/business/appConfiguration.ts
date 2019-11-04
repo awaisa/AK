@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 
-import {RequestOptions} from '@angular/http';
+//import {RequestOptions} from '@angular/common/http';
 declare var toastr: any;
 declare var location: any;
 
@@ -81,6 +81,6 @@ export class AppConfiguration {
    * Http Request options to for requests
    * @type {RequestOptions}
    */
-  requestOptions =  new RequestOptions({  withCredentials: true });
+  //requestOptions =  new RequestOptions({  withCredentials: true });
 }
 

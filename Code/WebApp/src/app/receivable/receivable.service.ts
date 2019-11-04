@@ -15,7 +15,7 @@ export class ReceivableService {
     getCustomer(id): Observable<Customer> {
         return this.httpClient.get(this.config.urls.url("customers", id))
             .map(response => {
-                var result = <Customer>response.json();
+                var result = response;
                 return result;
             })
             .catch(new ValidationErrorService().parseObservableResponseError);
@@ -24,7 +24,7 @@ export class ReceivableService {
     saveCustomer(customer): Observable<any> {
         return this.httpClient.post(this.config.urls.url("customersave"), customer, null)
         .map(response => {
-            return response.json();
+            return response;
         })
         .catch(new ValidationErrorService().parseObservableResponseError);
     }

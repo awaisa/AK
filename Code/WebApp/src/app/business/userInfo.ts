@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import {Http, Headers, Response, RequestOptions} from "@angular/http";
+import { HttpClient } from "@angular/common/http";
 import {AppConfiguration} from "./appConfiguration";
 import {Observable} from "rxjs";
 import { ValidationErrorService } from "../shared/validation-error.service";
+import { User } from '../entities/user';
 
 @Injectable()
 export class UserInfo {
@@ -39,7 +40,7 @@ export class UserInfo {
   get token() {
     return this._currentUser.token;
   };
-  constructor(private http: Http,
+  constructor(private http: HttpClient,
               private config: AppConfiguration) {
     // initialize isAuthenticate from localstorage
     var isAuthenticated = localStorage.getItem("av_isAuthenticated");
@@ -49,10 +50,10 @@ export class UserInfo {
 
 
   login(username, password) {
-    return this.http.post(this.config.urls.url("login"), { username: username, password: password })
-      .map((response: Response) => {
+    return this.http.post<User>(this.config.urls.url("login"), { username: username, password: password })
+      .map((user) => {
           // login successful if there's a jwt token in the response
-        let user = response.json();
+        //let user = response.json();
           if (user && user.token) {
               // store user details and jwt token in local storage to keep user logged in between page refreshes
               localStorage.setItem('currentUser', JSON.stringify(user));
@@ -82,12 +83,10 @@ export class UserInfo {
   checkAuthentication() {
     var url = this.config.urls.url("isAuthenticated");
     console.log(url);
-    return this.http.get(url,
-                         new RequestOptions({withCredentials: true}))
+    return this.http.get<boolean>(url)
       .map( (response) => {
-        let result = response.json();
-        this.isAuthenticated = result;
-        return result;
+        this.isAuthenticated = response;
+        return this.isAuthenticated;
       })
       .catch( (response) => {
         this.isAuthenticated = false;

@@ -1,7 +1,8 @@
 ﻿import { Injectable } from '@angular/core';
 import { Item } from "../entities/item";
 import {AppConfiguration} from "../business/appConfiguration";
-import { HttpClientService } from "../business/http-client.service";
+//import { HttpClientService } from "../business/http-client.service";
+import { HttpClient } from "@angular/common/http";
 import { ValidationErrorService } from "../shared/validation-error.service";
 import { Observable } from "rxjs";
 import { Brand, Catagory, Model, TaxGroup, Measurement, Account, Vendor, PaymentTerm } from '../entities';
@@ -19,7 +20,7 @@ export class RefService {
     vendorList:Vendor[]=[];
     paymentTermList:PaymentTerm[]=[];
 
-    constructor(private httpClient: HttpClientService,
+    constructor(private httpClient: HttpClient,
         private config: AppConfiguration) {
     }
 
@@ -29,9 +30,9 @@ export class RefService {
         if (force !== true && (this.itemList && this.itemList.length > 0))
             return Observable.of(this.itemList) as Observable<Item[]>;
 
-        return this.httpClient.get(this.config.urls.url("AllItems"))
+        return this.httpClient.get<Item[]>(this.config.urls.url("AllItems"))
             .map(response => {
-                this.itemList = response.json();
+                this.itemList = response;
 
                 return this.itemList;
             })
@@ -44,9 +45,9 @@ export class RefService {
         if (force !== true && (this.brandList && this.brandList.length > 0))
             return Observable.of(this.brandList) as Observable<Brand[]>;
 
-        return this.httpClient.get(this.config.urls.url("brands"))
+        return this.httpClient.get<Brand[]>(this.config.urls.url("brands"))
             .map(response => {
-                this.brandList = response.json();
+                this.brandList = response;
 
                 return this.brandList;
             })
@@ -59,9 +60,9 @@ export class RefService {
         if (force !== true && (this.catagoryList && this.catagoryList.length > 0))
             return Observable.of(this.catagoryList) as Observable<Catagory[]>;
 
-        return this.httpClient.get(this.config.urls.url("catagories"))
+        return this.httpClient.get<Catagory[]>(this.config.urls.url("catagories"))
             .map(response => {
-                this.catagoryList = response.json();
+                this.catagoryList = response;
 
                 return this.catagoryList;
             })
@@ -75,9 +76,9 @@ export class RefService {
         if (force !== true && (this.modelList && this.modelList.length > 0))
             return Observable.of(this.modelList) as Observable<Model[]>;
 
-        return this.httpClient.get(this.config.urls.url("models"))
+        return this.httpClient.get<Model[]>(this.config.urls.url("models"))
             .map(response => {
-                this.modelList = response.json();
+                this.modelList = response;
 
                 return this.modelList;
             })
@@ -91,9 +92,9 @@ export class RefService {
         if (force !== true && (this.taxGroupList && this.taxGroupList.length > 0))
             return Observable.of(this.taxGroupList) as Observable<TaxGroup[]>;
 
-        return this.httpClient.get(this.config.urls.url("taxgroups"))
+        return this.httpClient.get<TaxGroup[]>(this.config.urls.url("taxgroups"))
             .map(response => {
-                this.taxGroupList = response.json();
+                this.taxGroupList = response;
 
                 return this.taxGroupList;
             })
@@ -106,9 +107,9 @@ export class RefService {
         if (force !== true && (this.measurementList && this.measurementList.length > 0))
             return Observable.of(this.measurementList) as Observable<Measurement[]>;
 
-        return this.httpClient.get(this.config.urls.url("measuremets"))
+        return this.httpClient.get<Measurement[]>(this.config.urls.url("measuremets"))
             .map(response => {
-                this.measurementList = response.json();
+                this.measurementList = response;
 
                 return this.measurementList;
             })
@@ -121,9 +122,9 @@ export class RefService {
         if (force !== true && (this.accountList && this.accountList.length > 0))
             return Observable.of(this.accountList) as Observable<Account[]>;
 
-        return this.httpClient.get(this.config.urls.url("accounts"))
+        return this.httpClient.get<Account[]>(this.config.urls.url("accounts"))
             .map(response => {
-                this.accountList = response.json();
+                this.accountList = response;
 
                 return this.accountList;
             })
@@ -137,9 +138,9 @@ export class RefService {
         if (force !== true && (this.vendorList && this.vendorList.length > 0))
             return Observable.of(this.vendorList) as Observable<Vendor[]>;
 
-        return this.httpClient.get(this.config.urls.url("vendorss"))
+        return this.httpClient.get<Vendor[]>(this.config.urls.url("vendorss"))
             .map(response => {
-                this.vendorList = response.json();
+                this.vendorList = response;
 
                 return this.vendorList;
             })
@@ -152,9 +153,9 @@ export class RefService {
         if (force !== true && (this.paymentTermList && this.paymentTermList.length > 0))
             return Observable.of(this.paymentTermList) as Observable<PaymentTerm[]>;
 
-        return this.httpClient.get(this.config.urls.url("paymentTerm"))
+        return this.httpClient.get<PaymentTerm[]>(this.config.urls.url("paymentTerm"))
             .map(response => {
-                this.paymentTermList = response.json();
+                this.paymentTermList = response;
 
                 return this.paymentTermList;
             })

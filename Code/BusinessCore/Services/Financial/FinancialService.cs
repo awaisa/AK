@@ -236,10 +236,6 @@ namespace BusinessCore.Services.Financial
                         });
                     }
                 }
-                foreach (var contact in dbObject.Party.Contacts.Where(c => toUpdateIds.Contains(c.Id)))
-                {
-                    contact.Deleted = true;
-                }
 
                 _journalEntryRepo.Update(dbObject);
                 journalEntry = dbObject;
@@ -652,8 +648,8 @@ namespace BusinessCore.Services.Financial
         public JournalEntryHeader GetJournalEntry(int id, bool fromGL = false)
         {
             if(fromGL)
-                return _journalEntryRepo.Table.Where(je => je.GeneralLedgerHeaderId == id).FirstOrDefault();
-            return _journalEntryRepo.Table.Where(je => je.Id == id).FirstOrDefault();
+                return _journalEntryRepo.Table.Include(je => je.JournalEntryLines).Where(je => je.GeneralLedgerHeaderId == id).FirstOrDefault();
+            return     _journalEntryRepo.Table.Include(je => je.JournalEntryLines).Where(je => je.Id == id).FirstOrDefault();
         }
 
         public void UpdateJournalEntry(JournalEntryHeader journalEntry, bool posted = false)

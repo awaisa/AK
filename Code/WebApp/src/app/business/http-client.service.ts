@@ -1,5 +1,6 @@
 ﻿import {Injectable} from "@angular/core";
-import {Http, Headers, RequestOptions, Response}  from "@angular/http";
+//import {HttpRequest, Headers, RequestOptions, Response}  from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
 import {UserInfo} from "./userInfo";
 import {Observable} from "rxjs";
 
@@ -9,10 +10,11 @@ import {Observable} from "rxjs";
 @Injectable()
 export class HttpClientService {
 
-  constructor(private http:Http, private user:UserInfo) {
+  constructor(private http:HttpClient, private user:UserInfo) {
   }
+  
 
-  get(url:string, requestOptions?:RequestOptions)  {
+  get(url:string, requestOptions?:any)  {
     requestOptions = this.ensureOptions(requestOptions);
     return this.http
       .get(url, requestOptions)
@@ -24,7 +26,7 @@ export class HttpClientService {
       })
   }
 
-  post(url:string, data:any, requestOptions?:RequestOptions) {
+  post(url:string, data:any, requestOptions?:any) {
     requestOptions = this.ensureOptions(requestOptions)
 
     return this.http
@@ -37,7 +39,7 @@ export class HttpClientService {
       });
   }
 
-  put(url:string, data:any, requestOptions?:RequestOptions) {
+  put(url:string, data:any, requestOptions?:any) {
     //this.ensureOptions(!requestOptions);
 
     return this.http
@@ -50,7 +52,7 @@ export class HttpClientService {
       });
   }
 
-  delete(url:string, requestOptions?:RequestOptions) {
+  delete(url:string, requestOptions?:any) {
 
     requestOptions = this.ensureOptions (requestOptions);
 
@@ -63,21 +65,21 @@ export class HttpClientService {
       });
   }
 
-  ensureOptions(requestOptions?:RequestOptions):RequestOptions {
+  ensureOptions(requestOptions?:any):any {
 
     let currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (currentUser && currentUser.token) {
-      let headAuthorization = { 'Authorization': 'Bearer ' + currentUser.token };
-      let headers = new Headers(headAuthorization);
+      let headAuthorization = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + currentUser.token
+      };
       //return new RequestOptions({ headers: headers });
-      if (!requestOptions)
-        requestOptions = new RequestOptions({
-          headers: headers
-        });
-      else
-        requestOptions.headers = headers;
+      
+      let options = {
+          headers: headAuthorization
+      }
+      return options;
     }
-
-    return requestOptions;
+    return null;
   }
 }

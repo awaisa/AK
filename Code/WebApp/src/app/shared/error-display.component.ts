@@ -1,5 +1,5 @@
 ﻿import {Component, OnInit, Input} from '@angular/core';
-import {ResponseOptionsArgs, Response} from "@angular/http";
+//import {ResponseOptionsArgs, Response} from "@angular/common/http";
 import {Observable} from "rxjs";
 
 import { ValidationErrorService } from '../shared/validation-error.service';

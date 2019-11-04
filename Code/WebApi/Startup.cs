@@ -158,7 +158,8 @@ namespace WebApiCore
             //services.AddSingleton(new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<Models.Mappings.ModelMappingProfile>())));
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new ModelMappingProfile());
+                //cfg.AddProfile(new ModelMappingProfile());
+                cfg.AddMaps(GetType().Assembly);
             });
 
             //register

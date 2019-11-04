@@ -2,9 +2,10 @@
 import { BrowserModule} from "@angular/platform-browser";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule} from "@angular/forms";
-import { HttpModule } from "@angular/http";
+import { HttpClientModule, HTTP_INTERCEPTORS  } from "@angular/common/http";
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+//import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import {BreadcrumbsModule} from 'ng2-breadcrumbs';
 
@@ -30,10 +31,10 @@ import { ErrorInterceptor } from './_helpers/error.interceptor';
     BreadcrumbsModule,
     SharedModule, BrowserModule,
     FormsModule,
-    HttpModule,
     HttpClientModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgSelectModule
   ],
 
   // components

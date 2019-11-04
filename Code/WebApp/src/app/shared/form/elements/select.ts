@@ -1,5 +1,5 @@
 import {Component, Optional, Inject, Input, ViewChild, ContentChild, AfterContentInit,
-  ElementRef, ContentChildren, QueryList } from '@angular/core';
+  ElementRef, ContentChildren, QueryList, Output } from '@angular/core';
 import {NgModel, NG_VALUE_ACCESSOR, ControlContainer, } from '@angular/forms';
 import {ElementBase, animations} from '../';
 
@@ -12,14 +12,18 @@ import {ElementBase, animations} from '../';
       'has-success': shouldShowErrors() == true
     }">
       <label *ngIf="label" [attr.for]="identifier" class="col-form-label-sm">{{label}}:</label>
-      <select *ngIf="!isreadonly"
-        class="form-control form-control-sm"
-        [ngClass]="{'is-invalid': (shouldShowErrors())}"
+      <ng-select *ngIf="!isreadonly" [items]="items"
+        bindLabel="name"
+        [placeholder]="placeholder"
+        appendTo="body"
+        [id]="identifier"
         [(ngModel)]="value"
-        [id]="identifier">
-          <option value="" selected *ngIf="placeholder">{{placeholder}}</option>
-          <option *ngFor="let item of items" [value]="item[bindValue]">{{getLabel(item)}}</option>
-      </select>
+        [ngClass]="{'is-invalid': (shouldShowErrors())}">
+          <ng-option [value]="item[bindValue]" [disabled]="item.disabled" *ngFor="let item of items">
+            {{getLabel(item)}}
+          </ng-option>
+      </ng-select>
+
       <div [@flyInOut]="'in,out'"
         class="invalid-feedback"
         *ngIf="!isreadonly && shouldShowErrors()">
@@ -40,8 +44,8 @@ export class FormSelectComponent extends ElementBase<string> {
   @Input() items: any[] = [];
   @Input() bindLabel: string;
   @Input() bindValue: string;
-
-  @ViewChild(NgModel) model: NgModel;
+  
+  @ViewChild(NgModel, {static: false}) model: NgModel;
 
   constructor(
     _elementRef: ElementRef,
@@ -58,6 +62,9 @@ export class FormSelectComponent extends ElementBase<string> {
   getLabel(item): string {
     let label = "";
     label = this.getDescendantProp(item, this.bindLabel);
+    var c = this.getDescendantProp(item, 'code');
+    if (c) label = label + ' - ' + c;
+
     return label;
   }
 
@@ -69,5 +76,4 @@ export class FormSelectComponent extends ElementBase<string> {
       }
       return "";
   }
-
 }

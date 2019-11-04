@@ -38,7 +38,7 @@ import {ElementBase, animations} from '../';
 })
 export class FormRadioComponent extends ElementBase<boolean> {
 
-  @ViewChild(NgModel) model: NgModel;
+  @ViewChild(NgModel, {static: false}) model: NgModel;
   @Output() radioChange: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(

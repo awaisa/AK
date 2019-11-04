@@ -37,7 +37,7 @@ import {ElementBase, animations} from '../';
 })
 export class FormTextComponent extends ElementBase<string> {
 
-  @ViewChild(NgModel) model: NgModel;
+  @ViewChild(NgModel, {static: false}) model: NgModel;
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,

@@ -31,7 +31,7 @@ import {Component, Optional, Inject, Input, ViewChild, ContentChild, AfterConten
     @Output() change: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() save: EventEmitter<any> = new EventEmitter<any>();
 
-    @ViewChild(NgModel) model: NgModel;
+    @ViewChild(NgModel, {static: false}) model: NgModel;
   
     constructor(
       private _elementRef: ElementRef,

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClientService } from '../business/http-client.service';
+import { HttpClient } from "@angular/common/http";
+// import { HttpClientService } from '../business/http-client.service';
 import { AppConfiguration } from '../business/appConfiguration';
 import { Observable } from 'rxjs';
 import { Invoice } from '../entities/invoice';
@@ -11,7 +12,7 @@ import { TaxGroupTax } from '../entities/taxGroupTax';
 @Injectable()
 export class PayableService {
 
-  constructor(private httpClient: HttpClientService,
+  constructor(private httpClient: HttpClient,
     private config: AppConfiguration) {
 }
 invoiceList: Invoice[] = [];
@@ -28,9 +29,9 @@ getInvoices(force: boolean = false): Observable<Invoice[]> {
     if (force !== true && (this.invoiceList && this.invoiceList.length > 0))
         return Observable.of(this.invoiceList) as Observable<Invoice[]>;
 
-        return this.httpClient.get(this.config.urls.url("purchaseInvoices"))
+        return this.httpClient.get<Invoice[]>(this.config.urls.url("purchaseInvoices"))
             .map(response => {
-                this.invoiceList = response.json();
+                this.invoiceList = response;
                 
                 return this.invoiceList;
             })
@@ -38,10 +39,11 @@ getInvoices(force: boolean = false): Observable<Invoice[]> {
  }
 
  getInvoice(id) {
-  return this.httpClient.get(this.config.urls.url("purchaseInvoices", id))
+  return this.httpClient.get<Invoice>(this.config.urls.url("purchaseInvoices", id))
       .map(response => {
-          var result = response.json();
-          return this.invoiceList;
+          return response;
+          
+          //return this.invoiceList;
       })
       .catch(new ValidationErrorService().parseObservableResponseError);
 }
@@ -51,9 +53,9 @@ getTaxes(force: boolean = false): Observable<Tax[]> {
     if (force !== true && (this.taxList && this.taxList.length > 0))
         return Observable.of(this.taxList) as Observable<Tax[]>;
 
-        return this.httpClient.get(this.config.urls.url("Taxes"))
+        return this.httpClient.get<Tax[]>(this.config.urls.url("Taxes"))
             .map(response => {
-                this.taxList = response.json();
+                this.taxList = response;
                 
                 return this.taxList;
             })
@@ -65,9 +67,9 @@ getTaxes(force: boolean = false): Observable<Tax[]> {
     if (force !== true && (this.taxGroupTaxList && this.taxGroupTaxList.length > 0))
         return Observable.of(this.taxGroupTaxList) as Observable<TaxGroupTax[]>;
 
-        return this.httpClient.get(this.config.urls.url("Taxgrouptax"))
+        return this.httpClient.get<TaxGroupTax[]>(this.config.urls.url("Taxgrouptax"))
             .map(response => {
-                this.taxGroupTaxList = response.json();
+                this.taxGroupTaxList = response;
                 
                 return this.taxGroupTaxList;
             })
@@ -80,9 +82,9 @@ getTaxes(force: boolean = false): Observable<Tax[]> {
     if (force !== true && (this.taxGroupList && this.taxGroupList.length > 0))
         return Observable.of(this.taxGroupList) as Observable<TaxGroup[]>;
 
-        return this.httpClient.get(this.config.urls.url("TaxGroup"))
+        return this.httpClient.get<TaxGroup[]>(this.config.urls.url("TaxGroup"))
             .map(response => {
-                this.taxGroupList = response.json();
+                this.taxGroupList = response;
                 
                 return this.taxGroupList;
             })

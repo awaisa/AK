@@ -8,7 +8,7 @@ import { BreadcrumbComponent } from 'ng2-breadcrumbs';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Test Application';
+  title = 'AK Application';
 
   //constructor(private user:UserInfo){
   //  this.user.checkAuthentication()
