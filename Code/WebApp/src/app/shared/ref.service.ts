@@ -171,7 +171,7 @@ export class RefService {
 
      return this.httpClient.get(this.config.urls.url("getCustomers"))
          .map(response => {
-             this.customerList = response.json();
+             this.customerList = response as Customer[];
 
              return this.customerList;
          })

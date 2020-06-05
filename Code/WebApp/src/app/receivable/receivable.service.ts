@@ -33,8 +33,7 @@ export class ReceivableService {
     getInvoice(id): Observable<SaleInvoice> {
         return this.httpClient.get(this.config.urls.url("invoices", id))
             .map(response => {
-                var result = <SaleInvoice>response.json();
-                return result;
+                return response;
             })
             .catch(new ValidationErrorService().parseObservableResponseError);
     }
@@ -42,7 +41,7 @@ export class ReceivableService {
     saveSaleInvoice(saleInvoice): Observable<any> {
         return this.httpClient.post(this.config.urls.url("saleInvoice"), saleInvoice, null)
         .map(response => {
-            return response.json();
+            return response;
         })
         .catch(new ValidationErrorService().parseObservableResponseError);
     }
