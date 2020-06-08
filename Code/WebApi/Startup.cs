@@ -20,8 +20,6 @@ using BusinessCore.Services.Sales;
 using BusinessCore.Services.TaxSystem;
 using System.Text;
 using WebApiCore.Infrastructure;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using BusinessCore.Security;
 using AutoMapper;
 //using WebApiCore.Models.Mappings;
@@ -32,19 +30,23 @@ using WebApiCore.Infrastructure.Security;
 using BusinessCore.Domain.Security;
 using BusinessCore.Domain.Purchases;
 using System;
-using Microsoft.Data.Sqlite;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using DocumentFormat.OpenXml.EMMA;
+using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Hosting;
 
 namespace WebApiCore
 {
     public class Startup
     {
-        readonly IHostingEnvironment HostingEnvironment;
+        readonly IWebHostEnvironment _hostingEnvironment;
 
         IConfigurationRoot Configuration { get; }
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment env)
         {
-            HostingEnvironment = env;
+            _hostingEnvironment = env;
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -63,11 +65,11 @@ namespace WebApiCore
         {
             services.AddDbContext<ApplicationContext>(builder =>
             {
-                if (HostingEnvironment.IsEnvironment("Test"))
+                if (_hostingEnvironment.IsEnvironment("Test"))
                 {
                     #pragma warning disable CS0618 // Type or member is obsolete
                     var options = builder
-                          .UseInMemoryDatabase()
+                          .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                     #pragma warning restore CS0618 // Type or member is obsolete
                                               .Options;
                 }
@@ -84,7 +86,7 @@ namespace WebApiCore
                         // Note this path has to have full  access for the Web user in order 
                         // to create the DB and write to it.
                         var connStr = "Data Source=" +
-                                      Path.Combine(HostingEnvironment.ContentRootPath, "AKData.sqlite");
+                                      Path.Combine(_hostingEnvironment.ContentRootPath, "AKData.sqlite");
                         builder.UseSqlite(connStr);
                     }
                 }
@@ -116,15 +118,6 @@ namespace WebApiCore
 
             //services.AddAuthenticationCore();
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder
-                        .AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials());
-            });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //services.AddScoped<IPrincipal>(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
@@ -167,13 +160,13 @@ namespace WebApiCore
 
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new Info { Title = "ak api", Version = "v1" });
-                options.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "ak api", Version = "v1" });
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
                     Name = "Authorization",
-                    In = "header",
-                    Type = "apiKey"
+                    In = ParameterLocation.Header, // "header",
+                    Type = SecuritySchemeType.ApiKey //"apiKey"
                 });
                 //https://github.com/domaindrivendev/Swashbuckle/issues/581#issuecomment-235053027
                 options.DocInclusionPredicate((docName, apiDesc) =>
@@ -185,31 +178,45 @@ namespace WebApiCore
 
             });
 
-            services.AddCors();
-
-            // Add framework services
-            services.AddMvc(options =>
+            // Cors policy is added to controllers via [EnableCors("CorsPolicy")]
+            // or .UseCors("CorsPolicy") globally
+            services.AddCors(options =>
             {
-                //options.Filters.Add(new ApiExceptionFilter());
-                options.Filters.Add(typeof(ValidateModelAttribute));
-            })
-            .AddJsonOptions(opt =>
-            {
-                opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                //var resolver = opt.SerializerSettings.ContractResolver;
-                //if (resolver != null)
-                //{
-                //    var res = resolver as DefaultContractResolver;
-                //    res.NamingStrategy = null;
-                //}
-            })
-            .AddFluentValidation(fvc => fvc.RegisterValidatorsFromAssemblyContaining<Startup>());
+                options.AddPolicy("CorsPolicy",
+                    builder => builder
+                        // required if AllowCredentials is set also
+                        .SetIsOriginAllowed(s => true)
+                        //.AllowAnyOrigin()
+                        .AllowAnyMethod()  // doesn't work for DELETE!
+                        .WithMethods("DELETE")
+                        .AllowAnyHeader()
+                        .AllowCredentials()
+                );
+            });
 
+            services.AddControllers()
+                .AddNewtonsoftJson(opt =>
+                {
+                    opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    var resolver = opt.SerializerSettings.ContractResolver;
+                    //if (resolver != null)
+                    //{
+                    //    var res = resolver as DefaultContractResolver;
+                    //    res.NamingStrategy = null;
+                    //}
+
+                    if (_hostingEnvironment.IsDevelopment())
+                        opt.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+
+                })
+                .AddFluentValidation(fvc => fvc.RegisterValidatorsFromAssemblyContaining<Startup>());
+
+            //services.AddMvc(options => options.EnableEndpointRouting = false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app,
-            IHostingEnvironment env,
+            IWebHostEnvironment env,
             ILoggerFactory loggerFactory,
             IConfiguration configuration)
         {
@@ -283,14 +290,26 @@ namespace WebApiCore
                     dbContext.EnsureSeeded();
             }
 
-            // Enable Cookie Auth with automatic user policy
+
+            app.UseRouting();
+
+            app.UseCors("CorsPolicy");
+
+
             app.UseAuthentication();
+            app.UseAuthorization();
+
 
             app.UseDatabaseErrorPage();
             app.UseStatusCodePages();
 
             app.UseDefaultFiles(); // so index.html is not required
             app.UseStaticFiles();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
 
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
@@ -303,14 +322,8 @@ namespace WebApiCore
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "ak api v1");
             });
 
-            // put last so header configs like CORS or Cookies etc can fire
-            app.UseCors(builder => builder
-                                .AllowAnyOrigin()
-                                .AllowAnyMethod()
-                                .AllowAnyHeader()
-                                .AllowCredentials());
 
-            app.UseMvc();
+            //app.UseMvc();
         }
     }
 }

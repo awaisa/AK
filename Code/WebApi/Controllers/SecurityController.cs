@@ -7,16 +7,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using BusinessCore.Services.Security;
 using WebApiCore.Models;
-using Microsoft.AspNetCore.Http.Authentication;
 using System;
 using Microsoft.AspNetCore.Authentication;
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using WebApiCore.Infrastructure;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using WebApiCore.Infrastructure.ErrorHandling;
 using BusinessCore.Security;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
 
 namespace WebApiCore.Controllers
 {
